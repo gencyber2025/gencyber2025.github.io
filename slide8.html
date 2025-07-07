@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - AmpliPi: Multi-Room Audio System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Circuit Board Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 119, 190, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 180, 216, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(144, 224, 239, 0.05) 0%, transparent 50%);
+        }
+
+        /* Audio Wave Animation */
+        .audio-wave {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            bottom: 0;
+            opacity: 0.1;
+            background: linear-gradient(to top, #0077be 0%, transparent 100%);
+            clip-path: polygon(
+                0% 80%, 10% 70%, 20% 75%, 30% 65%, 40% 70%, 
+                50% 60%, 60% 70%, 70% 65%, 80% 75%, 90% 70%, 100% 80%,
+                100% 100%, 0% 100%
+            );
+            animation: waveMotion 10s ease-in-out infinite;
+        }
+
+        @keyframes waveMotion {
+            0%, 100% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-50px) scaleY(1.2); }
+        }
+
+        /* Data Particles */
+        .data-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00b4d8;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00b4d8;
+            animation: dataFlow 15s linear infinite;
+        }
+
+        @keyframes dataFlow {
+            0% {
+                transform: translateX(-100px) translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-50px);
+                opacity: 0;
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #0077be, #00b4d8, #90e0ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            color: #90e0ef;
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+
+        /* AmpliPi Hardware Section */
+        .hardware-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 180, 216, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #00b4d8;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+        }
+
+        /* 3D Hardware Preview */
+        .hardware-preview {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .amplipi-3d {
+            width: 400px;
+            height: 250px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3D 20s linear infinite;
+            cursor: grab;
+        }
+
+        .amplipi-3d:active {
+            cursor: grabbing;
+        }
+
+        @keyframes rotate3D {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .amplipi-face {
+            position: absolute;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #00b4d8;
+        }
+
+        .amplipi-front {
+            width: 400px;
+            height: 150px;
+            transform: translateZ(75px);
+            background: linear-gradient(to right, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+
+        .amplipi-back {
+            width: 400px;
+            height: 150px;
+            transform: rotateY(180deg) translateZ(75px);
+            background: #0d0d0d;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .amplipi-side {
+            width: 150px;
+            height: 150px;
+            background: #151515;
+        }
+
+        .amplipi-left {
+            transform: rotateY(-90deg) translateZ(200px);
+        }
+
+        .amplipi-right {
+            transform: rotateY(90deg) translateZ(200px);
+        }
+
+        .amplipi-top {
+            width: 400px;
+            height: 150px;
+            transform: rotateX(90deg) translateZ(75px);
+            background: #222;
+        }
+
+        .amplipi-bottom {
+            width: 400px;
+            height: 150px;
+            transform: rotateX(-90deg) translateZ(75px);
+            background: #0a0a0a;
+        }
+
+        /* Zone Indicators */
+        .zone-indicators {
+            display: flex;
+            gap: 10px;
+        }
+
+        .zone-led {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #333;
+            border: 2px solid #555;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .zone-led.active {
+            background: #00ff88;
+            box-shadow: 0 0 15px #00ff88;
+            animation: ledPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ledPulse {
+            0%, 100% { box-shadow: 0 0 15px #00ff88; }
+            50% { box-shadow: 0 0 25px #00ff88; }
+        }
+
+        /* Ports */
+        .port {
+            width: 40px;
+            height: 30px;
+            background: #000;
+            border: 2px solid #666;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .port:hover {
+            border-color: #00b4d8;
+            color: #00b4d8;
+        }
+
+        /* System Architecture */
+        .architecture-section {
+            background: rgba(0, 119, 190, 0.05);
+            border: 2px solid rgba(0, 119, 190, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .architecture-diagram {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 40px auto;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .component {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00b4d8;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .component:hover {
+            transform: scale(1.05);
+            background: rgba(0, 180, 216, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.4);
+        }
+
+        .component-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .component-label {
+            font-weight: bold;
+            color: #90e0ef;
+            margin-bottom: 5px;
+        }
+
+        .component-desc {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Data Flow Lines */
+        .data-flow {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00b4d8, transparent);
+            transform-origin: left center;
+            animation: flowAnimation 3s linear infinite;
+        }
+
+        @keyframes flowAnimation {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        /* Zone Control Simulation */
+        .zone-control {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .zone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .zone-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .zone-card:hover {
+            border-color: #00b4d8;
+            transform: translateY(-5px);
+        }
+
+        .zone-card.active {
+            background: rgba(0, 180, 216, 0.2);
+            border-color: #00b4d8;
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.3);
+        }
+
+        .zone-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .zone-name {
+            font-weight: bold;
+            color: #90e0ef;
+            margin-bottom: 10px;
+        }
+
+        .zone-status {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        /* Volume Control */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .volume-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b4d8, #00ff88);
+            border-radius: 3px;
+            width: 50%;
+            transition: width 0.3s ease;
+        }
+
+        .volume-knob {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* API Demo */
+        .api-demo {
+            background: #000;
+            border: 2px solid #00b4d8;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .api-endpoint {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .api-response {
+            color: #90e0ef;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Control Buttons */
+        .control-button {
+            background: linear-gradient(135deg, #0077be, #00b4d8);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.4);
+        }
+
+        .control-button:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(144, 224, 239, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 180, 216, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: #00b4d8;
+            box-shadow: 0 8px 25px rgba(0, 180, 216, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            color: #00b4d8;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Source Animation */
+        .source-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+        }
+
+        .source-item {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .source-item:hover {
+            transform: scale(1.1);
+        }
+
+        .source-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: sourceFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes sourceFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .source-label {
+            color: #90e0ef;
+            font-weight: bold;
+        }
+
+        /* Animated Arrow */
+        .flow-arrow {
+            font-size: 2em;
+            color: #00b4d8;
+            animation: arrowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hardware-preview {
+                flex-direction: column;
+            }
+            
+            .amplipi-3d {
+                width: 300px;
+                height: 200px;
+            }
+            
+            .amplipi-front, .amplipi-back, .amplipi-top, .amplipi-bottom {
+                width: 300px;
+            }
+            
+            .architecture-diagram {
+                height: 600px;
+            }
+            
+            .zone-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 20px;
+            color: #00ff88;
+            font-weight: bold;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: dotBlink 1s ease-in-out infinite;
+        }
+
+        @keyframes dotBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-container">
+        <div class="audio-wave"></div>
+        <!-- Data Particles -->
+        <div class="data-particle" style="top: 20%; animation-delay: 0s;"></div>
+        <div class="data-particle" style="top: 40%; animation-delay: 2s;"></div>
+        <div class="data-particle" style="top: 60%; animation-delay: 4s;"></div>
+        <div class="data-particle" style="top: 80%; animation-delay: 6s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="main-title">AmpliPi Audio System</h1>
+            <p class="subtitle">Multi-Room Audio Controller & Amplifier</p>
+            <div class="status-indicator" style="margin-top: 20px;">
+                <span class="status-dot"></span>
+                System Online
+            </div>
+        </header>
+
+        <!-- Hardware Section -->
+        <section class="hardware-section">
+            <h2 class="section-title">🔊 The Hardware</h2>
+            
+            <div class="hardware-preview">
+                <!-- 3D Model -->
+                <div class="amplipi-3d" id="amplipi3d">
+                    <div class="amplipi-face amplipi-front">
+                        <div class="zone-indicators">
+                            <div class="zone-led active" title="Zone 1"></div>
+                            <div class="zone-led" title="Zone 2"></div>
+                            <div class="zone-led" title="Zone 3"></div>
+                            <div class="zone-led active" title="Zone 4"></div>
+                            <div class="zone-led" title="Zone 5"></div>
+                            <div class="zone-led active" title="Zone 6"></div>
+                        </div>
+                        <div style="font-size: 1.5em; font-weight: bold;">AmpliPro</div>
+                    </div>
+                    <div class="amplipi-face amplipi-back">
+                        <div class="port">USB</div>
+                        <div class="port">ETH</div>
+                        <div class="port">RCA</div>
+                        <div class="port">RCA</div>
+                        <div class="port">SPK1</div>
+                        <div class="port">SPK2</div>
+                        <div class="port">SPK3</div>
+                        <div class="port">SPK4</div>
+                    </div>
+                    <div class="amplipi-face amplipi-left"></div>
+                    <div class="amplipi-face amplipi-right"></div>
+                    <div class="amplipi-face amplipi-top"></div>
+                    <div class="amplipi-face amplipi-bottom"></div>
+                </div>
+
+                <!-- Specifications -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3 style="color: #00b4d8; margin-bottom: 20px;">Key Specifications</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 2em;">🧠</span>
+                            <div>
+                                <div style="color: #90e0ef; font-weight: bold;">Raspberry Pi CM3+</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 0.9em;">1GB RAM, Quad-core processor</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 2em;">🎵</span>
+                            <div>
+                                <div style="color: #90e0ef; font-weight: bold;">4 Audio Sources</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 0.9em;">Digital + Analog inputs</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 2em;">🔊</span>
+                            <div>
+                                <div style="color: #90e0ef; font-weight: bold;">6 Stereo Zones</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 0.9em;">60W per zone, expandable to 36 zones</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 2em;">📱</span>
+                            <div>
+                                <div style="color: #90e0ef; font-weight: bold;">Multi-Platform Control</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 0.9em;">Web app, iOS/Android, REST API</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Architecture -->
+        <section class="architecture-section">
+            <h2 class="section-title">🏗️ System Architecture</h2>
+            
+            <div class="architecture-diagram" id="archDiagram">
+                <!-- Raspberry Pi -->
+                <div class="component" style="left: 40%; top: 10%;" onclick="showComponentInfo('rpi')">
+                    <div class="component-icon">🥧</div>
+                    <div class="component-label">Raspberry Pi</div>
+                    <div class="component-desc">Control Center</div>
+                </div>
+
+                <!-- Audio Sources -->
+                <div class="component" style="left: 10%; top: 40%;" onclick="showComponentInfo('sources')">
+                    <div class="component-icon">🎼</div>
+                    <div class="component-label">Audio Sources</div>
+                    <div class="component-desc">4 Inputs</div>
+                </div>
+
+                <!-- DAC/ADC -->
+                <div class="component" style="left: 40%; top: 40%;" onclick="showComponentInfo('dac')">
+                    <div class="component-icon">🔄</div>
+                    <div class="component-label">DAC/ADC</div>
+                    <div class="component-desc">Digital Conversion</div>
+                </div>
+
+                <!-- Amplifiers -->
+                <div class="component" style="left: 70%; top: 40%;" onclick="showComponentInfo('amp')">
+                    <div class="component-icon">⚡</div>
+                    <div class="component-label">Amplifiers</div>
+                    <div class="component-desc">6x60W</div>
+                </div>
+
+                <!-- API -->
+                <div class="component" style="left: 10%; top: 70%;" onclick="showComponentInfo('api')">
+                    <div class="component-icon">🔌</div>
+                    <div class="component-label">REST API</div>
+                    <div class="component-desc">Control Interface</div>
+                </div>
+
+                <!-- Apps -->
+                <div class="component" style="left: 70%; top: 70%;" onclick="showComponentInfo('apps')">
+                    <div class="component-icon">📱</div>
+                    <div class="component-label">Apps</div>
+                    <div class="component-desc">iOS/Android/Web</div>
+                </div>
+
+                <!-- Data Flow Lines -->
+                <div class="data-flow" style="width: 150px; left: 22%; top: 45%; transform: rotate(25deg);"></div>
+                <div class="data-flow" style="width: 100px; left: 47%; top: 25%; transform: rotate(90deg);"></div>
+                <div class="data-flow" style="width: 150px; left: 52%; top: 45%; transform: rotate(-25deg);"></div>
+                <div class="data-flow" style="width: 200px; left: 25%; top: 75%; transform: rotate(0deg);"></div>
+                <div class="data-flow" style="width: 200px; left: 45%; top: 75%; transform: rotate(0deg);"></div>
+            </div>
+        </section>
+
+        <!-- Source Flow Animation -->
+        <section style="background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 40px; margin: 40px 0;">
+            <h2 class="section-title">🎵 Audio Source Flow</h2>
+            
+            <div class="source-flow">
+                <div class="source-item" onclick="selectSource('spotify')">
+                    <div class="source-icon">🎵</div>
+                    <div class="source-label">Spotify</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="source-item">
+                    <div class="source-icon">🥧</div>
+                    <div class="source-label">Pi Processing</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="source-item" onclick="selectSource('zones')">
+                    <div class="source-icon">🏠</div>
+                    <div class="source-label">Multi-Zone</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zone Control Simulation -->
+        <section class="zone-control">
+            <h2 class="section-title">🏠 Zone Control Simulation</h2>
+            
+            <div class="zone-grid">
+                <div class="zone-card" id="zone1" onclick="toggleZone(1)">
+                    <div class="zone-icon">🛋️</div>
+                    <div class="zone-name">Living Room</div>
+                    <div class="zone-status">OFF</div>
+                    <div class="volume-control">
+                        <span>🔊</span>
+                        <div class="volume-slider" onclick="event.stopPropagation()">
+                            <div class="volume-fill"></div>
+                            <div class="volume-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="zone-card" id="zone2" onclick="toggleZone(2)">
+                    <div class="zone-icon">🍳</div>
+                    <div class="zone-name">Kitchen</div>
+                    <div class="zone-status">OFF</div>
+                    <div class="volume-control">
+                        <span>🔊</span>
+                        <div class="volume-slider" onclick="event.stopPropagation()">
+                            <div class="volume-fill"></div>
+                            <div class="volume-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="zone-card" id="zone3" onclick="toggleZone(3)">
+                    <div class="zone-icon">🛏️</div>
+                    <div class="zone-name">Master Bedroom</div>
+                    <div class="zone-status">OFF</div>
+                    <div class="volume-control">
+                        <span>🔊</span>
+                        <div class="volume-slider" onclick="event.stopPropagation()">
+                            <div class="volume-fill"></div>
+                            <div class="volume-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="zone-card" id="zone4" onclick="toggleZone(4)">
+                    <div class="zone-icon">🌳</div>
+                    <div class="zone-name">Patio</div>
+                    <div class="zone-status">OFF</div>
+                    <div class="volume-control">
+                        <span>🔊</span>
+                        <div class="volume-slider" onclick="event.stopPropagation()">
+                            <div class="volume-fill"></div>
+                            <div class="volume-knob"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="control-button" onclick="playAll()">▶️ Play All Zones</button>
+                <button class="control-button" onclick="stopAll()">⏹️ Stop All</button>
+                <button class="control-button" onclick="partyMode()">🎉 Party Mode</button>
+            </div>
+        </section>
+
+        <!-- API Demo -->
+        <section style="margin: 40px 0;">
+            <h2 class="section-title">🔌 REST API Demo</h2>
+            
+            <div class="api-demo">
+                <div class="api-endpoint">GET /api/zones</div>
+                <button class="control-button" onclick="simulateAPI('zones')">Send Request</button>
+                <div class="api-response" id="apiResponse">
+{
+  "zones": [
+    { "id": 1, "name": "Living Room", "volume": 50, "source": 1 },
+    { "id": 2, "name": "Kitchen", "volume": 40, "source": 1 },
+    { "id": 3, "name": "Master Bedroom", "volume": 30, "source": 2 },
+    { "id": 4, "name": "Patio", "volume": 60, "source": 1 }
+  ]
+}
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section>
+            <h2 class="section-title">✨ Key Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="demoFeature('streaming')">
+                    <div class="feature-icon">🎵</div>
+                    <div class="feature-title">Streaming Services</div>
+                    <div class="feature-desc">
+                        Spotify, Pandora, AirPlay, DLNA, and more
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="demoFeature('expansion')">
+                    <div class="feature-icon">➕</div>
+                    <div class="feature-title">Expandable</div>
+                    <div class="feature-desc">
+                        Connect up to 6 units for 36 zones total
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="demoFeature('opensource')">
+                    <div class="feature-icon">🔓</div>
+                    <div class="feature-title">Open Source</div>
+                    <div class="feature-desc">
+                        Fully open hardware and software design
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="demoFeature('automation')">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">Home Automation</div>
+                    <div class="feature-desc">
+                        Integrate with Home Assistant, OpenHAB
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Zone states
+        const zoneStates = {
+            1: { active: false, volume: 50 },
+            2: { active: false, volume: 40 },
+            3: { active: false, volume: 30 },
+            4: { active: false, volume: 60 }
+        };
+
+        // Initialize 3D rotation control
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let rotationX = 0;
+        let rotationY = 0;
+
+        const amplipi3d = document.getElementById('amplipi3d');
+
+        amplipi3d.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            currentX = e.clientX;
+            currentY = e.clientY;
+            amplipi3d.style.animation = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - currentX;
+            const deltaY = e.clientY - currentY;
+            
+            rotationY += deltaX * 0.5;
+            rotationX -= deltaY * 0.5;
+            
+            amplipi3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            
+            currentX = e.clientX;
+            currentY = e.clientY;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Touch support for mobile
+        amplipi3d.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            currentX = e.touches[0].clientX;
+            currentY = e.touches[0].clientY;
+            amplipi3d.style.animation = 'none';
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.touches[0].clientX - currentX;
+            const deltaY = e.touches[0].clientY - currentY;
+            
+            rotationY += deltaX * 0.5;
+            rotationX -= deltaY * 0.5;
+            
+            amplipi3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            
+            currentX = e.touches[0].clientX;
+            currentY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // Toggle zone
+        function toggleZone(zoneId) {
+            const zoneCard = document.getElementById(`zone${zoneId}`);
+            const statusEl = zoneCard.querySelector('.zone-status');
+            const led = document.querySelectorAll('.zone-led')[zoneId - 1];
+            
+            zoneStates[zoneId].active = !zoneStates[zoneId].active;
+            
+            if (zoneStates[zoneId].active) {
+                zoneCard.classList.add('active');
+                statusEl.textContent = 'PLAYING';
+                statusEl.style.color = '#00ff88';
+                led.classList.add('active');
+                
+                // Animate volume
+                animateVolume(zoneCard.querySelector('.volume-fill'), zoneStates[zoneId].volume);
+            } else {
+                zoneCard.classList.remove('active');
+                statusEl.textContent = 'OFF';
+                statusEl.style.color = 'rgba(255, 255, 255, 0.6)';
+                led.classList.remove('active');
+                
+                // Reset volume animation
+                animateVolume(zoneCard.querySelector('.volume-fill'), 0);
+            }
+        }
+
+        // Animate volume
+        function animateVolume(volumeFill, targetVolume) {
+            volumeFill.style.width = targetVolume + '%';
+        }
+
+        // Play all zones
+        function playAll() {
+            for (let i = 1; i <= 4; i++) {
+                if (!zoneStates[i].active) {
+                    toggleZone(i);
+                }
+            }
+        }
+
+        // Stop all zones
+        function stopAll() {
+            for (let i = 1; i <= 4; i++) {
+                if (zoneStates[i].active) {
+                    toggleZone(i);
+                }
+            }
+        }
+
+        // Party mode
+        function partyMode() {
+            playAll();
+            
+            // Flash LEDs
+            const leds = document.querySelectorAll('.zone-led');
+            let colorIndex = 0;
+            const colors = ['#00ff88', '#ff6361', '#00b4d8', '#ffeb3b'];
+            
+            const partyInterval = setInterval(() => {
+                leds.forEach((led, i) => {
+                    led.style.background = colors[(colorIndex + i) % colors.length];
+                    led.style.boxShadow = `0 0 20px ${colors[(colorIndex + i) % colors.length]}`;
+                });
+                colorIndex++;
+            }, 200);
+            
+            setTimeout(() => {
+                clearInterval(partyInterval);
+                leds.forEach((led, i) => {
+                    if (zoneStates[i + 1].active) {
+                        led.style.background = '#00ff88';
+                        led.style.boxShadow = '0 0 15px #00ff88';
+                    }
+                });
+            }, 5000);
+        }
+
+        // Show component info
+        function showComponentInfo(component) {
+            const info = {
+                'rpi': 'Raspberry Pi CM3+ - The brain of AmpliPi, running Linux and the control software',
+                'sources': '4 Audio Sources - 2 digital (USB/Network) + 2 analog (RCA) inputs',
+                'dac': 'DAC/ADC Converters - High-quality PCM5102A for digital-to-analog conversion',
+                'amp': 'Class-D Amplifiers - 6 zones × 60W stereo output with high efficiency',
+                'api': 'REST API - Full control via HTTP JSON API for integration',
+                'apps': 'Multi-platform apps - iOS, Android, and responsive web interface'
+            };
+            
+            console.log(info[component]);
+            
+            // Visual feedback
+            event.target.closest('.component').style.background = 'rgba(0, 255, 136, 0.2)';
+            setTimeout(() => {
+                event.target.closest('.component').style.background = '';
+            }, 500);
+        }
+
+        // Simulate API
+        function simulateAPI(endpoint) {
+            const responses = {
+                'zones': {
+                    zones: [
+                        { id: 1, name: "Living Room", volume: 50, source: 1, mute: false },
+                        { id: 2, name: "Kitchen", volume: 40, source: 1, mute: false },
+                        { id: 3, name: "Master Bedroom", volume: 30, source: 2, mute: false },
+                        { id: 4, name: "Patio", volume: 60, source: 1, mute: false }
+                    ]
+                }
+            };
+            
+            const responseEl = document.getElementById('apiResponse');
+            responseEl.style.opacity = '0.5';
+            responseEl.textContent = 'Loading...';
+            
+            setTimeout(() => {
+                responseEl.style.opacity = '1';
+                responseEl.textContent = JSON.stringify(responses[endpoint], null, 2);
+            }, 500);
+        }
+
+        // Select source
+        function selectSource(source) {
+            console.log(`Selected source: ${source}`);
+            
+            // Animate selection
+            event.target.closest('.source-item').style.transform = 'scale(1.2)';
+            event.target.closest('.source-item').style.color = '#00ff88';
+            
+            setTimeout(() => {
+                event.target.closest('.source-item').style.transform = '';
+                event.target.closest('.source-item').style.color = '';
+            }, 500);
+        }
+
+        // Demo feature
+        function demoFeature(feature) {
+            const demos = {
+                'streaming': 'Supports Spotify Connect, Pandora, AirPlay, DLNA, and Internet Radio',
+                'expansion': 'Connect up to 6 AmpliPi units for a total of 36 zones',
+                'opensource': 'Full source code at github.com/micro-nova/AmpliPi',
+                'automation': 'REST API enables integration with any home automation platform'
+            };
+            
+            console.log(demos[feature]);
+            
+            // Visual feedback
+            event.target.style.transform = 'translateY(-10px) rotate(2deg)';
+            setTimeout(() => {
+                event.target.style.transform = '';
+            }, 300);
+        }
+
+        // Create floating music notes
+        function createMusicNote() {
+            const note = document.createElement('div');
+            note.textContent = '♪';
+            note.style.position = 'fixed';
+            note.style.fontSize = '2em';
+            note.style.color = '#00b4d8';
+            note.style.left = Math.random() * window.innerWidth + 'px';
+            note.style.bottom = '0';
+            note.style.opacity = '0.6';
+            note.style.pointerEvents = 'none';
+            note.style.animation = 'musicFloat 5s ease-out';
+            
+            document.body.appendChild(note);
+            
+            setTimeout(() => note.remove(), 5000);
+        }
+
+        // Add music float animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes musicFloat {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.6;
+                }
+                100% {
+                    transform: translateY(-100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Create music notes periodically when zones are active
+        setInterval(() => {
+            const activeZones = Object.values(zoneStates).filter(z => z.active).length;
+            if (activeZones > 0) {
+                for (let i = 0; i < activeZones; i++) {
+                    setTimeout(() => createMusicNote(), i * 200);
+                }
+            }
+        }, 3000);
+
+        // Initialize volume sliders
+        document.querySelectorAll('.volume-slider').forEach((slider, index) => {
+            slider.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const rect = slider.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = (x / rect.width) * 100;
+                
+                const fill = slider.querySelector('.volume-fill');
+                const knob = slider.querySelector('.volume-knob');
+                
+                fill.style.width = percentage + '%';
+                knob.style.left = percentage + '%';
+                
+                zoneStates[index + 1].volume = Math.round(percentage);
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to next slide - Security Testing');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to previous slide - Modern Developments');
+            }
+        });
+
+        // Create continuous data particles
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'data-particle';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = '0s';
+            particle.style.animationDuration = (Math.random() * 5 + 10) + 's';
+            document.querySelector('.bg-container').appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 15000);
+        }, 1500);
+    </script>
+</body>
+</html>

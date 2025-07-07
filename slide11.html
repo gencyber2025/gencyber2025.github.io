@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - Defense & Security Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Shield Background Animation */
+        .shield-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(0, 180, 216, 0.05) 0%, transparent 50%);
+        }
+
+        /* Security Grid */
+        .security-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridSecure 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes gridSecure {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Shield Particles */
+        .shield-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+            animation: shieldFloat 15s linear infinite;
+        }
+
+        @keyframes shieldFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .shield-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88, #00b4d8);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+            animation: shieldPulse 2s infinite;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #00b4d8, #0077be);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: secureGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes secureGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            color: #90e0ef;
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+
+        /* Defense Container */
+        .defense-container {
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .defense-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff88, #00b4d8, #0077be, #00ff88);
+            border-radius: 20px;
+            opacity: 0.5;
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .defense-title {
+            font-size: 2em;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Security Implementation Visual */
+        .security-layers {
+            position: relative;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-center {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            z-index: 10;
+            box-shadow: 0 0 30px rgba(42, 82, 152, 0.5);
+        }
+
+        .security-layer {
+            position: absolute;
+            border: 2px solid;
+            border-radius: 50%;
+            opacity: 0;
+            animation: layerAppear 1s ease-out forwards;
+        }
+
+        .layer-1 {
+            width: 250px;
+            height: 250px;
+            border-color: #00ff88;
+            animation-delay: 0.5s;
+        }
+
+        .layer-2 {
+            width: 350px;
+            height: 350px;
+            border-color: #00b4d8;
+            animation-delay: 1s;
+        }
+
+        .layer-3 {
+            width: 450px;
+            height: 450px;
+            border-color: #0077be;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes layerAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .layer-label {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            opacity: 0;
+            animation: labelFade 1s ease-out forwards;
+        }
+
+        .layer-1 .layer-label {
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            animation-delay: 1s;
+        }
+
+        .layer-2 .layer-label {
+            right: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 1px solid #00b4d8;
+            color: #00b4d8;
+            animation-delay: 1.5s;
+        }
+
+        .layer-3 .layer-label {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 1px solid #0077be;
+            color: #0077be;
+            animation-delay: 2s;
+        }
+
+        @keyframes labelFade {
+            to { opacity: 1; }
+        }
+
+        /* HTTPS Implementation Demo */
+        .https-demo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 40px 0;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .connection-box {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .http-box {
+            border: 2px solid #ff3838;
+        }
+
+        .https-box {
+            border: 2px solid #00ff88;
+        }
+
+        .connection-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .data-packet-demo {
+            width: 100%;
+            height: 100px;
+            position: relative;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .packet-http {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff3838;
+            padding: 10px 20px;
+            border-radius: 5px;
+            animation: packetMove 3s ease-in-out infinite;
+        }
+
+        .packet-https {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #00ff88;
+            padding: 10px 20px;
+            border-radius: 5px;
+            animation: packetMove 3s ease-in-out infinite;
+        }
+
+        @keyframes packetMove {
+            0% { left: 10px; }
+            50% { left: calc(100% - 150px); }
+            100% { left: 10px; }
+        }
+
+        .lock-icon {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        /* Password Strength Meter */
+        .password-demo {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .password-input-secure {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00b4d8;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .strength-meter {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .strength-weak {
+            background: #ff3838;
+            width: 33%;
+        }
+
+        .strength-medium {
+            background: #ffa502;
+            width: 66%;
+        }
+
+        .strength-strong {
+            background: #00ff88;
+            width: 100%;
+        }
+
+        .strength-label {
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .requirements-list {
+            list-style: none;
+            font-size: 0.9em;
+        }
+
+        .requirement {
+            padding: 5px 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .requirement.met {
+            color: #00ff88;
+        }
+
+        .requirement.met::before {
+            content: '✓ ';
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .requirement:not(.met)::before {
+            content: '✗ ';
+            color: #ff3838;
+        }
+
+        /* Network Segmentation Visual */
+        .network-segmentation {
+            position: relative;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .vlan-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            flex-wrap: wrap;
+        }
+
+        .vlan {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .vlan-trusted {
+            border-color: #00ff88;
+        }
+
+        .vlan-iot {
+            border-color: #ffa502;
+        }
+
+        .vlan-guest {
+            border-color: #00b4d8;
+        }
+
+        .vlan-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .device-list {
+            list-style: none;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .firewall-wall {
+            position: absolute;
+            width: 2px;
+            height: 60%;
+            background: repeating-linear-gradient(
+                to bottom,
+                #ff6b6b,
+                #ff6b6b 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            top: 20%;
+        }
+
+        /* Security Checklist */
+        .checklist-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .checklist-title {
+            font-size: 1.5em;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .checklist-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            border-color: #00ff88;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .checklist-item.checked {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+        }
+
+        .checklist-item.checked::after {
+            content: '✓';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #00ff88;
+            animation: checkAppear 0.3s ease-out;
+        }
+
+        @keyframes checkAppear {
+            from {
+                transform: translateY(-50%) scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .checklist-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .checklist-text {
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .secure-button {
+            background: linear-gradient(135deg, #00ff88, #00b4d8);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secure-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .secure-button:active {
+            transform: translateY(0);
+        }
+
+        /* Info Cards */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .solution-card {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-3px);
+            border-color: #00ff88;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .solution-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .solution-title {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .solution-desc {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Terminal Output */
+        .terminal {
+            background: #000;
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00ff88;
+            height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            opacity: 0;
+            animation: terminalType 0.1s ease-out forwards;
+        }
+
+        @keyframes terminalType {
+            to { opacity: 1; }
+        }
+
+        .terminal-prompt {
+            color: #00b4d8;
+        }
+
+        /* AmpliPi Device Image */
+        .amplipro-showcase {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .amplipro-image {
+            max-width: 100%;
+            width: 600px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ff88;
+        }
+
+        .secure-badge {
+            position: absolute;
+            top: -20px;
+            right: 10%;
+            background: #00ff88;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: badgeBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes badgeBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .https-demo {
+                flex-direction: column;
+            }
+            
+            .vlan-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .solution-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Success Animation */
+        .success-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5em;
+            color: #00ff88;
+            opacity: 0;
+            pointer-events: none;
+            animation: successPop 1s ease-out;
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Shield Background -->
+    <div class="shield-bg">
+        <div class="security-grid"></div>
+        <!-- Shield Particles -->
+        <div class="shield-particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="shield-particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="shield-particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="shield-particle" style="left: 70%; animation-delay: 6s;"></div>
+        <div class="shield-particle" style="left: 90%; animation-delay: 8s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="shield-badge">🛡️ DEFENSE STRATEGIES</div>
+            <h1 class="main-title">Securing Your AmpliPi System</h1>
+            <p class="subtitle">Building Multiple Layers of Protection</p>
+        </header>
+
+        <!-- Defense in Depth Visualization -->
+        <section class="defense-container">
+            <h2 class="defense-title">🏰 Defense in Depth Strategy</h2>
+            
+            <div class="security-layers">
+                <div class="device-center">🎵</div>
+                
+                <div class="security-layer layer-1">
+                    <div class="layer-label">Device Security</div>
+                </div>
+                
+                <div class="security-layer layer-2">
+                    <div class="layer-label">Network Security</div>
+                </div>
+                
+                <div class="security-layer layer-3">
+                    <div class="layer-label">Perimeter Security</div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="secure-button" onclick="animateLayers()">🛡️ Show Protection Layers</button>
+                <p style="margin-top: 15px; color: #90e0ef;">
+                    <strong>Defense in Depth:</strong> Like a castle with multiple walls, each security layer adds protection. If one fails, others still defend!
+                </p>
+            </div>
+        </section>
+
+        <!-- HTTPS Implementation -->
+        <section class="defense-container">
+            <h2 class="defense-title">🔒 Solution #1: Enable HTTPS Encryption</h2>
+            
+            <div class="https-demo">
+                <div class="connection-box http-box">
+                    <h3 class="connection-title" style="color: #ff3838;">❌ HTTP (Unsecure)</h3>
+                    <div class="data-packet-demo">
+                        <div class="packet-http">Password: abc123</div>
+                    </div>
+                    <p style="color: #ff9999; font-size: 0.9em;">
+                        Data travels as plain text - anyone can read it!
+                    </p>
+                </div>
+                
+                <div class="connection-box https-box">
+                    <h3 class="connection-title" style="color: #00ff88;">✅ HTTPS (Secure)</h3>
+                    <div class="data-packet-demo">
+                        <div class="packet-https">🔐 Encrypted Data</div>
+                    </div>
+                    <div class="lock-icon">🔒</div>
+                    <p style="color: #90e0ef; font-size: 0.9em;">
+                        Data is encrypted - looks like gibberish to attackers!
+                    </p>
+                </div>
+            </div>
+            
+            <div class="terminal" id="httpsTerminal">
+                <div class="terminal-line"><span class="terminal-prompt">admin@amplipro:~$</span> Ready to configure HTTPS...</div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="secure-button" onclick="setupHTTPS()">🔐 Configure HTTPS</button>
+                <button class="secure-button" onclick="generateCertificate()">📜 Generate SSL Certificate</button>
+            </div>
+        </section>
+
+        <!-- Strong Password Implementation -->
+        <section class="defense-container">
+            <h2 class="defense-title">🔑 Solution #2: Strong Password Policy</h2>
+            
+            <div class="password-demo">
+                <input type="password" class="password-input-secure" id="securePassword" 
+                       placeholder="Enter a strong password..." onkeyup="checkPasswordStrength()">
+                
+                <div class="strength-meter">
+                    <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                
+                <div class="strength-label" id="strengthLabel">Password Strength: Not Entered</div>
+                
+                <ul class="requirements-list">
+                    <li class="requirement" id="req-length">At least 12 characters</li>
+                    <li class="requirement" id="req-upper">Contains uppercase letters (A-Z)</li>
+                    <li class="requirement" id="req-lower">Contains lowercase letters (a-z)</li>
+                    <li class="requirement" id="req-number">Contains numbers (0-9)</li>
+                    <li class="requirement" id="req-special">Contains special characters (!@#$%^&*)</li>
+                    <li class="requirement" id="req-no-common">Not a common password</li>
+                </ul>
+            </div>
+            
+            <div class="control-panel">
+                <button class="secure-button" onclick="generateStrongPassword()">🎲 Generate Strong Password</button>
+                <button class="secure-button" onclick="enableMFA()">📱 Enable 2-Factor Authentication</button>
+            </div>
+        </section>
+
+        <!-- Network Segmentation -->
+        <section class="defense-container">
+            <h2 class="defense-title">🌐 Solution #3: Network Segmentation (VLANs)</h2>
+            
+            <div class="network-segmentation">
+                <div class="vlan-container">
+                    <div class="vlan vlan-trusted">
+                        <div class="vlan-title" style="color: #00ff88;">Trusted Network</div>
+                        <ul class="device-list">
+                            <li>💻 Work Computers</li>
+                            <li>📱 Personal Phones</li>
+                            <li>🖨️ Printers</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="firewall-wall" style="left: 33%;"></div>
+                    
+                    <div class="vlan vlan-iot">
+                        <div class="vlan-title" style="color: #ffa502;">IoT Network</div>
+                        <ul class="device-list">
+                            <li>🎵 AmpliPi System</li>
+                            <li>🏠 Smart Home Devices</li>
+                            <li>📹 Security Cameras</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="firewall-wall" style="right: 33%;"></div>
+                    
+                    <div class="vlan vlan-guest">
+                        <div class="vlan-title" style="color: #00b4d8;">Guest Network</div>
+                        <ul class="device-list">
+                            <li>👥 Visitor Devices</li>
+                            <li>🎮 Gaming Consoles</li>
+                            <li>📺 Smart TVs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="secure-button" onclick="configureVLANs()">🔧 Configure VLANs</button>
+                <p style="margin-top: 15px; color: #90e0ef;">
+                    <strong>Why VLANs?</strong> Separate networks prevent compromised devices from accessing critical systems!
+                </p>
+            </div>
+        </section>
+
+        <!-- Security Checklist -->
+        <section class="checklist-container">
+            <h2 class="checklist-title">✅ AmpliPi Security Checklist</h2>
+            
+            <div class="checklist-grid">
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🔐</div>
+                    <div class="checklist-text">Enable HTTPS/SSL encryption for web interface</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🔑</div>
+                    <div class="checklist-text">Change default password to strong, unique password</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🌐</div>
+                    <div class="checklist-text">Place AmpliPi on isolated IoT network/VLAN</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🔥</div>
+                    <div class="checklist-text">Configure firewall rules to limit access</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🔄</div>
+                    <div class="checklist-text">Enable automatic security updates</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">📝</div>
+                    <div class="checklist-text">Enable security logging and monitoring</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🚫</div>
+                    <div class="checklist-text">Disable unnecessary services (SSH if not needed)</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">📱</div>
+                    <div class="checklist-text">Implement 2-factor authentication</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checklist-icon">🛡️</div>
+                    <div class="checklist-text">Install intrusion detection system (IDS)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AmpliPro Secure Setup Showcase -->
+        <section class="defense-container">
+            <h2 class="defense-title">🎵 Secured AmpliPi Configuration</h2>
+            
+            <div class="amplipro-showcase">
+                <div class="secure-badge">SECURED ✓</div>
+                <img src="data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='600' height='400' fill='%231a1a2e' rx='15'/%3E%3Crect x='50' y='50' width='500' height='300' fill='%232a2a3e' rx='10'/%3E%3Ctext x='300' y='200' font-family='Arial' font-size='24' fill='%2300ff88' text-anchor='middle'%3EAmpliPi Pro%3C/text%3E%3Ccircle cx='150' cy='150' r='30' fill='%2300b4d8'/%3E%3Ccircle cx='450' cy='150' r='30' fill='%2300b4d8'/%3E%3Crect x='100' y='250' width='400' height='50' fill='%23333' rx='5'/%3E%3Ctext x='300' y='280' font-family='Arial' font-size='16' fill='%23fff' text-anchor='middle'%3E6 Zones | Secured | HTTPS Enabled%3C/text%3E%3C/svg%3E" 
+                     alt="Secured AmpliPi System" class="amplipro-image">
+            </div>
+            
+            <div class="terminal" id="statusTerminal">
+                <div class="terminal-line"><span class="terminal-prompt">admin@amplipro:~$</span> systemctl status amplipro-security</div>
+                <div class="terminal-line">● amplipro-security.service - AmpliPro Security Monitor</div>
+                <div class="terminal-line">   Active: <span style="color: #00ff88;">active (running)</span></div>
+                <div class="terminal-line">   HTTPS: <span style="color: #00ff88;">Enabled</span></div>
+                <div class="terminal-line">   Firewall: <span style="color: #00ff88;">Active</span></div>
+                <div class="terminal-line">   Failed Logins: 0</div>
+            </div>
+        </section>
+
+        <!-- Solution Cards -->
+        <section>
+            <h2 class="defense-title" style="text-align: center; margin: 40px 0;">🛡️ Additional Security Measures</h2>
+            
+            <div class="solution-grid">
+                <div class="solution-card" onclick="explainSolution('updates')">
+                    <div class="solution-icon">🔄</div>
+                    <div class="solution-title">Regular Updates</div>
+                    <div class="solution-desc">
+                        Keep AmpliPi firmware and Raspberry Pi OS updated. Security patches fix vulnerabilities before attackers can exploit them!
+                    </div>
+                </div>
+                
+                <div class="solution-card" onclick="explainSolution('monitoring')">
+                    <div class="solution-icon">📊</div>
+                    <div class="solution-title">Security Monitoring</div>
+                    <div class="solution-desc">
+                        Use tools like fail2ban to block repeated failed login attempts. Monitor logs for suspicious activity patterns.
+                    </div>
+                </div>
+                
+                <div class="solution-card" onclick="explainSolution('backup')">
+                    <div class="solution-icon">💾</div>
+                    <div class="solution-title">Regular Backups</div>
+                    <div class="solution-desc">
+                        Backup AmpliPi configuration regularly. If compromised, you can quickly restore to a clean state!
+                    </div>
+                </div>
+                
+                <div class="solution-card" onclick="explainSolution('api')">
+                    <div class="solution-icon">🔌</div>
+                    <div class="solution-title">API Security</div>
+                    <div class="solution-desc">
+                        Implement API key authentication for REST API access. Never expose APIs without proper authentication!
+                    </div>
+                </div>
+                
+                <div class="solution-card" onclick="explainSolution('physical')">
+                    <div class="solution-icon">🔒</div>
+                    <div class="solution-title">Physical Security</div>
+                    <div class="solution-desc">
+                        Lock equipment in secure cabinets. Physical access to devices can bypass all digital security!
+                    </div>
+                </div>
+                
+                <div class="solution-card" onclick="explainSolution('training')">
+                    <div class="solution-icon">🎓</div>
+                    <div class="solution-title">User Training</div>
+                    <div class="solution-desc">
+                        Educate users about security best practices. The strongest security fails with weak passwords!
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Terminal output helper
+        function addTerminalLine(terminalId, text, isPrompt = false) {
+            const terminal = document.getElementById(terminalId);
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = isPrompt ? `<span class="terminal-prompt">admin@amplipro:~$</span> ${text}` : text;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Animate security layers
+        function animateLayers() {
+            const layers = document.querySelectorAll('.security-layer');
+            layers.forEach((layer, index) => {
+                layer.style.animation = 'none';
+                setTimeout(() => {
+                    layer.style.animation = `layerAppear 1s ease-out forwards`;
+                }, index * 500);
+            });
+            
+            showSuccess();
+        }
+
+        // Setup HTTPS
+        function setupHTTPS() {
+            addTerminalLine('httpsTerminal', 'sudo a2enmod ssl', true);
+            setTimeout(() => {
+                addTerminalLine('httpsTerminal', 'Enabling module ssl.');
+                addTerminalLine('httpsTerminal', 'sudo a2ensite default-ssl', true);
+            }, 500);
+            setTimeout(() => {
+                addTerminalLine('httpsTerminal', 'Enabling site default-ssl.');
+                addTerminalLine('httpsTerminal', 'sudo systemctl restart apache2', true);
+            }, 1000);
+            setTimeout(() => {
+                addTerminalLine('httpsTerminal', '<span style="color: #00ff88;">HTTPS successfully enabled on port 443!</span>');
+                showSuccess();
+            }, 1500);
+        }
+
+        // Generate SSL Certificate
+        function generateCertificate() {
+            addTerminalLine('httpsTerminal', 'sudo certbot --apache -d amplipro.local', true);
+            setTimeout(() => {
+                addTerminalLine('httpsTerminal', 'Saving debug log to /var/log/letsencrypt/letsencrypt.log');
+                addTerminalLine('httpsTerminal', 'Requesting certificate for amplipro.local...');
+            }, 500);
+            setTimeout(() => {
+                addTerminalLine('httpsTerminal', '<span style="color: #00ff88;">Successfully received certificate!</span>');
+                addTerminalLine('httpsTerminal', 'Certificate saved at: /etc/letsencrypt/live/amplipro.local/');
+            }, 1500);
+        }
+
+        // Password strength checker
+        function checkPasswordStrength() {
+            const password = document.getElementById('securePassword').value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthLabel = document.getElementById('strengthLabel');
+            
+            // Check requirements
+            const requirements = {
+                'req-length': password.length >= 12,
+                'req-upper': /[A-Z]/.test(password),
+                'req-lower': /[a-z]/.test(password),
+                'req-number': /[0-9]/.test(password),
+                'req-special': /[!@#$%^&*(),.?":{}|<>]/.test(password),
+                'req-no-common': !['password', 'admin', '123456', 'qwerty'].includes(password.toLowerCase())
+            };
+            
+            // Update requirement indicators
+            let metCount = 0;
+            for (const [id, met] of Object.entries(requirements)) {
+                const element = document.getElementById(id);
+                if (met) {
+                    element.classList.add('met');
+                    metCount++;
+                } else {
+                    element.classList.remove('met');
+                }
+            }
+            
+            // Update strength meter
+            strengthFill.className = 'strength-fill';
+            if (metCount <= 2) {
+                strengthFill.classList.add('strength-weak');
+                strengthLabel.textContent = 'Password Strength: Weak';
+                strengthLabel.style.color = '#ff3838';
+            } else if (metCount <= 4) {
+                strengthFill.classList.add('strength-medium');
+                strengthLabel.textContent = 'Password Strength: Medium';
+                strengthLabel.style.color = '#ffa502';
+            } else if (metCount >= 5) {
+                strengthFill.classList.add('strength-strong');
+                strengthLabel.textContent = 'Password Strength: Strong';
+                strengthLabel.style.color = '#00ff88';
+                if (metCount === 6) {
+                    showSuccess();
+                }
+            }
+            
+            if (password.length === 0) {
+                strengthLabel.textContent = 'Password Strength: Not Entered';
+                strengthLabel.style.color = '#90e0ef';
+            }
+        }
+
+        // Generate strong password
+        function generateStrongPassword() {
+            const chars = {
+                upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                lower: 'abcdefghijklmnopqrstuvwxyz',
+                numbers: '0123456789',
+                special: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+            };
+            
+            let password = '';
+            // Ensure at least one of each type
+            password += chars.upper[Math.floor(Math.random() * chars.upper.length)];
+            password += chars.lower[Math.floor(Math.random() * chars.lower.length)];
+            password += chars.numbers[Math.floor(Math.random() * chars.numbers.length)];
+            password += chars.special[Math.floor(Math.random() * chars.special.length)];
+            
+            // Fill the rest randomly
+            const allChars = chars.upper + chars.lower + chars.numbers + chars.special;
+            for (let i = 4; i < 16; i++) {
+                password += allChars[Math.floor(Math.random() * allChars.length)];
+            }
+            
+            // Shuffle the password
+            password = password.split('').sort(() => Math.random() - 0.5).join('');
+            
+            // Set the password and check strength
+            document.getElementById('securePassword').value = password;
+            checkPasswordStrength();
+        }
+
+        // Enable MFA
+        function enableMFA() {
+            const terminal = document.getElementById('httpsTerminal');
+            addTerminalLine('httpsTerminal', 'Configuring 2-Factor Authentication...', true);
+            setTimeout(() => {
+                addTerminalLine('httpsTerminal', 'Installing Google Authenticator...');
+                addTerminalLine('httpsTerminal', 'Generating QR code...');
+                addTerminalLine('httpsTerminal', '<span style="color: #00ff88;">2FA successfully enabled!</span>');
+                showSuccess();
+            }, 1000);
+        }
+
+        // Configure VLANs
+        function configureVLANs() {
+            const vlans = document.querySelectorAll('.vlan');
+            vlans.forEach((vlan, index) => {
+                setTimeout(() => {
+                    vlan.style.animation = 'none';
+                    setTimeout(() => {
+                        vlan.style.animation = 'fadeIn 0.5s ease-out';
+                    }, 10);
+                }, index * 300);
+            });
+            
+            // Animate firewall walls
+            const walls = document.querySelectorAll('.firewall-wall');
+            walls.forEach((wall, index) => {
+                setTimeout(() => {
+                    wall.style.animation = 'fadeIn 1s ease-out';
+                }, 1000 + index * 200);
+            });
+            
+            showSuccess();
+        }
+
+        // Toggle checklist items
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+            
+            // Check if all items are checked
+            const allItems = document.querySelectorAll('.checklist-item');
+            const checkedItems = document.querySelectorAll('.checklist-item.checked');
+            
+            if (allItems.length === checkedItems.length) {
+                showSuccess();
+                setTimeout(() => {
+                    alert('🎉 Congratulations! Your AmpliPi system is fully secured!');
+                }, 500);
+            }
+        }
+
+        // Explain solutions
+        function explainSolution(type) {
+            const explanations = {
+                'updates': 'sudo apt update && sudo apt upgrade -y\n# Schedule automatic updates with unattended-upgrades',
+                'monitoring': 'sudo apt install fail2ban\n# Configure /etc/fail2ban/jail.local for AmpliPi',
+                'backup': 'sudo amplipro-backup --create\n# Schedule daily backups with cron',
+                'api': 'Edit /etc/amplipro/api.conf\n# Set require_auth = true\n# Generate API keys for clients',
+                'physical': 'Physical security checklist:\n- Lock server room\n- Security cameras\n- Access logs',
+                'training': 'Security training topics:\n- Password management\n- Phishing awareness\n- Update procedures'
+            };
+            
+            addTerminalLine('statusTerminal', explanations[type]);
+            
+            // Visual feedback
+            event.target.classList.add('pulse');
+            setTimeout(() => event.target.classList.remove('pulse'), 1000);
+        }
+
+        // Show success animation
+        function showSuccess() {
+            const success = document.createElement('div');
+            success.className = 'success-animation';
+            success.textContent = '✓';
+            document.body.appendChild(success);
+            
+            setTimeout(() => success.remove(), 1000);
+        }
+
+        // Create more shield particles
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'shield-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = '0s';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.querySelector('.shield-bg').appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 20000);
+        }, 3000);
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to next slide - Future & Careers');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to previous slide - Security Testing');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add initial terminal messages
+            setTimeout(() => {
+                addTerminalLine('statusTerminal', 'Monitoring system security...');
+                addTerminalLine('statusTerminal', 'All systems operational.');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

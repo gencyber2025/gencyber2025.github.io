@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - AmpliPi Security Testing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 100, 0, 0.05) 0%, transparent 50%);
+        }
+
+        /* Security Grid Animation */
+        .security-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Threat Particles */
+        .threat-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff3838;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff3838;
+            animation: threatFloat 10s linear infinite;
+        }
+
+        @keyframes threatFloat {
+            0% {
+                transform: translateX(-100px) translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-30px);
+                opacity: 0;
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .warning-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff3838, #ff6b6b);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(255, 56, 56, 0.4);
+            animation: warningPulse 2s infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff3838, #ff6b6b, #ffa502);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: threatGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes threatGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            color: #ff9999;
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+
+        /* Attack Simulation Container */
+        .attack-container {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 56, 56, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attack-title {
+            font-size: 2em;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        /* Network Scan Visualization */
+        .network-scan {
+            position: relative;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .scan-radar {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #ff3838;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .radar-sweep {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff3838);
+            top: 50%;
+            left: 50%;
+            transform-origin: left center;
+            animation: radarSweep 3s linear infinite;
+        }
+
+        @keyframes radarSweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .scan-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            opacity: 0;
+            animation: dotAppear 3s ease-in-out infinite;
+        }
+
+        @keyframes dotAppear {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+            60% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .device-info {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #ff3838;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.8em;
+            color: #fff;
+            display: none;
+            min-width: 150px;
+        }
+
+        .device-info.show {
+            display: block;
+            animation: infoFadeIn 0.5s ease-out;
+        }
+
+        @keyframes infoFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Password Attack Visualization */
+        .password-attack {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .password-field {
+            position: relative;
+            width: 300px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff3838;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1em;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .password-attempts {
+            margin-top: 20px;
+            height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .attempt-line {
+            color: #ff6b6b;
+            margin: 5px 0;
+            opacity: 0;
+            animation: attemptShow 0.1s ease-out forwards;
+        }
+
+        @keyframes attemptShow {
+            to { opacity: 1; }
+        }
+
+        .attempt-line.success {
+            color: #00ff88;
+            font-weight: bold;
+            animation: successBlink 1s ease-in-out 3;
+        }
+
+        @keyframes successBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* MITM Attack Visualization */
+        .mitm-demo {
+            position: relative;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .network-device {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00b4d8;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .network-device:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+        }
+
+        .network-device.attacker {
+            border-color: #ff3838;
+            background: rgba(255, 56, 56, 0.1);
+        }
+
+        .device-icon {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .device-label {
+            font-size: 0.9em;
+            color: #90e0ef;
+        }
+
+        .data-packet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #00b4d8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            box-shadow: 0 0 10px currentColor;
+            z-index: 100;
+        }
+
+        .intercepted {
+            background: #ff3838;
+            color: #ff3838;
+        }
+
+        /* DoS Attack Visualization */
+        .dos-attack {
+            position: relative;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .server-visual {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #00b4d8, #0077be);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            transition: all 0.3s ease;
+        }
+
+        .server-visual.overloaded {
+            background: linear-gradient(135deg, #ff3838, #ff6b6b);
+            animation: serverShake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes serverShake {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-52%, -50%) rotate(-2deg); }
+            75% { transform: translate(-48%, -50%) rotate(2deg); }
+        }
+
+        .attack-request {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #ff3838;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            box-shadow: 0 0 15px #ff3838;
+        }
+
+        .server-status {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 30px;
+            border-radius: 20px;
+            border: 2px solid #00b4d8;
+            font-weight: bold;
+        }
+
+        .server-status.critical {
+            border-color: #ff3838;
+            color: #ff3838;
+            animation: criticalBlink 1s ease-in-out infinite;
+        }
+
+        @keyframes criticalBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .attack-button {
+            background: linear-gradient(135deg, #ff3838, #ff6b6b);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attack-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 56, 56, 0.4);
+        }
+
+        .attack-button:active {
+            transform: translateY(0);
+        }
+
+        .safe-button {
+            background: linear-gradient(135deg, #00b4d8, #0077be);
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            border-color: #ff6b6b;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .info-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .info-title {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .info-desc {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Terminal Output */
+        .terminal {
+            background: #000;
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00ff88;
+            height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            opacity: 0;
+            animation: terminalType 0.1s ease-out forwards;
+        }
+
+        @keyframes terminalType {
+            to { opacity: 1; }
+        }
+
+        .terminal-prompt {
+            color: #ff6b6b;
+        }
+
+        /* Vulnerability Meter */
+        .vuln-meter {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .meter-label {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #ffeb3b, #ff6b6b);
+            width: 0%;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+
+        .meter-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: meterShine 2s linear infinite;
+        }
+
+        @keyframes meterShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .password-attack {
+                flex-direction: column;
+            }
+            
+            .mitm-demo {
+                flex-direction: column;
+                height: auto;
+                gap: 30px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            animation: glitch 0.3s ease-in-out;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
+            20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+            40% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
+            60% { transform: translate(2px, 2px); filter: hue-rotate(270deg); }
+            80% { transform: translate(2px, -2px); filter: hue-rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg">
+        <div class="security-grid"></div>
+        <!-- Threat Particles -->
+        <div class="threat-particle" style="top: 20%; animation-delay: 0s;"></div>
+        <div class="threat-particle" style="top: 40%; animation-delay: 2s;"></div>
+        <div class="threat-particle" style="top: 60%; animation-delay: 4s;"></div>
+        <div class="threat-particle" style="top: 80%; animation-delay: 6s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="warning-badge">⚠️ SECURITY TESTING LAB</div>
+            <h1 class="main-title">AmpliPi Security Vulnerabilities</h1>
+            <p class="subtitle">Understanding & Testing Real-World Attacks</p>
+        </header>
+
+        <!-- Vulnerability Meter -->
+        <div class="vuln-meter">
+            <div class="meter-label">System Vulnerability Level</div>
+            <div class="meter-bar">
+                <div class="meter-fill" id="vulnMeter"></div>
+            </div>
+        </div>
+
+        <!-- Network Scanning Attack -->
+        <section class="attack-container">
+            <h2 class="attack-title">🔍 Attack #1: Network Reconnaissance</h2>
+            
+            <div class="network-scan" id="networkScan">
+                <div class="scan-radar">
+                    <div class="radar-sweep"></div>
+                    <!-- Discovered devices will appear here -->
+                </div>
+                
+                <!-- Device info popups -->
+                <div class="device-info" id="deviceInfo1" style="top: 20%; left: 60%;">
+                    <strong>AmpliPi Controller</strong><br>
+                    IP: 192.168.1.100<br>
+                    Port: 80 (HTTP) OPEN<br>
+                    Port: 22 (SSH) OPEN
+                </div>
+                
+                <div class="device-info" id="deviceInfo2" style="top: 60%; left: 20%;">
+                    <strong>User Phone</strong><br>
+                    IP: 192.168.1.45<br>
+                    MAC: AA:BB:CC:DD:EE:FF
+                </div>
+                
+                <div class="device-info" id="deviceInfo3" style="bottom: 20%; right: 20%;">
+                    <strong>Router</strong><br>
+                    IP: 192.168.1.1<br>
+                    Admin Panel: FOUND
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="attack-button" onclick="startNetworkScan()">🔍 Start Network Scan</button>
+                <p style="margin-top: 15px; color: #ff9999;">
+                    <strong>What's happening?</strong> Network scanning finds all devices on the network and checks for open ports - like finding all doors in a building and checking which ones are unlocked!
+                </p>
+            </div>
+        </section>
+
+        <!-- Password Attack -->
+        <section class="attack-container">
+            <h2 class="attack-title">🔐 Attack #2: Password Brute Force</h2>
+            
+            <div class="password-attack">
+                <div>
+                    <div class="password-field">
+                        <input type="password" class="password-input" id="passwordField" value="********" readonly>
+                    </div>
+                    <div class="password-attempts" id="passwordAttempts">
+                        <div style="color: #fff; text-align: center;">Password attempts will appear here...</div>
+                    </div>
+                </div>
+                
+                <div style="flex: 1; max-width: 400px;">
+                    <h3 style="color: #ff6b6b; margin-bottom: 15px;">How it works:</h3>
+                    <ol style="color: rgba(255,255,255,0.8); line-height: 1.8;">
+                        <li>Attacker uses automated tools (like Hydra)</li>
+                        <li>Tries thousands of passwords per second</li>
+                        <li>Common passwords tried first (123456, admin, password)</li>
+                        <li>Eventually finds weak passwords</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="attack-button" onclick="startPasswordAttack()">💀 Start Brute Force Attack</button>
+                <button class="safe-button attack-button" onclick="showStrongPassword()">🛡️ Use Strong Password</button>
+            </div>
+        </section>
+
+        <!-- MITM Attack -->
+        <section class="attack-container">
+            <h2 class="attack-title">🕵️ Attack #3: Man-in-the-Middle (MITM)</h2>
+            
+            <div class="mitm-demo" id="mitmDemo">
+                <div class="network-device" id="userDevice">
+                    <div class="device-icon">📱</div>
+                    <div class="device-label">Your Phone</div>
+                </div>
+                
+                <div class="network-device attacker" id="attackerDevice" style="opacity: 0;">
+                    <div class="device-icon">🦹‍♂️</div>
+                    <div class="device-label">Attacker</div>
+                </div>
+                
+                <div class="network-device" id="amplipiDevice">
+                    <div class="device-icon">🔊</div>
+                    <div class="device-label">AmpliPi</div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="attack-button" onclick="startMITM()">🕵️ Start MITM Attack</button>
+                <p style="margin-top: 15px; color: #ff9999;">
+                    <strong>What's happening?</strong> The attacker secretly positions themselves between your phone and AmpliPi, intercepting all communication - like someone secretly listening to your phone calls!
+                </p>
+            </div>
+        </section>
+
+        <!-- DoS Attack -->
+        <section class="attack-container">
+            <h2 class="attack-title">💥 Attack #4: Denial of Service (DoS)</h2>
+            
+            <div class="dos-attack" id="dosAttack">
+                <div class="server-visual" id="amplipiServer">
+                    🎵
+                </div>
+                <div class="server-status" id="serverStatus">
+                    Server Status: Online
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button class="attack-button" onclick="startDoS()">💥 Launch DoS Attack</button>
+                <button class="safe-button attack-button" onclick="stopDoS()">🛑 Stop Attack</button>
+                <p style="margin-top: 15px; color: #ff9999;">
+                    <strong>What's happening?</strong> Flooding the AmpliPi with thousands of fake requests until it can't respond to real users - like calling someone's phone non-stop so no one else can get through!
+                </p>
+            </div>
+        </section>
+
+        <!-- Terminal Output -->
+        <section class="attack-container">
+            <h2 class="attack-title">💻 Attack Terminal</h2>
+            <div class="terminal" id="terminal">
+                <div class="terminal-line"><span class="terminal-prompt">root@kali:~#</span> Ready for security testing...</div>
+            </div>
+        </section>
+
+        <!-- Info Cards -->
+        <section>
+            <h2 class="attack-title" style="text-align: center; margin: 40px 0;">🛡️ Vulnerabilities Found</h2>
+            
+            <div class="info-grid">
+                <div class="info-card" onclick="explainVuln('http')">
+                    <div class="info-icon">🔓</div>
+                    <div class="info-title">Unencrypted HTTP</div>
+                    <div class="info-desc">
+                        AmpliPi uses HTTP (not HTTPS) for its web interface. All data, including passwords, travels unencrypted and can be intercepted!
+                    </div>
+                </div>
+                
+                <div class="info-card" onclick="explainVuln('default')">
+                    <div class="info-icon">🔑</div>
+                    <div class="info-title">Default Credentials</div>
+                    <div class="info-desc">
+                        Many users never change the default username/password. Attackers know these defaults and try them first!
+                    </div>
+                </div>
+                
+                <div class="info-card" onclick="explainVuln('api')">
+                    <div class="info-icon">🔌</div>
+                    <div class="info-title">Exposed API</div>
+                    <div class="info-desc">
+                        The REST API has no authentication. Anyone on the network can control all zones and settings!
+                    </div>
+                </div>
+                
+                <div class="info-card" onclick="explainVuln('ssh')">
+                    <div class="info-icon">🖥️</div>
+                    <div class="info-title">SSH Enabled</div>
+                    <div class="info-desc">
+                        SSH port 22 is open with password authentication. This allows remote access if the password is compromised!
+                    </div>
+                </div>
+                
+                <div class="info-card" onclick="explainVuln('update')">
+                    <div class="info-icon">📦</div>
+                    <div class="info-title">Outdated Software</div>
+                    <div class="info-desc">
+                        Running old versions of Linux packages with known vulnerabilities that attackers can exploit!
+                    </div>
+                </div>
+                
+                <div class="info-card" onclick="explainVuln('logs')">
+                    <div class="info-icon">📝</div>
+                    <div class="info-title">No Security Logs</div>
+                    <div class="info-desc">
+                        No logging of failed login attempts or suspicious activity. Attacks go unnoticed!
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Initialize vulnerability meter
+        setTimeout(() => {
+            document.getElementById('vulnMeter').style.width = '75%';
+        }, 500);
+
+        // Terminal output helper
+        function addTerminalLine(text, isPrompt = false) {
+            const terminal = document.getElementById('terminal');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = isPrompt ? `<span class="terminal-prompt">root@kali:~#</span> ${text}` : text;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Network Scan Simulation
+        let scanInterval;
+        function startNetworkScan() {
+            const radar = document.querySelector('.scan-radar');
+            
+            // Clear previous scan
+            const existingDots = radar.querySelectorAll('.scan-dot');
+            existingDots.forEach(dot => dot.remove());
+            
+            // Add terminal output
+            addTerminalLine('nmap -sS -sV 192.168.1.0/24', true);
+            addTerminalLine('Starting Nmap 7.91 ( https://nmap.org )');
+            
+            // Create scan dots
+            const devices = [
+                { x: 50, y: 30, delay: 1, info: 1 },
+                { x: 30, y: 60, delay: 2, info: 2 },
+                { x: 70, y: 70, delay: 3, info: 3 }
+            ];
+            
+            devices.forEach((device, index) => {
+                setTimeout(() => {
+                    const dot = document.createElement('div');
+                    dot.className = 'scan-dot';
+                    dot.style.left = device.x + '%';
+                    dot.style.top = device.y + '%';
+                    dot.style.animationDelay = '0s';
+                    radar.appendChild(dot);
+                    
+                    // Show device info
+                    setTimeout(() => {
+                        document.getElementById(`deviceInfo${device.info}`).classList.add('show');
+                        addTerminalLine(`Discovered host: 192.168.1.${device.info === 1 ? '100' : device.info === 2 ? '45' : '1'}`);
+                    }, 500);
+                }, device.delay * 1000);
+            });
+            
+            setTimeout(() => {
+                addTerminalLine('Nmap scan report complete: 3 hosts up');
+                addTerminalLine('VULNERABILITIES FOUND: Open HTTP, SSH, No encryption!');
+            }, 4500);
+        }
+
+        // Password Attack Simulation
+        const passwords = [
+            'admin', 'password', '123456', 'amplipi', 'music', 'audio',
+            'raspberry', 'pi', 'admin123', 'password123', 'letmein',
+            'qwerty', '12345678', 'abc123', '111111', 'master',
+            'amplipi2023'
+        ];
+
+        function startPasswordAttack() {
+            const attemptsDiv = document.getElementById('passwordAttempts');
+            const passwordField = document.getElementById('passwordField');
+            attemptsDiv.innerHTML = '';
+            
+            addTerminalLine('hydra -l admin -P wordlist.txt 192.168.1.100 http-post-form', true);
+            addTerminalLine('Hydra v9.1 starting...');
+            
+            let index = 0;
+            const attackInterval = setInterval(() => {
+                if (index < passwords.length) {
+                    const attempt = document.createElement('div');
+                    attempt.className = 'attempt-line';
+                    
+                    if (index === passwords.length - 1) {
+                        attempt.classList.add('success');
+                        attempt.textContent = `[SUCCESS] Password found: ${passwords[index]}`;
+                        passwordField.value = passwords[index];
+                        passwordField.classList.add('glitch');
+                        addTerminalLine(`[SUCCESS] Valid credentials - admin:${passwords[index]}`);
+                        clearInterval(attackInterval);
+                    } else {
+                        attempt.textContent = `[ATTEMPT ${index + 1}] Trying: ${passwords[index]} - FAILED`;
+                    }
+                    
+                    attemptsDiv.appendChild(attempt);
+                    attemptsDiv.scrollTop = attemptsDiv.scrollHeight;
+                    index++;
+                } else {
+                    clearInterval(attackInterval);
+                }
+            }, 200);
+        }
+
+        function showStrongPassword() {
+            const passwordField = document.getElementById('passwordField');
+            passwordField.value = 'Kj#8mP$qR2!xZ9@L';
+            addTerminalLine('Strong password detected: 16 chars, mixed case, numbers, symbols', true);
+            addTerminalLine('Estimated crack time: 2.4 billion years');
+        }
+
+        // MITM Attack Simulation
+        function startMITM() {
+            const attacker = document.getElementById('attackerDevice');
+            const userDevice = document.getElementById('userDevice');
+            const amplipiDevice = document.getElementById('amplipiDevice');
+            
+            // Show attacker
+            attacker.style.opacity = '1';
+            attacker.style.animation = 'fadeIn 1s ease-out';
+            
+            addTerminalLine('arpspoof -i eth0 -t 192.168.1.45 192.168.1.100', true);
+            addTerminalLine('ARP poisoning started...');
+            
+            // Simulate data interception
+            let packetCount = 0;
+            const mitmInterval = setInterval(() => {
+                if (packetCount < 10) {
+                    // Create packet
+                    const packet = document.createElement('div');
+                    packet.className = 'data-packet';
+                    packet.textContent = '📦';
+                    
+                    // Calculate positions
+                    const userRect = userDevice.getBoundingClientRect();
+                    const attackerRect = attacker.getBoundingClientRect();
+                    const amplipiRect = amplipiDevice.getBoundingClientRect();
+                    const containerRect = document.getElementById('mitmDemo').getBoundingClientRect();
+                    
+                    // Start at user device
+                    packet.style.left = (userRect.left - containerRect.left + userRect.width/2 - 10) + 'px';
+                    packet.style.top = (userRect.top - containerRect.top + userRect.height/2 - 10) + 'px';
+                    
+                    document.getElementById('mitmDemo').appendChild(packet);
+                    
+                    // Move to attacker
+                    setTimeout(() => {
+                        packet.style.transition = 'all 1s ease';
+                        packet.style.left = (attackerRect.left - containerRect.left + attackerRect.width/2 - 10) + 'px';
+                        packet.style.top = (attackerRect.top - containerRect.top + attackerRect.height/2 - 10) + 'px';
+                        packet.classList.add('intercepted');
+                    }, 100);
+                    
+                    // Move to AmpliPi
+                    setTimeout(() => {
+                        packet.style.left = (amplipiRect.left - containerRect.left + amplipiRect.width/2 - 10) + 'px';
+                        packet.style.top = (amplipiRect.top - containerRect.top + amplipiRect.height/2 - 10) + 'px';
+                    }, 1100);
+                    
+                    // Remove packet
+                    setTimeout(() => packet.remove(), 2200);
+                    
+                    if (packetCount % 3 === 0) {
+                        addTerminalLine(`Intercepted: POST /api/zones {"volume": 75, "source": 1}`);
+                    }
+                    
+                    packetCount++;
+                } else {
+                    clearInterval(mitmInterval);
+                    addTerminalLine('MITM Attack successful: All traffic intercepted!');
+                }
+            }, 500);
+        }
+
+        // DoS Attack Simulation
+        let dosInterval;
+        let requestCount = 0;
+        
+        function startDoS() {
+            const server = document.getElementById('amplipiServer');
+            const status = document.getElementById('serverStatus');
+            const container = document.getElementById('dosAttack');
+            
+            addTerminalLine('python3 slowloris.py 192.168.1.100 -p 80 -s 1000', true);
+            addTerminalLine('Launching Slowloris DoS attack...');
+            
+            dosInterval = setInterval(() => {
+                requestCount++;
+                
+                // Create attack request
+                const request = document.createElement('div');
+                request.className = 'attack-request';
+                request.textContent = '💣';
+                
+                // Random position around the edge
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 200;
+                const centerX = container.offsetWidth / 2;
+                const centerY = container.offsetHeight / 2;
+                
+                request.style.left = (centerX + Math.cos(angle) * radius - 15) + 'px';
+                request.style.top = (centerY + Math.sin(angle) * radius - 15) + 'px';
+                
+                container.appendChild(request);
+                
+                // Animate to server
+                setTimeout(() => {
+                    request.style.transition = 'all 0.5s ease-in';
+                    request.style.left = (centerX - 15) + 'px';
+                    request.style.top = (centerY - 15) + 'px';
+                    request.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => request.remove(), 510);
+                
+                // Update server status
+                if (requestCount > 10) {
+                    server.classList.add('overloaded');
+                    status.classList.add('critical');
+                    status.textContent = 'Server Status: OVERLOADED';
+                }
+                
+                if (requestCount % 5 === 0) {
+                    addTerminalLine(`Requests sent: ${requestCount * 50} - Server response time: ${requestCount * 100}ms`);
+                }
+                
+                if (requestCount > 20) {
+                    clearInterval(dosInterval);
+                    status.textContent = 'Server Status: OFFLINE';
+                    addTerminalLine('DoS Attack successful: Server is down!');
+                }
+            }, 200);
+        }
+
+        function stopDoS() {
+            clearInterval(dosInterval);
+            requestCount = 0;
+            
+            const server = document.getElementById('amplipiServer');
+            const status = document.getElementById('serverStatus');
+            
+            server.classList.remove('overloaded');
+            status.classList.remove('critical');
+            status.textContent = 'Server Status: Recovering...';
+            
+            setTimeout(() => {
+                status.textContent = 'Server Status: Online';
+                addTerminalLine('Server recovered from DoS attack');
+            }, 2000);
+        }
+
+        // Explain vulnerabilities
+        function explainVuln(type) {
+            const explanations = {
+                'http': 'HTTP transmits data in plain text. Anyone on the network can see passwords, commands, and personal data!',
+                'default': 'Default credentials are publicly known. Attackers have lists of default passwords for every device!',
+                'api': 'APIs without authentication are like leaving your house door wide open - anyone can walk in!',
+                'ssh': 'SSH with password authentication is vulnerable to brute force attacks. Use key-based authentication instead!',
+                'update': 'Old software has known bugs that attackers can exploit. Always keep systems updated!',
+                'logs': 'Without logs, you can\'t detect attacks. It\'s like having no security cameras in a bank!'
+            };
+            
+            addTerminalLine(`VULNERABILITY EXPLANATION: ${explanations[type]}`);
+            
+            // Visual feedback
+            event.target.classList.add('glitch');
+            setTimeout(() => event.target.classList.remove('glitch'), 300);
+        }
+
+        // Create more threat particles
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'threat-particle';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = '0s';
+            particle.style.animationDuration = (Math.random() * 5 + 10) + 's';
+            document.querySelector('.cyber-bg').appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 15000);
+        }, 2000);
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to next slide - Security Solutions');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to previous slide - AmpliPi Hardware');
+            }
+        });
+    </script>
+</body>
+</html>

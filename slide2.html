@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - The Vacuum Tube Era (1900s-1940s)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Vintage Electronic Pattern */
+        .vintage-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            animation: patternPulse 10s ease-in-out infinite;
+        }
+
+        @keyframes patternPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Electric Grid */
+        .electric-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 140, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 140, 0, 0.05) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        /* Content Container */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .era-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(255, 140, 0, 0.4);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 20px rgba(255, 140, 0, 0.4); }
+            to { box-shadow: 0 4px 40px rgba(255, 140, 0, 0.8); }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff8c00, #ffd700, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(255, 140, 0, 0.5)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #ffa500;
+            opacity: 0.9;
+        }
+
+        /* Vacuum Tube Simulator */
+        .vacuum-tube-section {
+            background: rgba(255, 140, 0, 0.05);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tube-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        /* 3D Vacuum Tube */
+        .vacuum-tube-3d {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            perspective: 1000px;
+            cursor: grab;
+        }
+
+        .tube-glass {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 3px solid rgba(255, 140, 0, 0.5);
+            border-radius: 50px 50px 20px 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+            box-shadow: 
+                inset 0 0 50px rgba(255, 140, 0, 0.2),
+                0 0 30px rgba(255, 140, 0, 0.3);
+        }
+
+        .tube-glass:hover {
+            transform: rotateY(10deg) rotateX(-5deg);
+        }
+
+        /* Tube Components */
+        .filament {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 150px;
+            background: #ff4500;
+            box-shadow: 0 0 20px #ff4500;
+            animation: filamentGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes filamentGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px #ff4500;
+                filter: brightness(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px #ff6500;
+                filter: brightness(1.5);
+            }
+        }
+
+        .cathode {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 20px;
+            background: #444;
+            border-radius: 10px;
+            border: 2px solid #666;
+        }
+
+        .grid {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: #888;
+            box-shadow: 0 10px 0 #888, 0 20px 0 #888, 0 30px 0 #888;
+        }
+
+        .anode {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 80px;
+            background: #333;
+            border-radius: 10px;
+            border: 2px solid #555;
+        }
+
+        /* Electron Animation */
+        .electron-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #00ffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ffff;
+            pointer-events: none;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff8c00;
+            border-radius: 15px;
+            padding: 30px;
+            width: 350px;
+        }
+
+        .control-title {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .control-slider {
+            margin: 20px 0;
+        }
+
+        .control-label {
+            display: block;
+            color: #ffa500;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255, 140, 0, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
+        }
+
+        .value-display {
+            display: inline-block;
+            color: #ffd700;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .info-card {
+            background: rgba(255, 140, 0, 0.1);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .info-card:hover::before {
+            animation: cardSweep 0.5s ease;
+        }
+
+        @keyframes cardSweep {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card-content {
+            color: #ffffff;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Timeline Visualization */
+        .timeline-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .timeline-title {
+            text-align: center;
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .timeline-track {
+            position: relative;
+            height: 100px;
+            background: linear-gradient(90deg, 
+                rgba(255, 140, 0, 0.2) 0%, 
+                rgba(255, 215, 0, 0.2) 50%, 
+                rgba(255, 140, 0, 0.2) 100%);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff8c00, #ffd700);
+            border-radius: 50px;
+            animation: timelineGrow 5s ease-out forwards;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes timelineGrow {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .timeline-markers {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .timeline-marker {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            background: #ff8c00;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: markerPulse 2s infinite;
+        }
+
+        @keyframes markerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .timeline-marker:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .marker-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* Size Comparison */
+        .size-comparison {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff8c00;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .comparison-title {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .size-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            margin: 30px 0;
+        }
+
+        .size-item {
+            text-align: center;
+            animation: sizeGrow 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes sizeGrow {
+            from { 
+                transform: scaleY(0);
+                opacity: 0;
+            }
+            to { 
+                transform: scaleY(1);
+                opacity: 1;
+            }
+        }
+
+        .size-box {
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            border-radius: 10px;
+            margin: 10px auto;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .size-box:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.5);
+        }
+
+        .size-label {
+            color: #ffd700;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Interactive Demo */
+        .demo-section {
+            background: rgba(255, 140, 0, 0.05);
+            border: 2px solid #ff8c00;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .circuit-demo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .demo-component {
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 3px solid #ff8c00;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .demo-component:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.5);
+            background: rgba(255, 140, 0, 0.2);
+        }
+
+        .connection-wire {
+            position: absolute;
+            height: 3px;
+            background: #ff8c00;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: -1;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+
+        .power-button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .power-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 140, 0, 0.6);
+        }
+
+        .power-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Heat Visualization */
+        .heat-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heat-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff4500;
+            border-radius: 50%;
+            opacity: 0;
+            animation: heatRise 3s infinite;
+        }
+
+        @keyframes heatRise {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0);
+            }
+        }
+
+        /* Fun Facts */
+        .fun-facts {
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.1), rgba(255, 215, 0, 0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .fact-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .fact-text {
+            font-size: 1.3em;
+            color: #ffd700;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tube-container {
+                flex-direction: column;
+            }
+
+            .control-panel {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .main-title {
+                font-size: 2em;
+            }
+
+            .circuit-demo {
+                flex-wrap: wrap;
+            }
+
+            .size-visual {
+                flex-direction: column;
+                height: auto;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #ff8c00;
+            border-radius: 50%;
+            animation: dotPulse 1.5s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes dotPulse {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-container">
+        <div class="vintage-pattern"></div>
+        <div class="electric-grid"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="era-badge">1900s - 1940s</div>
+            <h1 class="main-title">The Vacuum Tube Era</h1>
+            <p class="subtitle">When Computers Filled Entire Rooms</p>
+        </header>
+
+        <!-- Vacuum Tube Simulator -->
+        <section class="vacuum-tube-section">
+            <div class="tube-container">
+                <!-- 3D Vacuum Tube -->
+                <div class="vacuum-tube-3d" id="vacuumTube">
+                    <div class="tube-glass">
+                        <div class="anode"></div>
+                        <div class="grid"></div>
+                        <div class="cathode"></div>
+                        <div class="filament" id="filament"></div>
+                        <div class="heat-particles" id="heatParticles"></div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <h3 class="control-title">🎛️ Vacuum Tube Controls</h3>
+                    
+                    <div class="control-slider">
+                        <label class="control-label">
+                            Heater Voltage: <span class="value-display" id="heaterValue">6.3V</span>
+                        </label>
+                        <input type="range" class="slider" id="heaterSlider" min="0" max="10" value="6.3" step="0.1">
+                    </div>
+
+                    <div class="control-slider">
+                        <label class="control-label">
+                            Grid Voltage: <span class="value-display" id="gridValue">-2V</span>
+                        </label>
+                        <input type="range" class="slider" id="gridSlider" min="-10" max="0" value="-2" step="0.1">
+                    </div>
+
+                    <div class="control-slider">
+                        <label class="control-label">
+                            Plate Voltage: <span class="value-display" id="plateValue">250V</span>
+                        </label>
+                        <input type="range" class="slider" id="plateSlider" min="0" max="500" value="250" step="10">
+                    </div>
+
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="power-button" onclick="simulateElectronFlow()">
+                            ⚡ Simulate Electron Flow
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Cards -->
+        <div class="info-grid">
+            <div class="info-card" onclick="animateCard(this)">
+                <div class="card-icon">🔥</div>
+                <h3 class="card-title">Heat Generation</h3>
+                <p class="card-content">
+                    Vacuum tubes generated enormous heat, requiring massive cooling systems. 
+                    A single ENIAC computer used 17,468 vacuum tubes and consumed 150 kW of power!
+                </p>
+            </div>
+
+            <div class="info-card" onclick="animateCard(this)">
+                <div class="card-icon">⚡</div>
+                <h3 class="card-title">How It Works</h3>
+                <p class="card-content">
+                    Electrons flow from the heated cathode to the anode through a vacuum. 
+                    The grid controls this flow, acting like a valve for electricity.
+                </p>
+            </div>
+
+            <div class="info-card" onclick="animateCard(this)">
+                <div class="card-icon">💡</div>
+                <h3 class="card-title">Applications</h3>
+                <p class="card-content">
+                    Used in early computers, radios, and TVs. The first electronic computer, 
+                    ENIAC (1946), weighed 30 tons and occupied 1,800 square feet!
+                </p>
+            </div>
+        </div>
+
+        <!-- Timeline Visualization -->
+        <section class="timeline-section">
+            <h2 class="timeline-title">📅 Key Milestones</h2>
+            <div class="timeline-track">
+                <div class="timeline-progress"></div>
+                <div class="timeline-markers">
+                    <div class="timeline-marker" onclick="showEvent('1904')">
+                        <span class="marker-label">1904</span>
+                    </div>
+                    <div class="timeline-marker" onclick="showEvent('1906')">
+                        <span class="marker-label">1906</span>
+                    </div>
+                    <div class="timeline-marker" onclick="showEvent('1946')">
+                        <span class="marker-label">1946</span>
+                    </div>
+                    <div class="timeline-marker" onclick="showEvent('1958')">
+                        <span class="marker-label">1958</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Size Comparison -->
+        <section class="size-comparison">
+            <h2 class="comparison-title">📏 Evolution of Computer Size</h2>
+            <div class="size-visual">
+                <div class="size-item" style="animation-delay: 0.2s;">
+                    <div class="size-box" style="width: 200px; height: 250px;"></div>
+                    <div class="size-label">ENIAC (1946)<br>30 tons</div>
+                </div>
+                <div class="size-item" style="animation-delay: 0.4s;">
+                    <div class="size-box" style="width: 150px; height: 180px;"></div>
+                    <div class="size-label">UNIVAC (1951)<br>13 tons</div>
+                </div>
+                <div class="size-item" style="animation-delay: 0.6s;">
+                    <div class="size-box" style="width: 100px; height: 120px;"></div>
+                    <div class="size-label">IBM 704 (1954)<br>1 ton</div>
+                </div>
+                <div class="size-item" style="animation-delay: 0.8s;">
+                    <div class="size-box" style="width: 50px; height: 60px;"></div>
+                    <div class="size-label">Transistor Era<br>< 100 lbs</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="demo-section">
+            <h2 class="demo-title">🔌 Build Your Own Circuit!</h2>
+            <div class="circuit-demo">
+                <div class="demo-component" id="powerSource">
+                    <span>🔋</span>
+                </div>
+                <div class="connection-wire" style="width: 100px; left: 100px;"></div>
+                <div class="demo-component" id="vacuumTubeDemo">
+                    <span>💡</span>
+                </div>
+                <div class="connection-wire" style="width: 100px; left: 230px;"></div>
+                <div class="demo-component" id="lightBulb">
+                    <span>💡</span>
+                </div>
+            </div>
+            <button class="power-button" onclick="toggleCircuit()">
+                🔌 Toggle Power
+            </button>
+        </section>
+
+        <!-- Fun Facts -->
+        <div class="fun-facts">
+            <div class="fact-icon">🤔</div>
+            <p class="fact-text">
+                <strong>Did you know?</strong> The term "bug" in computing originated when 
+                a moth got trapped in a relay of Harvard's Mark II computer in 1947!
+            </p>
+        </div>
+
+        <!-- Loading Animation -->
+        <div style="text-align: center; margin: 50px 0;">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <p style="color: #ffd700; margin-top: 20px;">Preparing next era...</p>
+        </div>
+    </div>
+
+    <script>
+        // Vacuum Tube Controls
+        const heaterSlider = document.getElementById('heaterSlider');
+        const gridSlider = document.getElementById('gridSlider');
+        const plateSlider = document.getElementById('plateSlider');
+        const heaterValue = document.getElementById('heaterValue');
+        const gridValue = document.getElementById('gridValue');
+        const plateValue = document.getElementById('plateValue');
+        const filament = document.getElementById('filament');
+
+        // Update display values
+        heaterSlider.addEventListener('input', (e) => {
+            heaterValue.textContent = e.target.value + 'V';
+            updateFilamentGlow(e.target.value);
+        });
+
+        gridSlider.addEventListener('input', (e) => {
+            gridValue.textContent = e.target.value + 'V';
+        });
+
+        plateSlider.addEventListener('input', (e) => {
+            plateValue.textContent = e.target.value + 'V';
+        });
+
+        // Update filament glow based on heater voltage
+        function updateFilamentGlow(voltage) {
+            const intensity = voltage / 10;
+            filament.style.filter = `brightness(${0.5 + intensity * 1.5})`;
+            filament.style.boxShadow = `0 0 ${20 + intensity * 30}px #ff4500`;
+            
+            // Generate heat particles
+            if (voltage > 3) {
+                generateHeatParticles();
+            }
+        }
+
+        // Generate heat particles
+        function generateHeatParticles() {
+            const container = document.getElementById('heatParticles');
+            const particle = document.createElement('div');
+            particle.className = 'heat-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '20%';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            container.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 3000);
+        }
+
+        // Simulate electron flow
+        function simulateElectronFlow() {
+            const tube = document.getElementById('vacuumTube');
+            const numElectrons = 10;
+            
+            for (let i = 0; i < numElectrons; i++) {
+                setTimeout(() => {
+                    const electron = document.createElement('div');
+                    electron.className = 'electron-particle';
+                    electron.style.left = '50%';
+                    electron.style.bottom = '100px';
+                    tube.appendChild(electron);
+                    
+                    // Animate electron movement
+                    electron.style.transition = 'all 1s ease-out';
+                    setTimeout(() => {
+                        electron.style.bottom = '350px';
+                        electron.style.opacity = '0';
+                    }, 10);
+                    
+                    setTimeout(() => electron.remove(), 1000);
+                }, i * 100);
+            }
+            
+            // Visual feedback
+            tube.querySelector('.tube-glass').style.boxShadow = 
+                'inset 0 0 100px rgba(0, 255, 255, 0.5), 0 0 50px rgba(255, 140, 0, 0.8)';
+            
+            setTimeout(() => {
+                tube.querySelector('.tube-glass').style.boxShadow = 
+                    'inset 0 0 50px rgba(255, 140, 0, 0.2), 0 0 30px rgba(255, 140, 0, 0.3)';
+            }, 1000);
+        }
+
+        // Show timeline events
+        function showEvent(year) {
+            const events = {
+                '1904': 'John Ambrose Fleming invents the first vacuum tube (diode)',
+                '1906': 'Lee de Forest adds a grid, creating the triode - enabling amplification',
+                '1946': 'ENIAC, the first general-purpose electronic computer, uses 17,468 vacuum tubes',
+                '1958': 'Last major vacuum tube computer built as transistors take over'
+            };
+            
+            alert(`${year}: ${events[year]}`);
+        }
+
+        // Circuit demo
+        let circuitOn = false;
+        function toggleCircuit() {
+            circuitOn = !circuitOn;
+            const bulb = document.getElementById('lightBulb');
+            const tubeDemo = document.getElementById('vacuumTubeDemo');
+            
+            if (circuitOn) {
+                bulb.style.background = 'rgba(255, 255, 0, 0.5)';
+                bulb.style.boxShadow = '0 0 40px yellow';
+                tubeDemo.style.background = 'rgba(255, 140, 0, 0.5)';
+                tubeDemo.style.boxShadow = '0 0 40px orange';
+            } else {
+                bulb.style.background = 'rgba(0, 0, 0, 0.3)';
+                bulb.style.boxShadow = 'none';
+                tubeDemo.style.background = 'rgba(0, 0, 0, 0.3)';
+                tubeDemo.style.boxShadow = 'none';
+            }
+        }
+
+        // Card animation
+        function animateCard(card) {
+            card.style.transform = 'scale(0.95) rotateZ(-1deg)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1) rotateZ(0deg)';
+            }, 200);
+        }
+
+        // 3D rotation on mouse move
+        const tube3d = document.querySelector('.vacuum-tube-3d');
+        tube3d.addEventListener('mousemove', (e) => {
+            const rect = tube3d.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            
+            tube3d.querySelector('.tube-glass').style.transform = 
+                `rotateY(${x * 30}deg) rotateX(${-y * 20}deg)`;
+        });
+
+        tube3d.addEventListener('mouseleave', () => {
+            tube3d.querySelector('.tube-glass').style.transform = 'rotateY(0) rotateX(0)';
+        });
+
+        // Auto-generate heat particles
+        setInterval(() => {
+            const voltage = parseFloat(heaterSlider.value);
+            if (voltage > 5) {
+                generateHeatParticles();
+            }
+        }, 500);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                // Navigate to next slide
+                console.log('Navigate to Transistor Era slide');
+            }
+            if (e.key === 'ArrowLeft') {
+                // Navigate to previous slide
+                console.log('Navigate to Introduction slide');
+            }
+        });
+    </script>
+</body>
+</html>

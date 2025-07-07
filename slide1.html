@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber Summer Camp - Microelectronics & AmpliPi Security</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: #f4e8d0;
+            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Traditional Book Style */
+        .traditional-container {
+            min-height: 100vh;
+            position: relative;
+            transition: all 1.5s ease;
+            background: linear-gradient(135deg, #f4e8d0 0%, #e8dcc0 50%, #ddd0b0 100%);
+        }
+
+        /* Book Page Effect */
+        .book-page {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 80px;
+            background: #fefdf8;
+            box-shadow: 
+                0 0 50px rgba(0,0,0,0.1),
+                inset 0 0 30px rgba(139,69,19,0.05);
+            border-left: 3px solid #d4c4a0;
+            border-right: 3px solid #d4c4a0;
+            min-height: 100vh;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: repeating-linear-gradient(
+                90deg,
+                #8b4513,
+                #8b4513 2px,
+                transparent 2px,
+                transparent 20px
+            );
+            opacity: 0.1;
+        }
+
+        /* Traditional Typography */
+        .traditional-title {
+            text-align: center;
+            margin-top: 100px;
+            color: #2c1810;
+        }
+
+        .traditional-title h1 {
+            font-size: 3.5em;
+            font-weight: normal;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 2px;
+        }
+
+        .ornament {
+            font-size: 2em;
+            color: #8b4513;
+            margin: 20px 0;
+        }
+
+        .traditional-subtitle {
+            font-size: 1.8em;
+            color: #5d4037;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .traditional-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #3e2723;
+            text-align: justify;
+            margin: 30px 0;
+            text-indent: 50px;
+        }
+
+        /* Decorative Elements */
+        .corner-decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #8b4513;
+            opacity: 0.3;
+        }
+
+        .corner-decoration.top-left {
+            top: 20px;
+            left: 20px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-decoration.top-right {
+            top: 20px;
+            right: 20px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Hack Button */
+        .hack-button {
+            margin: 50px auto;
+            display: block;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: #fefdf8;
+            border: 3px solid #654321;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hack-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #a0522d, #8b4513);
+        }
+
+        .hack-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .hack-button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Digital Style (After Hack) */
+        body.hacked {
+            background: #0a0a0a !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+        }
+
+        body.hacked .traditional-container {
+            display: none;
+        }
+
+        /* Glitch Transition Effect */
+        .glitch-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: none;
+            overflow: hidden;
+        }
+
+        .glitch-transition.active {
+            display: block;
+            animation: glitchEffect 1.5s ease-out;
+        }
+
+        @keyframes glitchEffect {
+            0%, 100% { opacity: 0; }
+            10% { opacity: 1; background: #ff0000; }
+            20% { opacity: 1; background: #00ff00; }
+            30% { opacity: 1; background: #0000ff; }
+            40% { opacity: 1; background: #ffffff; }
+            50% { opacity: 1; background: #000000; }
+            60% { opacity: 1; background: #ff00ff; }
+            70% { opacity: 1; background: #00ffff; }
+            80% { opacity: 1; background: #ffff00; }
+            90% { opacity: 0.5; background: #000000; }
+        }
+
+        /* Digital Container */
+        .digital-container {
+            display: none;
+            min-height: 100vh;
+            position: relative;
+            color: #ffffff;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        body.hacked .digital-container {
+            display: block;
+            animation: digitalFadeIn 1s ease-out;
+        }
+
+        @keyframes digitalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Matrix Rain Background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* Circuit Pattern Background */
+        .circuit-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 2;
+            pointer-events: none;
+            animation: circuitMove 20s linear infinite;
+        }
+
+        @keyframes circuitMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Digital Content */
+        .digital-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Cyber Title */
+        .cyber-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: cyberGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes cyberGlow {
+            from { filter: drop-shadow(0 0 20px rgba(0,255,255,0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(0,255,255,0.8)); }
+        }
+
+        .cyber-title {
+            font-size: 4em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+        }
+
+        .cyber-subtitle {
+            font-size: 1.5em;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+            margin-bottom: 10px;
+        }
+
+        .security-badge {
+            display: inline-block;
+            background: rgba(255,0,0,0.2);
+            border: 2px solid #ff0000;
+            padding: 10px 30px;
+            border-radius: 30px;
+            color: #ff0000;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            margin-top: 20px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        /* Interactive Cards */
+        .tech-card {
+            background: rgba(0,255,255,0.1);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .tech-card:hover::before {
+            animation: cardSweep 0.5s ease;
+        }
+
+        @keyframes cardSweep {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0,255,255,0.8);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.3);
+            background: rgba(0,255,255,0.15);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            color: #00ff00;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0,255,0,0.5);
+        }
+
+        .card-description {
+            color: #ffffff;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Microelectronics Timeline */
+        .timeline-container {
+            position: relative;
+            padding: 20px 0;
+            margin: 30px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #00ffff, #ff00ff);
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            animation: timelineSlide 0.8s ease-out;
+        }
+
+        @keyframes timelineSlide {
+            from { 
+                opacity: 0; 
+                transform: translateX(-30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            text-align: right;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #ff00ff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255,0,255,0.8);
+            z-index: 1;
+            animation: dotPulse 2s infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 0 40px;
+            opacity: 0.9;
+        }
+
+        .timeline-year {
+            font-size: 2em;
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,0,255,0.5);
+        }
+
+        .timeline-title {
+            font-size: 1.3em;
+            color: #00ffff;
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            color: #ffffff;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        /* AmpliPi Visualization */
+        .amplipi-container {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #00ff00;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .amplipi-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #00ff00;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0,255,0,0.5);
+        }
+
+        .amplipi-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,255,0,0.3);
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Interactive Circuit Simulation */
+        .circuit-sim {
+            background: #000;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            min-height: 300px;
+            cursor: crosshair;
+        }
+
+        .circuit-component {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(0,255,255,0.2);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .circuit-component:hover {
+            transform: scale(1.1);
+            background: rgba(0,255,255,0.4);
+            box-shadow: 0 0 20px rgba(0,255,255,0.8);
+        }
+
+        .circuit-wire {
+            position: absolute;
+            height: 2px;
+            background: #00ff00;
+            transform-origin: left center;
+            pointer-events: none;
+            box-shadow: 0 0 5px rgba(0,255,0,0.8);
+        }
+
+        .electron {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffff00;
+            pointer-events: none;
+        }
+
+        /* Security Analysis Section */
+        .security-section {
+            background: rgba(255,0,0,0.1);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .security-title {
+            font-size: 2em;
+            color: #ff0000;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+
+        .vulnerability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .vuln-item {
+            background: rgba(255,0,0,0.2);
+            border: 1px solid #ff0000;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .vuln-item:hover {
+            transform: scale(1.05);
+            background: rgba(255,0,0,0.3);
+            box-shadow: 0 0 15px rgba(255,0,0,0.5);
+        }
+
+        .vuln-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .vuln-name {
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .vuln-status {
+            color: #ff0000;
+            font-size: 0.9em;
+        }
+
+        /* Terminal Window */
+        .terminal {
+            background: #000;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Consolas', monospace;
+            color: #00ff00;
+            position: relative;
+            min-height: 200px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-button.red { background: #ff5f56; }
+        .terminal-button.yellow { background: #ffbd2e; }
+        .terminal-button.green { background: #27c93f; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #00ff00;
+        }
+
+        .terminal-content {
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            animation: terminalType 0.5s ease-out;
+        }
+
+        @keyframes terminalType {
+            from { 
+                opacity: 0; 
+                transform: translateX(-10px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0);
+            }
+        }
+
+        .terminal-prompt {
+            color: #00ff00;
+        }
+
+        .terminal-command {
+            color: #ffffff;
+        }
+
+        .terminal-output {
+            color: #00ffff;
+            margin-left: 20px;
+        }
+
+        /* Loading Animation */
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 20px;
+            background: rgba(0,255,255,0.2);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #00ff00);
+            width: 0%;
+            animation: loadingFill 3s ease-out forwards;
+        }
+
+        @keyframes loadingFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .book-page {
+                padding: 40px 30px;
+            }
+
+            .traditional-title h1 {
+                font-size: 2.5em;
+            }
+
+            .cyber-title {
+                font-size: 2.5em;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-item:nth-child(even) .timeline-content {
+                text-align: left;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <!-- Traditional Book Page -->
+    <div class="traditional-container">
+        <div class="book-page">
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+
+            <div class="traditional-title">
+                <h1>GenCyber Summer Camp</h1>
+                <div class="ornament">⚜ ❦ ⚜</div>
+                <p class="traditional-subtitle">A Journey Through Microelectronics</p>
+            </div>
+
+            <p class="traditional-text">
+                In the realm of modern technology, where silicon dreams meet digital reality, 
+                we embark upon a scholarly expedition through the fascinating world of microelectronics. 
+                From the humble vacuum tube to the sophisticated integrated circuits that power our world, 
+                this journey shall illuminate the very foundations of our digital age.
+            </p>
+
+            <p class="traditional-text">
+                Herein lies the knowledge of the AmpliPi system—a marvel of engineering that brings 
+                harmony to our homes through the marriage of electronics and acoustics. Yet, with great 
+                power comes great responsibility, for we must also understand the vulnerabilities that 
+                lurk within these systems.
+            </p>
+
+            <button class="hack-button" onclick="initiateHack()">
+                🔓 Enter the Digital Realm
+            </button>
+
+            <p class="traditional-text" style="text-align: center; font-style: italic; margin-top: 50px;">
+                "The best way to predict the future is to invent it." - Alan Kay
+            </p>
+        </div>
+    </div>
+
+    <!-- Glitch Transition -->
+    <div class="glitch-transition" id="glitchTransition"></div>
+
+    <!-- Digital Container -->
+    <div class="digital-container">
+        <!-- Matrix Background -->
+        <canvas class="matrix-bg" id="matrixBg"></canvas>
+        <div class="circuit-pattern"></div>
+
+        <div class="digital-content">
+            <!-- Cyber Header -->
+            <div class="cyber-header">
+                <h1 class="cyber-title">MICROELECTRONICS & SECURITY</h1>
+                <p class="cyber-subtitle">GenCyber Summer Camp 2025</p>
+                <div class="security-badge">🔒 SECURE SYSTEM ACCESSED</div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Microelectronics Evolution Card -->
+                <div class="tech-card fade-in" onclick="animateCard(this)">
+                    <div class="card-icon">🔬</div>
+                    <h3 class="card-title">Microelectronics Evolution</h3>
+                    <p class="card-description">
+                        Journey from vacuum tubes to modern semiconductors. 
+                        Explore how technology shrank from room-sized to nanoscale.
+                    </p>
+                    <div class="loading-container">
+                        <div class="loading-bar">
+                            <div class="loading-progress"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AmpliPi System Card -->
+                <div class="tech-card fade-in" onclick="animateCard(this)">
+                    <div class="card-icon">🎵</div>
+                    <h3 class="card-title">AmpliPi Architecture</h3>
+                    <p class="card-description">
+                        Multi-zone audio streaming system powered by Raspberry Pi. 
+                        6 zones, 6 sources, infinite possibilities.
+                    </p>
+                    <div class="circuit-sim" id="amplipiCircuit" style="min-height: 150px;">
+                        <!-- Circuit components will be added by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Security Analysis Card -->
+                <div class="tech-card fade-in" onclick="animateCard(this)">
+                    <div class="card-icon">🛡️</div>
+                    <h3 class="card-title">Security Testing</h3>
+                    <p class="card-description">
+                        Real penetration testing on AmpliPi: Network scanning, 
+                        password attacks, MitM, and DoS vulnerabilities discovered.
+                    </p>
+                    <div class="terminal" style="min-height: 150px;">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <div class="terminal-button red"></div>
+                                <div class="terminal-button yellow"></div>
+                                <div class="terminal-button green"></div>
+                            </div>
+                            <div class="terminal-title">Terminal</div>
+                        </div>
+                        <div class="terminal-content" id="securityTerminal">
+                            <div class="terminal-line">
+                                <span class="terminal-prompt">$</span>
+                                <span class="terminal-command"> nmap -sV 192.168.1.0/24</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Section -->
+            <div class="timeline-container fade-in">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">1904</div>
+                        <div class="timeline-title">Vacuum Tubes</div>
+                        <div class="timeline-desc">First electronic amplification</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">1947</div>
+                        <div class="timeline-title">Transistor</div>
+                        <div class="timeline-desc">Bell Labs revolution</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">1958</div>
+                        <div class="timeline-title">Integrated Circuit</div>
+                        <div class="timeline-desc">Multiple components on one chip</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-title">AI & IoT</div>
+                        <div class="timeline-desc">Smart systems everywhere</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AmpliPi Section -->
+            <div class="amplipi-container fade-in">
+                <h2 class="amplipi-title">🎵 AmpliPi Home Audio System</h2>
+                <div style="text-align: center;">
+                    <p style="color: #00ff00; margin-bottom: 20px;">
+                        Professional-grade multi-zone audio streaming with Raspberry Pi at its core
+                    </p>
+                    <!-- Simulated AmpliPi Image using CSS -->
+                    <div style="width: 100%; max-width: 600px; margin: 0 auto; background: #222; border: 2px solid #00ff00; border-radius: 10px; padding: 20px;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+                            <div style="background: #444; border: 1px solid #00ff00; border-radius: 5px; padding: 20px; text-align: center;">
+                                <div style="font-size: 2em;">🔊</div>
+                                <div style="color: #00ff00; font-size: 0.9em;">Zone 1</div>
+                            </div>
+                            <div style="background: #444; border: 1px solid #00ff00; border-radius: 5px; padding: 20px; text-align: center;">
+                                <div style="font-size: 2em;">🔊</div>
+                                <div style="color: #00ff00; font-size: 0.9em;">Zone 2</div>
+                            </div>
+                            <div style="background: #444; border: 1px solid #00ff00; border-radius: 5px; padding: 20px; text-align: center;">
+                                <div style="font-size: 2em;">🔊</div>
+                                <div style="color: #00ff00; font-size: 0.9em;">Zone 3</div>
+                            </div>
+                            <div style="background: #444; border: 1px solid #00ff00; border-radius: 5px; padding: 20px; text-align: center;">
+                                <div style="font-size: 2em;">🔊</div>
+                                <div style="color: #00ff00; font-size: 0.9em;">Zone 4</div>
+                            </div>
+                            <div style="background: #444; border: 1px solid #00ff00; border-radius: 5px; padding: 20px; text-align: center;">
+                                <div style="font-size: 2em;">🔊</div>
+                                <div style="color: #00ff00; font-size: 0.9em;">Zone 5</div>
+                            </div>
+                            <div style="background: #444; border: 1px solid #00ff00; border-radius: 5px; padding: 20px; text-align: center;">
+                                <div style="font-size: 2em;">🔊</div>
+                                <div style="color: #00ff00; font-size: 0.9em;">Zone 6</div>
+                            </div>
+                        </div>
+                        <div style="background: #333; border: 1px solid #00ff00; border-radius: 5px; padding: 15px;">
+                            <div style="color: #00ffff; text-align: center; font-weight: bold;">Raspberry Pi Controller</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Analysis -->
+            <div class="security-section fade-in">
+                <h2 class="security-title">🔒 Security Vulnerabilities Discovered</h2>
+                <div class="vulnerability-grid">
+                    <div class="vuln-item" onclick="showVulnDetails('Network Scanning')">
+                        <div class="vuln-icon">📡</div>
+                        <div class="vuln-name">Network Scanning</div>
+                        <div class="vuln-status">VULNERABLE</div>
+                    </div>
+                    <div class="vuln-item" onclick="showVulnDetails('Password Attack')">
+                        <div class="vuln-icon">🔑</div>
+                        <div class="vuln-name">Weak Passwords</div>
+                        <div class="vuln-status">CRITICAL</div>
+                    </div>
+                    <div class="vuln-item" onclick="showVulnDetails('MitM Attack')">
+                        <div class="vuln-icon">👤</div>
+                        <div class="vuln-name">MitM Attack</div>
+                        <div class="vuln-status">HIGH RISK</div>
+                    </div>
+                    <div class="vuln-item" onclick="showVulnDetails('DoS Attack')">
+                        <div class="vuln-icon">⚠️</div>
+                        <div class="vuln-name">DoS Attack</div>
+                        <div class="vuln-status">MODERATE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Rain Effect
+        function initMatrixRain() {
+            const canvas = document.getElementById('matrixBg');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+            const matrixArray = matrix.split("");
+            
+            const fontSize = 10;
+            const columns = canvas.width / fontSize;
+            
+            const drops = [];
+            for(let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff00';
+                ctx.font = fontSize + 'px monospace';
+                
+                for(let i = 0; i < drops.length; i++) {
+                    const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+
+        // Hack Initiation
+        function initiateHack() {
+            const glitch = document.getElementById('glitchTransition');
+            glitch.classList.add('active');
+            
+            // Play glitch sound effect (simulated)
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmFgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+            
+            setTimeout(() => {
+                document.body.classList.add('hacked');
+                glitch.classList.remove('active');
+                initMatrixRain();
+                initCircuitSimulation();
+                initTerminalAnimation();
+                observeScrollAnimations();
+            }, 1500);
+        }
+
+        // Initialize Circuit Simulation
+        function initCircuitSimulation() {
+            const circuit = document.getElementById('amplipiCircuit');
+            const components = [
+                {icon: '🔌', x: 20, y: 30, name: 'Power'},
+                {icon: '🧠', x: 50, y: 30, name: 'RPi'},
+                {icon: '🔊', x: 80, y: 30, name: 'Amp'}
+            ];
+            
+            components.forEach((comp, i) => {
+                const div = document.createElement('div');
+                div.className = 'circuit-component';
+                div.style.left = comp.x + '%';
+                div.style.top = comp.y + '%';
+                div.innerHTML = comp.icon;
+                div.title = comp.name;
+                div.onclick = () => animateElectronFlow(circuit, i);
+                circuit.appendChild(div);
+            });
+            
+            // Add wires
+            const wire1 = document.createElement('div');
+            wire1.className = 'circuit-wire';
+            wire1.style.left = '25%';
+            wire1.style.top = '45%';
+            wire1.style.width = '20%';
+            circuit.appendChild(wire1);
+            
+            const wire2 = document.createElement('div');
+            wire2.className = 'circuit-wire';
+            wire2.style.left = '55%';
+            wire2.style.top = '45%';
+            wire2.style.width = '20%';
+            circuit.appendChild(wire2);
+        }
+
+        // Animate Electron Flow
+        function animateElectronFlow(circuit, startIndex) {
+            const electron = document.createElement('div');
+            electron.className = 'electron';
+            
+            const positions = [
+                {left: '20%', top: '30%'},
+                {left: '50%', top: '30%'},
+                {left: '80%', top: '30%'}
+            ];
+            
+            electron.style.left = positions[startIndex].left;
+            electron.style.top = positions[startIndex].top;
+            circuit.appendChild(electron);
+            
+            let nextIndex = (startIndex + 1) % positions.length;
+            electron.style.transition = 'all 1s ease';
+            
+            setTimeout(() => {
+                electron.style.left = positions[nextIndex].left;
+                electron.style.top = positions[nextIndex].top;
+            }, 10);
+            
+            setTimeout(() => electron.remove(), 1000);
+        }
+
+        // Terminal Animation
+        function initTerminalAnimation() {
+            const terminal = document.getElementById('securityTerminal');
+            const commands = [
+                {prompt: '$', command: ' Scanning network...', output: 'Found 5 devices'},
+                {prompt: '$', command: ' hydra -l admin -P pass.txt 192.168.1.100', output: 'Password found: admin123'},
+                {prompt: '$', command: ' arpspoof -t 192.168.1.1 192.168.1.100', output: 'ARP poisoning active'},
+                {prompt: '$', command: ' slowloris 192.168.1.100', output: 'DoS attack initiated'}
+            ];
+            
+            let index = 0;
+            setInterval(() => {
+                if (index < commands.length) {
+                    const line = document.createElement('div');
+                    line.className = 'terminal-line';
+                    line.innerHTML = `
+                        <span class="terminal-prompt">${commands[index].prompt}</span>
+                        <span class="terminal-command">${commands[index].command}</span>
+                    `;
+                    terminal.appendChild(line);
+                    
+                    setTimeout(() => {
+                        const output = document.createElement('div');
+                        output.className = 'terminal-line';
+                        output.innerHTML = `<span class="terminal-output">${commands[index].output}</span>`;
+                        terminal.appendChild(output);
+                        index++;
+                    }, 500);
+                }
+            }, 2000);
+        }
+
+        // Card Animation
+        function animateCard(card) {
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Show Vulnerability Details
+        function showVulnDetails(vulnType) {
+            alert(`${vulnType} Details:\n\nThis vulnerability was discovered during our security assessment of the AmpliPi system. Click through the presentation to learn more!`);
+        }
+
+        // Scroll Animations
+        function observeScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Window Resize Handler
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('matrixBg');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !document.body.classList.contains('hacked')) {
+                initiateHack();
+            }
+        });
+    </script>
+</body>
+</html>

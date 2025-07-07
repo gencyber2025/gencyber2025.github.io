@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - The Transistor Revolution (1947)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000814;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background Animation */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Silicon Crystal Pattern */
+        .silicon-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 30% 40%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(0, 255, 150, 0.1) 0%, transparent 50%);
+            animation: crystalShift 15s ease-in-out infinite;
+        }
+
+        @keyframes crystalShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Circuit Board Grid */
+        .circuit-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridFlow 20s linear infinite;
+        }
+
+        @keyframes gridFlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .era-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #0096ff, #00ff96);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 150, 255, 0.4);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            background: linear-gradient(45deg, #0096ff, #00ff96, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: titleShine 3s ease-in-out infinite;
+        }
+
+        @keyframes titleShine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #00ccff;
+            opacity: 0.9;
+        }
+
+        /* Bell Labs Section */
+        .bell-labs-section {
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.1), rgba(0, 255, 150, 0.05));
+            border: 2px solid rgba(0, 150, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inventors-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .inventor-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #0096ff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .inventor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 150, 255, 0.5);
+            border-color: #00ff96;
+        }
+
+        .inventor-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: iconBounce 3s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .inventor-name {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .inventor-role {
+            color: #00ccff;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* Transistor Simulator */
+        .transistor-section {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ff96;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .transistor-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        /* Interactive Transistor Model */
+        .transistor-model {
+            width: 400px;
+            height: 300px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+            border: 3px solid #00ff96;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        /* P-N Junction Visualization */
+        .pn-junction {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        .p-type {
+            flex: 1;
+            background: linear-gradient(90deg, rgba(255, 0, 150, 0.3), rgba(255, 0, 150, 0.1));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0096;
+        }
+
+        .n-type {
+            flex: 1;
+            background: linear-gradient(90deg, rgba(0, 150, 255, 0.1), rgba(0, 150, 255, 0.3));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #0096ff;
+        }
+
+        .junction-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #ff0096, #0096ff);
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Electron/Hole Animation */
+        .charge-carrier {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .electron {
+            background: #0096ff;
+            box-shadow: 0 0 10px #0096ff;
+        }
+
+        .hole {
+            background: #ff0096;
+            box-shadow: 0 0 10px #ff0096;
+            border: 2px solid #ff0096;
+            background: transparent;
+        }
+
+        /* Control Panel */
+        .transistor-controls {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 30px;
+            width: 350px;
+        }
+
+        .control-title {
+            font-size: 1.5em;
+            color: #00ff96;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
+        }
+
+        .transistor-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .type-button {
+            flex: 1;
+            padding: 10px;
+            background: rgba(0, 150, 255, 0.2);
+            border: 2px solid #0096ff;
+            color: #00ffff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .type-button:hover {
+            background: rgba(0, 150, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .type-button.active {
+            background: #0096ff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+        }
+
+        /* Size Comparison */
+        .size-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .comparison-item {
+            background: rgba(0, 150, 255, 0.1);
+            border: 2px solid #0096ff;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .comparison-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 150, 255, 0.3);
+        }
+
+        .size-visual {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+        }
+
+        .size-representation {
+            background: linear-gradient(135deg, #0096ff, #00ff96);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        /* Moore's Law Visualization */
+        .moores-law-section {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff96;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .law-title {
+            font-size: 2em;
+            color: #00ff96;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 255, 150, 0.5);
+        }
+
+        .graph-container {
+            position: relative;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #0096ff;
+            border-radius: 15px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .graph-line {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: #00ffff;
+            transform-origin: left center;
+            transform: rotate(-30deg);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .graph-points {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .data-point {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #00ff96;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
+        }
+
+        .data-point:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(0, 255, 150, 0.8);
+        }
+
+        .data-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ffff;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        /* Applications Grid */
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .app-item {
+            background: rgba(0, 255, 150, 0.1);
+            border: 2px solid #00ff96;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .app-item:hover {
+            transform: translateY(-5px) rotate(2deg);
+            box-shadow: 0 10px 20px rgba(0, 255, 150, 0.3);
+            background: rgba(0, 255, 150, 0.2);
+        }
+
+        .app-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: appFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes appFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.1); }
+        }
+
+        .app-name {
+            color: #00ff96;
+            font-weight: bold;
+        }
+
+        /* Interactive Demo */
+        .demo-section {
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.05), rgba(0, 255, 150, 0.05));
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 2em;
+            color: #00ffff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .switch-demo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .demo-item {
+            text-align: center;
+        }
+
+        .demo-label {
+            color: #00ff96;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .vacuum-tube-switch {
+            width: 100px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.3), rgba(255, 140, 0, 0.1));
+            border: 3px solid #ff8c00;
+            border-radius: 40px 40px 10px 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .transistor-switch {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0096ff, #00ff96);
+            border: 3px solid #00ffff;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 150, 255, 0.3);
+        }
+
+        .switch-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+            margin: 40px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #0096ff, #00ff96);
+            transform: translateX(-50%);
+        }
+
+        .timeline-event {
+            position: relative;
+            margin: 30px 0;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-event:nth-child(even) {
+            text-align: right;
+        }
+
+        .event-content {
+            background: rgba(0, 150, 255, 0.1);
+            border: 2px solid #0096ff;
+            border-radius: 15px;
+            padding: 20px;
+            display: inline-block;
+            max-width: 45%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-event:hover .event-content {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 150, 255, 0.3);
+        }
+
+        .event-year {
+            color: #00ff96;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .event-description {
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Fun Animation */
+        .transistor-rain {
+            position: fixed;
+            top: -50px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .falling-transistor {
+            position: absolute;
+            font-size: 20px;
+            animation: fall 5s linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(calc(100vh + 50px)) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .transistor-container {
+                flex-direction: column;
+            }
+
+            .transistor-model {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .transistor-controls {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .timeline-event {
+                text-align: left !important;
+            }
+
+            .event-content {
+                max-width: 80%;
+            }
+        }
+
+        /* Pulse Button */
+        .action-button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #0096ff, #00ff96);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 150, 255, 0.4);
+            margin: 20px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 150, 255, 0.6);
+        }
+
+        .action-button:active {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-container">
+        <div class="silicon-pattern"></div>
+        <div class="circuit-grid"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="era-badge">December 23, 1947</div>
+            <h1 class="main-title">The Transistor Revolution</h1>
+            <p class="subtitle">The Invention That Changed Everything</p>
+        </header>
+
+        <!-- Bell Labs Section -->
+        <section class="bell-labs-section">
+            <h2 style="text-align: center; color: #00ff96; font-size: 2em; margin-bottom: 30px;">
+                🏢 Bell Labs - Where Magic Happened
+            </h2>
+            <div class="inventors-container">
+                <div class="inventor-card" onclick="showInventorInfo('Bardeen')">
+                    <div class="inventor-icon">👨‍🔬</div>
+                    <div class="inventor-name">John Bardeen</div>
+                    <div class="inventor-role">Quantum Theory Expert</div>
+                </div>
+                <div class="inventor-card" onclick="showInventorInfo('Brattain')">
+                    <div class="inventor-icon">🔬</div>
+                    <div class="inventor-name">Walter Brattain</div>
+                    <div class="inventor-role">Experimental Physicist</div>
+                </div>
+                <div class="inventor-card" onclick="showInventorInfo('Shockley')">
+                    <div class="inventor-icon">💡</div>
+                    <div class="inventor-name">William Shockley</div>
+                    <div class="inventor-role">Team Leader</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transistor Simulator -->
+        <section class="transistor-section">
+            <h2 style="text-align: center; color: #00ff96; font-size: 2em; margin-bottom: 30px;">
+                ⚡ Interactive Transistor Model
+            </h2>
+            <div class="transistor-container">
+                <!-- P-N Junction Model -->
+                <div class="transistor-model" id="transistorModel">
+                    <div class="pn-junction">
+                        <div class="p-type">P-Type</div>
+                        <div class="n-type">N-Type</div>
+                        <div class="junction-line"></div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="transistor-controls">
+                    <h3 class="control-title">🎛️ Transistor Controls</h3>
+                    
+                    <div class="transistor-type-selector">
+                        <button class="type-button active" onclick="setTransistorType('NPN')">NPN</button>
+                        <button class="type-button" onclick="setTransistorType('PNP')">PNP</button>
+                    </div>
+
+                    <button class="action-button" onclick="simulateCurrentFlow()" style="width: 100%;">
+                        ⚡ Apply Voltage
+                    </button>
+
+                    <div style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.5); border-radius: 10px;">
+                        <p style="color: #00ffff; margin-bottom: 10px;">
+                            <strong>How it works:</strong>
+                        </p>
+                        <p style="color: #ffffff; line-height: 1.6; font-size: 0.9em;">
+                            A small current at the base controls a larger current 
+                            between collector and emitter - like a water valve!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Size Comparison -->
+        <section class="size-comparison">
+            <div class="comparison-item" onclick="animateComparison(this)">
+                <h3 style="color: #00ff96; margin-bottom: 20px;">Vacuum Tube</h3>
+                <div class="size-visual">
+                    <div class="size-representation" style="width: 80px; height: 120px;"></div>
+                </div>
+                <p style="color: #00ccff;">Size: 10-20 cm</p>
+                <p style="color: #ff8c00;">Power: 10-100 W</p>
+                <p style="color: #ff4444;">Heat: Very High</p>
+            </div>
+
+            <div class="comparison-item" onclick="animateComparison(this)">
+                <h3 style="color: #00ff96; margin-bottom: 20px;">First Transistor</h3>
+                <div class="size-visual">
+                    <div class="size-representation" style="width: 30px; height: 30px;"></div>
+                </div>
+                <p style="color: #00ccff;">Size: 1-2 cm</p>
+                <p style="color: #00ff00;">Power: 0.1 W</p>
+                <p style="color: #00ff00;">Heat: Low</p>
+            </div>
+
+            <div class="comparison-item" onclick="animateComparison(this)">
+                <h3 style="color: #00ff96; margin-bottom: 20px;">Modern Transistor</h3>
+                <div class="size-visual">
+                    <div class="size-representation" style="width: 2px; height: 2px;"></div>
+                </div>
+                <p style="color: #00ccff;">Size: 5-10 nm</p>
+                <p style="color: #00ff00;">Power: nW</p>
+                <p style="color: #00ff00;">Heat: Minimal</p>
+            </div>
+        </section>
+
+        <!-- Moore's Law Visualization -->
+        <section class="moores-law-section">
+            <h2 class="law-title">📈 Moore's Law in Action</h2>
+            <div class="graph-container">
+                <div class="graph-line"></div>
+                <div class="graph-points">
+                    <div class="data-point" style="left: 10%; bottom: 30%;" onclick="showDataPoint('1970')">
+                        <span class="data-label">1970</span>
+                    </div>
+                    <div class="data-point" style="left: 25%; bottom: 40%;" onclick="showDataPoint('1980')">
+                        <span class="data-label">1980</span>
+                    </div>
+                    <div class="data-point" style="left: 40%; bottom: 52%;" onclick="showDataPoint('1990')">
+                        <span class="data-label">1990</span>
+                    </div>
+                    <div class="data-point" style="left: 55%; bottom: 65%;" onclick="showDataPoint('2000')">
+                        <span class="data-label">2000</span>
+                    </div>
+                    <div class="data-point" style="left: 70%; bottom: 78%;" onclick="showDataPoint('2010')">
+                        <span class="data-label">2010</span>
+                    </div>
+                    <div class="data-point" style="left: 85%; bottom: 90%;" onclick="showDataPoint('2020')">
+                        <span class="data-label">2020</span>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: #00ccff; margin-top: 20px;">
+                "The number of transistors doubles approximately every two years"
+            </p>
+        </section>
+
+        <!-- Applications -->
+        <h2 style="text-align: center; color: #00ff96; font-size: 2em; margin: 40px 0;">
+            🚀 Transistor Applications
+        </h2>
+        <div class="applications-grid">
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">📻</div>
+                <div class="app-name">Radio</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">📺</div>
+                <div class="app-name">Television</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">💻</div>
+                <div class="app-name">Computer</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">📱</div>
+                <div class="app-name">Phone</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">🎮</div>
+                <div class="app-name">Gaming</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">🚗</div>
+                <div class="app-name">Automotive</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">🏥</div>
+                <div class="app-name">Medical</div>
+            </div>
+            <div class="app-item" onclick="animateApp(this)">
+                <div class="app-icon">🛰️</div>
+                <div class="app-name">Space</div>
+            </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <section class="demo-section">
+            <h2 class="demo-title">🔄 Vacuum Tube vs Transistor</h2>
+            <div class="switch-demo">
+                <div class="demo-item">
+                    <div class="demo-label">Vacuum Tube</div>
+                    <div class="vacuum-tube-switch" onclick="toggleSwitch(this, 'tube')">
+                        <div class="switch-state">OFF</div>
+                    </div>
+                </div>
+                <div class="demo-item">
+                    <div class="demo-label">VS</div>
+                    <div style="font-size: 3em;">⚡</div>
+                </div>
+                <div class="demo-item">
+                    <div class="demo-label">Transistor</div>
+                    <div class="transistor-switch" onclick="toggleSwitch(this, 'transistor')">
+                        <div class="switch-state">OFF</div>
+                    </div>
+                </div>
+            </div>
+            <p style="color: #00ccff; margin-top: 20px;">
+                Click the switches to see the speed difference!
+            </p>
+        </section>
+
+        <!-- Timeline -->
+        <section class="timeline">
+            <div class="timeline-line"></div>
+            <div class="timeline-event">
+                <div class="event-content">
+                    <div class="event-year">1947</div>
+                    <div class="event-description">First transistor invented at Bell Labs</div>
+                </div>
+            </div>
+            <div class="timeline-event">
+                <div class="event-content">
+                    <div class="event-year">1954</div>
+                    <div class="event-description">First transistor radio produced</div>
+                </div>
+            </div>
+            <div class="timeline-event">
+                <div class="event-content">
+                    <div class="event-year">1958</div>
+                    <div class="event-description">Integrated circuits developed</div>
+                </div>
+            </div>
+            <div class="timeline-event">
+                <div class="event-content">
+                    <div class="event-year">1971</div>
+                    <div class="event-description">Intel 4004 - First microprocessor</div>
+                </div>
+            </div>
+            <div class="timeline-event">
+                <div class="event-content">
+                    <div class="event-year">2024</div>
+                    <div class="event-description">Billions of transistors on a single chip!</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Transistor type switching
+        let currentType = 'NPN';
+        
+        function setTransistorType(type) {
+            currentType = type;
+            const buttons = document.querySelectorAll('.type-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update model display
+            const model = document.getElementById('transistorModel');
+            if (type === 'PNP') {
+                model.querySelector('.p-type').textContent = 'P-Type';
+                model.querySelector('.n-type').textContent = 'P-Type';
+                model.querySelector('.junction-line').style.background = 
+                    'linear-gradient(to bottom, #ff0096, #ff0096, #0096ff, #ff0096, #ff0096)';
+            } else {
+                model.querySelector('.p-type').textContent = 'N-Type';
+                model.querySelector('.n-type').textContent = 'N-Type';
+                model.querySelector('.junction-line').style.background = 
+                    'linear-gradient(to bottom, #0096ff, #0096ff, #ff0096, #0096ff, #0096ff)';
+            }
+        }
+
+        // Simulate current flow
+        function simulateCurrentFlow() {
+            const model = document.getElementById('transistorModel');
+            const numCarriers = 20;
+            
+            for (let i = 0; i < numCarriers; i++) {
+                setTimeout(() => {
+                    const carrier = document.createElement('div');
+                    carrier.className = Math.random() > 0.5 ? 'charge-carrier electron' : 'charge-carrier hole';
+                    
+                    if (carrier.classList.contains('electron')) {
+                        carrier.style.left = '75%';
+                        carrier.style.top = Math.random() * 80 + 10 + '%';
+                    } else {
+                        carrier.style.left = '25%';
+                        carrier.style.top = Math.random() * 80 + 10 + '%';
+                    }
+                    
+                    model.appendChild(carrier);
+                    
+                    // Animate movement
+                    setTimeout(() => {
+                        carrier.style.transition = 'all 1s ease-out';
+                        if (carrier.classList.contains('electron')) {
+                            carrier.style.left = '25%';
+                        } else {
+                            carrier.style.left = '75%';
+                        }
+                        carrier.style.opacity = '0';
+                    }, 10);
+                    
+                    setTimeout(() => carrier.remove(), 1000);
+                }, i * 100);
+            }
+            
+            // Visual feedback
+            model.style.boxShadow = '0 0 50px rgba(0, 255, 255, 0.5)';
+            setTimeout(() => {
+                model.style.boxShadow = 'none';
+            }, 2000);
+        }
+
+        // Show inventor info
+        function showInventorInfo(name) {
+            const info = {
+                'Bardeen': 'John Bardeen - Only person to win Nobel Prize in Physics twice!',
+                'Brattain': 'Walter Brattain - Expert in surface physics, crucial for the discovery',
+                'Shockley': 'William Shockley - Later invented the junction transistor'
+            };
+            alert(info[name]);
+        }
+
+        // Show data point info
+        function showDataPoint(year) {
+            const data = {
+                '1970': '~2,300 transistors (Intel 4004)',
+                '1980': '~29,000 transistors (Intel 8086)',
+                '1990': '~1.2 million transistors (Intel 486)',
+                '2000': '~42 million transistors (Pentium 4)',
+                '2010': '~2.3 billion transistors (6-core Xeon)',
+                '2020': '~50 billion transistors (Apple M1 Ultra)'
+            };
+            alert(`${year}: ${data[year]}`);
+        }
+
+        // Switch toggle
+        function toggleSwitch(element, type) {
+            const state = element.querySelector('.switch-state');
+            const isOn = state.textContent === 'ON';
+            
+            if (type === 'tube') {
+                // Slow transition for vacuum tube
+                element.style.transition = 'all 1s ease';
+                setTimeout(() => {
+                    state.textContent = isOn ? 'OFF' : 'ON';
+                    element.style.background = isOn ? 
+                        'linear-gradient(135deg, rgba(255, 140, 0, 0.3), rgba(255, 140, 0, 0.1))' :
+                        'linear-gradient(135deg, rgba(255, 140, 0, 0.8), rgba(255, 215, 0, 0.6))';
+                    element.style.boxShadow = isOn ? 'none' : '0 0 40px orange';
+                }, 500);
+            } else {
+                // Fast transition for transistor
+                state.textContent = isOn ? 'OFF' : 'ON';
+                element.style.background = isOn ?
+                    'linear-gradient(135deg, #0096ff, #00ff96)' :
+                    'linear-gradient(135deg, #00ff96, #00ffff)';
+                element.style.boxShadow = isOn ? '0 5px 15px rgba(0, 150, 255, 0.3)' : 
+                    '0 0 30px rgba(0, 255, 255, 0.8)';
+            }
+        }
+
+        // Animate comparison
+        function animateComparison(element) {
+            element.style.transform = 'scale(0.95) rotateY(10deg)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1) rotateY(0)';
+            }, 300);
+        }
+
+        // Animate app
+        function animateApp(element) {
+            element.style.transform = 'scale(0.9) rotate(-5deg)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1.1) rotate(5deg)';
+                setTimeout(() => {
+                    element.style.transform = 'scale(1) rotate(0)';
+                }, 200);
+            }, 200);
+        }
+
+        // Create falling transistors
+        function createFallingTransistor() {
+            const transistor = document.createElement('div');
+            transistor.className = 'falling-transistor';
+            transistor.textContent = '⚡';
+            transistor.style.left = Math.random() * window.innerWidth + 'px';
+            transistor.style.animationDuration = (3 + Math.random() * 2) + 's';
+            transistor.style.color = Math.random() > 0.5 ? '#0096ff' : '#00ff96';
+            
+            const container = document.createElement('div');
+            container.className = 'transistor-rain';
+            container.appendChild(transistor);
+            document.body.appendChild(container);
+            
+            setTimeout(() => container.remove(), 5000);
+        }
+
+        // Create transistor rain periodically
+        setInterval(createFallingTransistor, 2000);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to Integrated Circuits slide');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to Vacuum Tube Era slide');
+            }
+        });
+
+        // Particle effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.98) {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.background = '#00ffff';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.animation = 'fall 1s ease-out forwards';
+                particle.style.opacity = '0.8';
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>

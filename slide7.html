@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - Modern Developments (2000s-Present)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000814;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Futuristic Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Neural Network Background */
+        .neural-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(0, 180, 216, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 99, 97, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(144, 224, 239, 0.05) 0%, transparent 70%);
+            animation: neuralPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes neuralPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Nano Particle System */
+        .nano-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #00b4d8;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00b4d8;
+            animation: nanoFloat 20s linear infinite;
+        }
+
+        @keyframes nanoFloat {
+            0% {
+                transform: translate(0, 100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translate(10vw, 80vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translate(90vw, -10vh) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(100vw, -20vh) scale(0);
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .era-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b4d8, #90e0ef);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 180, 216, 0.4);
+            animation: futurePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes futurePulse {
+            0%, 100% { 
+                box-shadow: 0 4px 20px rgba(0, 180, 216, 0.4);
+            }
+            50% { 
+                box-shadow: 0 6px 30px rgba(144, 224, 239, 0.6);
+            }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            background: linear-gradient(45deg, #00b4d8, #ff6361, #90e0ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: futureShimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes futureShimmer {
+            0%, 100% { filter: brightness(1) contrast(1); }
+            50% { filter: brightness(1.2) contrast(1.1); }
+        }
+
+        /* Nanotechnology Section */
+        .nano-section {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.05), rgba(144, 224, 239, 0.05));
+            border: 2px solid rgba(0, 180, 216, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            color: #00b4d8;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+        }
+
+        /* Nano Scale Visualization */
+        .nano-viz-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .scale-comparison {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00b4d8;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scale-comparison:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.4);
+        }
+
+        .scale-object {
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .human-hair {
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, #8b7355, #a0826d);
+            border-radius: 2px;
+            margin: 20px 0;
+        }
+
+        .nano-particle-viz {
+            width: 2px;
+            height: 2px;
+            background: #00b4d8;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00b4d8;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Atom Simulation */
+        .atom-container {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            margin: 40px auto;
+        }
+
+        .nucleus {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ff6361, #ff4757);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ff6361;
+            animation: nucleusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes nucleusPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        .electron-orbit {
+            position: absolute;
+            border: 2px solid rgba(0, 180, 216, 0.3);
+            border-radius: 50%;
+            animation: orbitRotate 10s linear infinite;
+        }
+
+        .electron-orbit:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            top: 50px;
+            left: 50px;
+        }
+
+        .electron-orbit:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 25px;
+            left: 25px;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+
+        .electron-orbit:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 75px;
+            left: 75px;
+            animation-duration: 7s;
+        }
+
+        @keyframes orbitRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .electron {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #00b4d8;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00b4d8;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* AI and IoT Section */
+        .ai-iot-section {
+            background: linear-gradient(135deg, rgba(255, 99, 97, 0.05), rgba(255, 154, 0, 0.05));
+            border: 2px solid rgba(255, 99, 97, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Neural Network Visualization */
+        .neural-network {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .neural-layer {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 100%;
+        }
+
+        .neural-layer:nth-child(1) { left: 0; }
+        .neural-layer:nth-child(2) { left: 50%; transform: translateX(-50%); }
+        .neural-layer:nth-child(3) { right: 0; }
+
+        .neuron {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #ff6361, #ff4757);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .neuron:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 30px #ff6361;
+        }
+
+        .neuron.active {
+            background: radial-gradient(circle, #00b4d8, #0077b6);
+            animation: neuronFire 0.5s ease;
+        }
+
+        @keyframes neuronFire {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        .synapse {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff9a00, transparent);
+            transform-origin: left center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .synapse.active {
+            opacity: 1;
+            animation: synapseFlow 1s linear;
+        }
+
+        @keyframes synapseFlow {
+            0% { background-position: -100px 0; }
+            100% { background-position: 100px 0; }
+        }
+
+        /* IoT Network Visualization */
+        .iot-network {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 40px auto;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .iot-device {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #90e0ef;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .iot-device:hover {
+            transform: scale(1.1);
+            background: rgba(144, 224, 239, 0.2);
+            box-shadow: 0 10px 30px rgba(144, 224, 239, 0.4);
+        }
+
+        .iot-connection {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #90e0ef, transparent);
+            height: 2px;
+            transform-origin: left center;
+            animation: dataTransfer 3s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes dataTransfer {
+            0% { background-position: -100px 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        .central-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #ff9a00, #ff6361);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            box-shadow: 0 0 40px rgba(255, 154, 0, 0.5);
+            animation: hubPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes hubPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* Technology Cards */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .tech-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: #00b4d8;
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.3);
+        }
+
+        .tech-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .tech-title {
+            font-size: 1.5em;
+            color: #90e0ef;
+            margin-bottom: 15px;
+        }
+
+        .tech-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Interactive Demo Buttons */
+        .demo-button {
+            background: linear-gradient(135deg, #00b4d8, #90e0ef);
+            color: #000814;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.4);
+        }
+
+        .demo-button:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Applications Grid */
+        .applications-section {
+            margin: 60px 0;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .app-card {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), rgba(255, 99, 97, 0.1));
+            border: 1px solid rgba(144, 224, 239, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .app-card:hover {
+            transform: translateY(-3px) rotate(1deg);
+            box-shadow: 0 8px 25px rgba(0, 180, 216, 0.3);
+        }
+
+        .app-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .app-name {
+            color: #ff9a00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .app-info {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        /* Future Vision Section */
+        .future-section {
+            background: linear-gradient(135deg, rgba(144, 224, 239, 0.05), rgba(0, 180, 216, 0.05));
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .future-title {
+            font-size: 2em;
+            color: #90e0ef;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(144, 224, 239, 0.5);
+        }
+
+        /* Timeline */
+        .future-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #00b4d8, #ff6361);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00b4d8;
+            border-radius: 15px;
+            padding: 20px;
+            width: 45%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.3);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #ff6361;
+            border: 3px solid #000814;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .timeline-year {
+            color: #ff9a00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nano-viz-container {
+                flex-direction: column;
+            }
+
+            .neural-network {
+                height: 300px;
+            }
+
+            .iot-network {
+                height: 400px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: 90%;
+                margin: 20px auto;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-marker {
+                left: 20px;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 180, 216, 0.3);
+            border-top-color: #00b4d8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Quantum Effect */
+        .quantum-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #90e0ef;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: quantumJump 2s ease-in-out infinite;
+        }
+
+        @keyframes quantumJump {
+            0%, 100% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+            50% {
+                opacity: 0;
+            }
+            51% {
+                opacity: 1;
+                transform: translate(50px, -50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-container">
+        <div class="neural-bg"></div>
+        <!-- Nano Particles -->
+        <div class="nano-particle" style="animation-delay: 0s;"></div>
+        <div class="nano-particle" style="animation-delay: 2s;"></div>
+        <div class="nano-particle" style="animation-delay: 4s;"></div>
+        <div class="nano-particle" style="animation-delay: 6s;"></div>
+        <div class="nano-particle" style="animation-delay: 8s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="era-badge">2000s - Present</div>
+            <h1 class="main-title">The Future is Now</h1>
+            <p class="subtitle" style="color: #90e0ef; font-size: 1.5em;">Nanotechnology, AI, and the Internet of Things</p>
+        </header>
+
+        <!-- Nanotechnology Section -->
+        <section class="nano-section">
+            <h2 class="section-title">🔬 Nanotechnology: Building at the Atomic Scale</h2>
+            
+            <div class="nano-viz-container">
+                <!-- Scale Comparison -->
+                <div class="scale-comparison" onclick="zoomToNano()">
+                    <h3 style="color: #00b4d8; margin-bottom: 20px;">Size Comparison</h3>
+                    <div class="scale-object">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <div style="color: #ff9a00;">Human Hair</div>
+                            <div class="human-hair"></div>
+                            <div style="color: #90e0ef; font-size: 0.9em;">100,000 nanometers</div>
+                        </div>
+                        <div style="text-align: center; margin-top: 30px;">
+                            <div style="color: #ff9a00;">Nanoparticle</div>
+                            <div class="nano-particle-viz"></div>
+                            <div style="color: #90e0ef; font-size: 0.9em;">1-100 nanometers</div>
+                        </div>
+                    </div>
+                    <p style="color: #ffffff; font-size: 0.9em; margin-top: 20px;">
+                        Click to zoom to nanoscale!
+                    </p>
+                </div>
+
+                <!-- Atom Simulation -->
+                <div class="atom-container">
+                    <div class="nucleus"></div>
+                    <div class="electron-orbit">
+                        <div class="electron"></div>
+                    </div>
+                    <div class="electron-orbit">
+                        <div class="electron"></div>
+                    </div>
+                    <div class="electron-orbit">
+                        <div class="electron"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nano Applications -->
+            <div class="tech-grid">
+                <div class="tech-card" onclick="showNanoApp('medicine')">
+                    <div class="tech-icon">💊</div>
+                    <div class="tech-title">Nanomedicine</div>
+                    <div class="tech-description">
+                        Targeted drug delivery systems that can attack cancer cells directly
+                    </div>
+                </div>
+                <div class="tech-card" onclick="showNanoApp('electronics')">
+                    <div class="tech-icon">💻</div>
+                    <div class="tech-title">Nanoelectronics</div>
+                    <div class="tech-description">
+                        Transistors smaller than 5nm enabling powerful yet efficient chips
+                    </div>
+                </div>
+                <div class="tech-card" onclick="showNanoApp('materials')">
+                    <div class="tech-icon">🛡️</div>
+                    <div class="tech-title">Nanomaterials</div>
+                    <div class="tech-description">
+                        Super-strong materials like graphene and carbon nanotubes
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI and IoT Section -->
+        <section class="ai-iot-section">
+            <h2 class="section-title" style="color: #ff6361;">🤖 AI & IoT: When Everything Becomes Smart</h2>
+            
+            <!-- Neural Network Visualization -->
+            <div style="margin: 40px 0;">
+                <h3 style="text-align: center; color: #ff9a00; margin-bottom: 20px;">
+                    Interactive Neural Network
+                </h3>
+                <div class="neural-network" id="neuralNetwork">
+                    <!-- Neural network will be generated by JavaScript -->
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="demo-button" onclick="trainNetwork()">
+                        🧠 Train Network
+                    </button>
+                    <button class="demo-button" onclick="resetNetwork()">
+                        🔄 Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- IoT Network -->
+            <div style="margin: 60px 0;">
+                <h3 style="text-align: center; color: #ff9a00; margin-bottom: 20px;">
+                    Smart Home IoT Network
+                </h3>
+                <div class="iot-network" id="iotNetwork">
+                    <div class="central-hub">🏠</div>
+                    <!-- IoT devices will be positioned by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section class="applications-section">
+            <h2 style="text-align: center; color: #00b4d8; font-size: 2em; margin-bottom: 30px;">
+                💡 Real-World Applications Today
+            </h2>
+            
+            <div class="app-grid">
+                <div class="app-card" onclick="demoApp('smartphone')">
+                    <div class="app-icon">📱</div>
+                    <div class="app-name">Smartphones</div>
+                    <div class="app-info">
+                        7nm chips with billions of transistors, AI processors, 5G connectivity
+                    </div>
+                </div>
+                <div class="app-card" onclick="demoApp('autonomous')">
+                    <div class="app-icon">🚗</div>
+                    <div class="app-name">Self-Driving Cars</div>
+                    <div class="app-info">
+                        AI-powered vision, LiDAR sensors, real-time decision making
+                    </div>
+                </div>
+                <div class="app-card" onclick="demoApp('assistant')">
+                    <div class="app-icon">🗣️</div>
+                    <div class="app-name">Voice Assistants</div>
+                    <div class="app-info">
+                        Natural language processing, cloud AI, smart home control
+                    </div>
+                </div>
+                <div class="app-card" onclick="demoApp('healthcare')">
+                    <div class="app-icon">🏥</div>
+                    <div class="app-name">Smart Healthcare</div>
+                    <div class="app-info">
+                        Wearable monitors, AI diagnosis, remote patient care
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Vision -->
+        <section class="future-section">
+            <h2 class="future-title">🔮 The Next Frontier</h2>
+            
+            <div class="future-timeline">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025-2030</div>
+                        <div>Quantum Computing becomes practical</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2030-2035</div>
+                        <div>Brain-Computer Interfaces mainstream</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2035-2040</div>
+                        <div>Molecular-scale computing</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Challenge -->
+        <section style="background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 40px; margin: 40px 0; text-align: center;">
+            <h2 style="color: #90e0ef; margin-bottom: 20px;">🎯 Future Tech Challenge</h2>
+            <p style="color: #ffffff; margin-bottom: 30px; font-size: 1.1em;">
+                How many IoT devices are expected to be connected by 2025?
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <button class="demo-button" onclick="checkFutureAnswer('15B')">15 Billion</button>
+                <button class="demo-button" onclick="checkFutureAnswer('75B')">75 Billion</button>
+                <button class="demo-button" onclick="checkFutureAnswer('150B')">150 Billion</button>
+            </div>
+            <div id="futureAnswerFeedback" style="margin-top: 20px; font-size: 1.1em; height: 30px;"></div>
+        </section>
+    </div>
+
+    <script>
+        // Initialize Neural Network
+        function initializeNeuralNetwork() {
+            const network = document.getElementById('neuralNetwork');
+            const layers = [4, 6, 4, 2]; // Input, Hidden1, Hidden2, Output
+            
+            // Create neurons
+            layers.forEach((count, layerIndex) => {
+                const layer = document.createElement('div');
+                layer.className = 'neural-layer';
+                layer.style.left = (layerIndex * 33) + '%';
+                
+                for (let i = 0; i < count; i++) {
+                    const neuron = document.createElement('div');
+                    neuron.className = 'neuron';
+                    neuron.dataset.layer = layerIndex;
+                    neuron.dataset.index = i;
+                    neuron.onclick = () => activateNeuron(neuron);
+                    layer.appendChild(neuron);
+                }
+                
+                network.appendChild(layer);
+            });
+            
+            // Create synapses
+            createSynapses();
+        }
+
+        // Create synapses between neurons
+        function createSynapses() {
+            const layers = document.querySelectorAll('.neural-layer');
+            
+            for (let l = 0; l < layers.length - 1; l++) {
+                const currentLayer = layers[l].querySelectorAll('.neuron');
+                const nextLayer = layers[l + 1].querySelectorAll('.neuron');
+                
+                currentLayer.forEach((neuron1, i) => {
+                    nextLayer.forEach((neuron2, j) => {
+                        const synapse = document.createElement('div');
+                        synapse.className = 'synapse';
+                        
+                        const rect1 = neuron1.getBoundingClientRect();
+                        const rect2 = neuron2.getBoundingClientRect();
+                        const containerRect = document.getElementById('neuralNetwork').getBoundingClientRect();
+                        
+                        const x1 = rect1.left - containerRect.left + rect1.width / 2;
+                        const y1 = rect1.top - containerRect.top + rect1.height / 2;
+                        const x2 = rect2.left - containerRect.left + rect2.width / 2;
+                        const y2 = rect2.top - containerRect.top + rect2.height / 2;
+                        
+                        const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                        const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                        
+                        synapse.style.width = length + 'px';
+                        synapse.style.left = x1 + 'px';
+                        synapse.style.top = y1 + 'px';
+                        synapse.style.transform = `rotate(${angle}deg)`;
+                        synapse.style.transformOrigin = 'left center';
+                        
+                        document.getElementById('neuralNetwork').appendChild(synapse);
+                    });
+                });
+            }
+        }
+
+        // Activate neuron
+        function activateNeuron(neuron) {
+            neuron.classList.add('active');
+            
+            // Propagate activation
+            const layer = parseInt(neuron.dataset.layer);
+            if (layer < 3) {
+                setTimeout(() => {
+                    const nextLayer = document.querySelectorAll(`.neuron[data-layer="${layer + 1}"]`);
+                    const randomNeuron = nextLayer[Math.floor(Math.random() * nextLayer.length)];
+                    activateNeuron(randomNeuron);
+                }, 200);
+            }
+            
+            setTimeout(() => {
+                neuron.classList.remove('active');
+            }, 1000);
+        }
+
+        // Train network animation
+        function trainNetwork() {
+            const neurons = document.querySelectorAll('.neuron');
+            const synapses = document.querySelectorAll('.synapse');
+            
+            // Random activation pattern
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index >= neurons.length) {
+                    clearInterval(interval);
+                    synapses.forEach(s => s.classList.remove('active'));
+                    return;
+                }
+                
+                const neuron = neurons[index];
+                neuron.classList.add('active');
+                
+                // Activate random synapses
+                if (Math.random() > 0.5) {
+                    const randomSynapse = synapses[Math.floor(Math.random() * synapses.length)];
+                    randomSynapse.classList.add('active');
+                }
+                
+                setTimeout(() => {
+                    neuron.classList.remove('active');
+                }, 500);
+                
+                index++;
+            }, 100);
+        }
+
+        // Reset network
+        function resetNetwork() {
+            document.querySelectorAll('.neuron').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.synapse').forEach(s => s.classList.remove('active'));
+        }
+
+        // Initialize IoT Network
+        function initializeIoTNetwork() {
+            const network = document.getElementById('iotNetwork');
+            const devices = [
+                { icon: '💡', name: 'Smart Lights', x: 20, y: 20 },
+                { icon: '🌡️', name: 'Thermostat', x: 80, y: 20 },
+                { icon: '📺', name: 'Smart TV', x: 80, y: 80 },
+                { icon: '🔊', name: 'Smart Speaker', x: 20, y: 80 },
+                { icon: '📷', name: 'Security Camera', x: 50, y: 10 },
+                { icon: '🚪', name: 'Smart Lock', x: 10, y: 50 },
+                { icon: '🧊', name: 'Smart Fridge', x: 90, y: 50 }
+            ];
+            
+            devices.forEach((device, index) => {
+                // Create device
+                const deviceEl = document.createElement('div');
+                deviceEl.className = 'iot-device';
+                deviceEl.style.left = device.x + '%';
+                deviceEl.style.top = device.y + '%';
+                deviceEl.innerHTML = device.icon;
+                deviceEl.title = device.name;
+                deviceEl.onclick = () => connectDevice(deviceEl, device.name);
+                
+                // Create connection to hub
+                const connection = document.createElement('div');
+                connection.className = 'iot-connection';
+                const hubPos = { x: 50, y: 50 };
+                const dx = hubPos.x - device.x;
+                const dy = hubPos.y - device.y;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                connection.style.width = length + '%';
+                connection.style.left = device.x + '%';
+                connection.style.top = device.y + '%';
+                connection.style.transform = `rotate(${angle}deg)`;
+                connection.style.transformOrigin = 'left center';
+                connection.style.animationDelay = (index * 0.5) + 's';
+                
+                network.appendChild(connection);
+                network.appendChild(deviceEl);
+            });
+        }
+
+        // Connect IoT device
+        function connectDevice(device, name) {
+            device.style.background = 'rgba(0, 180, 216, 0.3)';
+            device.style.transform = 'scale(1.2)';
+            
+            // Show connection info
+            const info = document.createElement('div');
+            info.style.position = 'absolute';
+            info.style.top = '10px';
+            info.style.left = '50%';
+            info.style.transform = 'translateX(-50%)';
+            info.style.background = 'rgba(0, 0, 0, 0.8)';
+            info.style.padding = '10px 20px';
+            info.style.borderRadius = '20px';
+            info.style.color = '#00b4d8';
+            info.textContent = `${name} connected!`;
+            device.parentElement.appendChild(info);
+            
+            setTimeout(() => {
+                device.style.background = '';
+                device.style.transform = '';
+                info.remove();
+            }, 2000);
+        }
+
+        // Zoom to nanoscale
+        function zoomToNano() {
+            const comparison = event.currentTarget;
+            comparison.style.transform = 'scale(1.2)';
+            
+            const hair = comparison.querySelector('.human-hair');
+            const nano = comparison.querySelector('.nano-particle-viz');
+            
+            // Animate zoom
+            setTimeout(() => {
+                hair.style.transform = 'scale(0.01)';
+                hair.style.opacity = '0.3';
+                nano.style.transform = 'translate(-50%, -50%) scale(50)';
+            }, 300);
+            
+            setTimeout(() => {
+                hair.style.transform = '';
+                hair.style.opacity = '';
+                nano.style.transform = 'translate(-50%, -50%)';
+                comparison.style.transform = '';
+            }, 2000);
+        }
+
+        // Show nano application
+        function showNanoApp(app) {
+            const apps = {
+                'medicine': 'Nanorobots can deliver drugs directly to cancer cells, minimizing side effects!',
+                'electronics': 'Current processors use 5nm transistors - that\'s just 25 silicon atoms wide!',
+                'materials': 'Graphene is 200 times stronger than steel but 6 times lighter!'
+            };
+            
+            alert(apps[app]);
+        }
+
+        // Demo application
+        function demoApp(app) {
+            const card = event.currentTarget;
+            card.style.transform = 'translateY(-10px) rotate(-2deg)';
+            
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 500);
+            
+            const demos = {
+                'smartphone': 'Modern smartphones have more computing power than all of NASA in 1969!',
+                'autonomous': 'Self-driving cars process 1TB of data per hour from their sensors!',
+                'assistant': 'Voice assistants use neural networks with billions of parameters!',
+                'healthcare': 'Smart watches can detect irregular heartbeats and save lives!'
+            };
+            
+            console.log(demos[app]);
+        }
+
+        // Check future answer
+        function checkFutureAnswer(answer) {
+            const feedback = document.getElementById('futureAnswerFeedback');
+            
+            if (answer === '75B') {
+                feedback.style.color = '#00ff88';
+                feedback.textContent = '✅ Correct! 75 billion IoT devices by 2025!';
+                
+                // Create particles
+                for (let i = 0; i < 20; i++) {
+                    createQuantumParticle();
+                }
+            } else {
+                feedback.style.color = '#ff6361';
+                feedback.textContent = '❌ Try again! Think bigger!';
+            }
+        }
+
+        // Create quantum particle effect
+        function createQuantumParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'quantum-particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 2000);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeNeuralNetwork();
+            initializeIoTNetwork();
+            
+            // Create continuous nano particles
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'nano-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = '0s';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                document.querySelector('.bg-container').appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 20000);
+            }, 2000);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to next slide');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to previous slide');
+            }
+        });
+    </script>
+</body>
+</html>

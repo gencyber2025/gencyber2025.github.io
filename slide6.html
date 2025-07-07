@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - Semiconductor Advancements (1980s-2000s)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background Animation */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Circuit Board Evolution Background */
+        .evolution-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 162, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 162, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(162, 0, 255, 0.05) 0%, transparent 70%);
+            animation: bgPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        /* Floating Transistors Animation */
+        .transistor-float {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(135deg, #00a2ff, #0066cc);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 162, 255, 0.5);
+            animation: floatTransistor 15s linear infinite;
+        }
+
+        @keyframes floatTransistor {
+            0% {
+                transform: translateX(-100px) translateY(100vh) rotate(0deg) scale(2);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+                transform: translateX(calc(100vw + 100px)) translateY(-100px) rotate(360deg) scale(0.1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(calc(100vw + 100px)) translateY(-100px) rotate(360deg) scale(0.1);
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .era-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00a2ff, #ff00a2);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 162, 255, 0.4);
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { 
+                box-shadow: 0 4px 20px rgba(0, 162, 255, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 6px 30px rgba(255, 0, 162, 0.6);
+                transform: scale(1.05);
+            }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            background: linear-gradient(45deg, #00a2ff, #ff00a2, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: titleGradient 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #00ff88;
+            opacity: 0.9;
+        }
+
+        /* Moore's Law Section */
+        .moores-law-section {
+            background: rgba(0, 162, 255, 0.05);
+            border: 2px solid rgba(0, 162, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .moores-law-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .moores-law-title {
+            font-size: 2.5em;
+            color: #00a2ff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 162, 255, 0.5);
+        }
+
+        /* Interactive Moore's Law Graph */
+        .graph-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin: 40px auto;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00a2ff;
+            border-radius: 15px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .graph-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 162, 255, 0.1);
+        }
+
+        .grid-line.horizontal {
+            width: 100%;
+            height: 1px;
+        }
+
+        .grid-line.vertical {
+            width: 1px;
+            height: 100%;
+        }
+
+        .graph-curve {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+        }
+
+        .data-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .data-point:hover {
+            transform: scale(2);
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .data-point-label {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .data-point:hover .data-point-label {
+            opacity: 1;
+        }
+
+        .graph-line {
+            stroke: #00ff88;
+            stroke-width: 3;
+            fill: none;
+            filter: drop-shadow(0 0 10px #00ff88);
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 3s ease-out forwards;
+        }
+
+        @keyframes drawLine {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Transistor Size Comparison */
+        .size-comparison {
+            background: rgba(255, 0, 162, 0.05);
+            border: 2px solid rgba(255, 0, 162, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .comparison-title {
+            text-align: center;
+            font-size: 2em;
+            color: #ff00a2;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(255, 0, 162, 0.5);
+        }
+
+        .size-timeline {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .size-item {
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .transistor-visual {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff00a2, #ff0066);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .transistor-visual:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 0, 162, 0.5);
+        }
+
+        .size-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff88;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .size-year {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00a2ff;
+            font-size: 0.9em;
+        }
+
+        /* Interactive Chip Simulator */
+        .chip-simulator {
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .sim-title {
+            text-align: center;
+            font-size: 2em;
+            color: #00ff88;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .chip-evolution {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .chip-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: #00a2ff;
+        }
+
+        .chip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .chip-card:hover::before {
+            left: 100%;
+        }
+
+        .chip-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .chip-name {
+            color: #00a2ff;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .chip-specs {
+            color: #00ff88;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Performance Metrics */
+        .performance-section {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(0, 162, 255, 0.1), rgba(255, 0, 162, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .metric-label {
+            color: #00a2ff;
+            font-size: 0.9em;
+        }
+
+        .metric-change {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00ff88;
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* Technology Demos */
+        .tech-demos {
+            margin: 60px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .demo-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 1.5em;
+            color: #00a2ff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .demo-description {
+            color: #ffffff;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Interactive Elements */
+        .interactive-button {
+            background: linear-gradient(135deg, #00a2ff, #00ff88);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .interactive-button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Animation Keyframes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 20px 15px;
+            }
+
+            .graph-container {
+                height: 300px;
+            }
+
+            .size-timeline {
+                height: 250px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                flex-wrap: nowrap;
+            }
+
+            .chip-evolution {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-top-color: #00ff88;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Particle Effects */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff88;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 5s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(80px) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(-80px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-container">
+        <div class="evolution-bg"></div>
+        <!-- Floating Transistors -->
+        <div class="transistor-float" style="animation-delay: 0s;"></div>
+        <div class="transistor-float" style="animation-delay: 3s;"></div>
+        <div class="transistor-float" style="animation-delay: 6s;"></div>
+        <div class="transistor-float" style="animation-delay: 9s;"></div>
+        <div class="transistor-float" style="animation-delay: 12s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="era-badge">1980s - 2000s</div>
+            <h1 class="main-title">Semiconductor Revolution</h1>
+            <p class="subtitle">Moore's Law & The Race to Miniaturization</p>
+        </header>
+
+        <!-- Moore's Law Section -->
+        <section class="moores-law-section">
+            <div class="moores-law-header">
+                <h2 class="moores-law-title">📈 Moore's Law in Action</h2>
+                <p style="color: #ffffff; font-size: 1.1em; margin-bottom: 20px;">
+                    "The number of transistors on a chip doubles every two years"
+                </p>
+                <p style="color: #00ff88;">- Gordon Moore, 1965</p>
+            </div>
+
+            <!-- Interactive Graph -->
+            <div class="graph-container">
+                <div class="graph-grid" id="graphGrid"></div>
+                <svg class="graph-curve" viewBox="0 0 760 360">
+                    <path class="graph-line" id="mooresLawCurve" d=""></path>
+                </svg>
+                <div id="dataPoints"></div>
+                
+                <!-- Axis Labels -->
+                <div style="position: absolute; bottom: -5px; left: 20px; color: #00a2ff; font-size: 0.9em;">1970</div>
+                <div style="position: absolute; bottom: -5px; right: 20px; color: #00a2ff; font-size: 0.9em;">2000</div>
+                <div style="position: absolute; top: 20px; left: -10px; color: #00a2ff; font-size: 0.9em; writing-mode: vertical-lr;">Transistors</div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="interactive-button" onclick="animateMooresLaw()">
+                    🎬 Animate Growth
+                </button>
+                <button class="interactive-button" onclick="showPrediction()">
+                    🔮 Future Prediction
+                </button>
+            </div>
+        </section>
+
+        <!-- Transistor Size Comparison -->
+        <section class="size-comparison">
+            <h2 class="comparison-title">🔬 The Incredible Shrinking Transistor</h2>
+            
+            <div class="size-timeline" id="sizeTimeline">
+                <div class="size-item">
+                    <div class="transistor-visual" style="width: 200px; height: 200px;" onclick="showSizeDetails('1980')">
+                        10μm
+                    </div>
+                    <div class="size-label">10 micrometers</div>
+                    <div class="size-year">1980</div>
+                </div>
+                <div class="size-item">
+                    <div class="transistor-visual" style="width: 100px; height: 100px;" onclick="showSizeDetails('1990')">
+                        1μm
+                    </div>
+                    <div class="size-label">1 micrometer</div>
+                    <div class="size-year">1990</div>
+                </div>
+                <div class="size-item">
+                    <div class="transistor-visual" style="width: 50px; height: 50px;" onclick="showSizeDetails('1995')">
+                        350nm
+                    </div>
+                    <div class="size-label">350 nanometers</div>
+                    <div class="size-year">1995</div>
+                </div>
+                <div class="size-item">
+                    <div class="transistor-visual" style="width: 25px; height: 25px;" onclick="showSizeDetails('2000')">
+                        130nm
+                    </div>
+                    <div class="size-label">130 nanometers</div>
+                    <div class="size-year">2000</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="color: #ffffff; font-size: 1.1em;">
+                    <strong>Fun Fact:</strong> A human hair is about 100,000 nanometers wide!
+                </p>
+            </div>
+        </section>
+
+        <!-- Chip Evolution Simulator -->
+        <section class="chip-simulator">
+            <h2 class="sim-title">💻 Processor Evolution Gallery</h2>
+            
+            <div class="chip-evolution">
+                <div class="chip-card" onclick="simulateChip('8086')">
+                    <div class="chip-icon">🖥️</div>
+                    <div class="chip-name">Intel 8086</div>
+                    <div class="chip-specs">
+                        1978 • 29K transistors<br>
+                        5-10 MHz • 3μm
+                    </div>
+                </div>
+                <div class="chip-card" onclick="simulateChip('80386')">
+                    <div class="chip-icon">💾</div>
+                    <div class="chip-name">Intel 80386</div>
+                    <div class="chip-specs">
+                        1985 • 275K transistors<br>
+                        16-33 MHz • 1.5μm
+                    </div>
+                </div>
+                <div class="chip-card" onclick="simulateChip('pentium')">
+                    <div class="chip-icon">⚡</div>
+                    <div class="chip-name">Pentium</div>
+                    <div class="chip-specs">
+                        1993 • 3.1M transistors<br>
+                        60-200 MHz • 0.8μm
+                    </div>
+                </div>
+                <div class="chip-card" onclick="simulateChip('pentium3')">
+                    <div class="chip-icon">🚀</div>
+                    <div class="chip-name">Pentium III</div>
+                    <div class="chip-specs">
+                        1999 • 28M transistors<br>
+                        450-1400 MHz • 0.18μm
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Metrics -->
+        <section class="performance-section">
+            <h2 style="text-align: center; color: #00ff88; font-size: 2em; margin-bottom: 30px;">
+                📊 The Numbers Tell the Story
+            </h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-change">+10,000x</div>
+                    <div class="metric-value" id="speedMetric">0</div>
+                    <div class="metric-label">MHz Clock Speed</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-change">+1,000x</div>
+                    <div class="metric-value" id="transistorMetric">0</div>
+                    <div class="metric-label">Million Transistors</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-change">-100x</div>
+                    <div class="metric-value" id="sizeMetric">0</div>
+                    <div class="metric-label">nm Process Size</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-change">+100x</div>
+                    <div class="metric-value" id="powerMetric">0</div>
+                    <div class="metric-label">Performance/Watt</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Demonstrations -->
+        <section class="tech-demos">
+            <h2 style="text-align: center; color: #00a2ff; font-size: 2em; margin-bottom: 30px;">
+                🔧 What This Enabled
+            </h2>
+            
+            <div class="demo-grid">
+                <div class="demo-card" onclick="demoTechnology('mobile')">
+                    <div class="demo-icon">📱</div>
+                    <div class="demo-title">Mobile Revolution</div>
+                    <div class="demo-description">
+                        Powerful computers that fit in your pocket, 
+                        enabling smartphones and tablets
+                    </div>
+                </div>
+                <div class="demo-card" onclick="demoTechnology('internet')">
+                    <div class="demo-icon">🌐</div>
+                    <div class="demo-title">Internet Era</div>
+                    <div class="demo-description">
+                        Faster processors enabled real-time communication 
+                        and the World Wide Web
+                    </div>
+                </div>
+                <div class="demo-card" onclick="demoTechnology('gaming')">
+                    <div class="demo-icon">🎮</div>
+                    <div class="demo-title">3D Gaming</div>
+                    <div class="demo-description">
+                        Graphics processors with millions of transistors 
+                        brought realistic gaming
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Challenge -->
+        <section style="background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 40px; margin: 40px 0; text-align: center;">
+            <h2 style="color: #00ff88; margin-bottom: 20px;">🎯 Moore's Law Challenge</h2>
+            <p style="color: #ffffff; margin-bottom: 30px; font-size: 1.1em;">
+                If a 1980 processor had 100,000 transistors, how many would it have in 2000 
+                following Moore's Law? (Doubles every 2 years)
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <button class="interactive-button" onclick="checkAnswer('A')">A: 10 Million</button>
+                <button class="interactive-button" onclick="checkAnswer('B')">B: 100 Million</button>
+                <button class="interactive-button" onclick="checkAnswer('C')">C: 1 Billion</button>
+            </div>
+            <div id="answerFeedback" style="margin-top: 20px; font-size: 1.1em; height: 30px;"></div>
+        </section>
+
+        <!-- Fun Facts -->
+        <section style="margin: 60px 0;">
+            <h2 style="text-align: center; color: #ff00a2; font-size: 2em; margin-bottom: 30px;">
+                🤯 Mind-Blowing Facts
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: rgba(255, 0, 162, 0.1); border: 2px solid #ff00a2; border-radius: 15px; padding: 20px;">
+                    <h3 style="color: #00ff88; margin-bottom: 10px;">📐 Size Comparison</h3>
+                    <p>Modern transistors are so small that over 100 million could fit on the head of a pin!</p>
+                </div>
+                <div style="background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 15px; padding: 20px;">
+                    <h3 style="color: #00a2ff; margin-bottom: 10px;">⚡ Speed Increase</h3>
+                    <p>Processors went from 1 MHz to over 1000 MHz (1 GHz) in just 20 years!</p>
+                </div>
+                <div style="background: rgba(0, 162, 255, 0.1); border: 2px solid #00a2ff; border-radius: 15px; padding: 20px;">
+                    <h3 style="color: #ff00a2; margin-bottom: 10px;">💰 Cost Reduction</h3>
+                    <p>The cost per transistor dropped from $1 to less than $0.0000001!</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Initialize Moore's Law Graph
+        function initializeGraph() {
+            const grid = document.getElementById('graphGrid');
+            
+            // Create grid lines
+            for (let i = 0; i <= 10; i++) {
+                // Horizontal lines
+                const hLine = document.createElement('div');
+                hLine.className = 'grid-line horizontal';
+                hLine.style.top = (i * 10) + '%';
+                grid.appendChild(hLine);
+                
+                // Vertical lines
+                const vLine = document.createElement('div');
+                vLine.className = 'grid-line vertical';
+                vLine.style.left = (i * 10) + '%';
+                grid.appendChild(vLine);
+            }
+            
+            // Create data points
+            const dataPoints = [
+                { year: 1971, transistors: 2300, name: '4004' },
+                { year: 1978, transistors: 29000, name: '8086' },
+                { year: 1982, transistors: 134000, name: '80286' },
+                { year: 1985, transistors: 275000, name: '80386' },
+                { year: 1989, transistors: 1200000, name: '80486' },
+                { year: 1993, transistors: 3100000, name: 'Pentium' },
+                { year: 1997, transistors: 7500000, name: 'Pentium II' },
+                { year: 1999, transistors: 28000000, name: 'Pentium III' }
+            ];
+            
+            const container = document.getElementById('dataPoints');
+            const maxTransistors = 30000000;
+            const startYear = 1970;
+            const endYear = 2000;
+            
+            // Create SVG path
+            let pathData = 'M ';
+            
+            dataPoints.forEach((point, index) => {
+                const x = ((point.year - startYear) / (endYear - startYear)) * 760;
+                const y = 360 - (Math.log10(point.transistors) / Math.log10(maxTransistors)) * 360;
+                
+                if (index === 0) {
+                    pathData += `${x} ${y}`;
+                } else {
+                    pathData += ` L ${x} ${y}`;
+                }
+                
+                // Create data point
+                const dataPoint = document.createElement('div');
+                dataPoint.className = 'data-point';
+                dataPoint.style.left = `${x + 20}px`;
+                dataPoint.style.bottom = `${360 - y + 20}px`;
+                
+                const label = document.createElement('div');
+                label.className = 'data-point-label';
+                label.textContent = `${point.name}: ${(point.transistors / 1000000).toFixed(1)}M`;
+                dataPoint.appendChild(label);
+                
+                container.appendChild(dataPoint);
+            });
+            
+            document.getElementById('mooresLawCurve').setAttribute('d', pathData);
+        }
+
+        // Animate Moore's Law
+        function animateMooresLaw() {
+            const curve = document.querySelector('.graph-line');
+            curve.style.strokeDashoffset = '1000';
+            setTimeout(() => {
+                curve.style.animation = 'drawLine 3s ease-out forwards';
+            }, 100);
+            
+            // Animate data points
+            const points = document.querySelectorAll('.data-point');
+            points.forEach((point, index) => {
+                point.style.opacity = '0';
+                point.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    point.style.transition = 'all 0.5s ease';
+                    point.style.opacity = '1';
+                    point.style.transform = 'scale(1)';
+                }, index * 300 + 500);
+            });
+        }
+
+        // Show future prediction
+        function showPrediction() {
+            alert('By 2010, processors would have over 1 billion transistors! (Moore\'s Law predicted it correctly!)');
+        }
+
+        // Show size details
+        function showSizeDetails(year) {
+            const details = {
+                '1980': '10 micrometers - About 1/10 the width of a human hair!',
+                '1990': '1 micrometer - Getting seriously tiny!',
+                '1995': '350 nanometers - Smaller than visible light wavelengths!',
+                '2000': '130 nanometers - About 1000 times smaller than a human hair!'
+            };
+            
+            const visual = event.currentTarget;
+            visual.style.transform = 'translateX(-50%) scale(1.5) rotate(360deg)';
+            setTimeout(() => {
+                visual.style.transform = 'translateX(-50%) scale(1)';
+            }, 600);
+            
+            // Create info popup
+            const info = document.createElement('div');
+            info.style.position = 'fixed';
+            info.style.top = '50%';
+            info.style.left = '50%';
+            info.style.transform = 'translate(-50%, -50%)';
+            info.style.background = 'rgba(0, 0, 0, 0.9)';
+            info.style.border = '2px solid #00ff88';
+            info.style.borderRadius = '15px';
+            info.style.padding = '30px';
+            info.style.color = '#ffffff';
+            info.style.zIndex = '1000';
+            info.style.maxWidth = '400px';
+            info.innerHTML = `
+                <h3 style="color: #00ff88; margin-bottom: 15px;">${year} Technology</h3>
+                <p>${details[year]}</p>
+                <button onclick="this.parentElement.remove()" style="margin-top: 20px; padding: 10px 20px; background: #00ff88; border: none; border-radius: 20px; cursor: pointer;">Close</button>
+            `;
+            document.body.appendChild(info);
+        }
+
+        // Simulate chip
+        function simulateChip(chipName) {
+            const card = event.currentTarget;
+            card.style.transform = 'scale(0.95)';
+            
+            // Create simulation effect
+            const simulation = document.createElement('div');
+            simulation.style.position = 'absolute';
+            simulation.style.top = '0';
+            simulation.style.left = '0';
+            simulation.style.width = '100%';
+            simulation.style.height = '100%';
+            simulation.style.background = 'radial-gradient(circle, rgba(0, 255, 136, 0.5), transparent)';
+            simulation.style.animation = 'pulse 1s ease-out';
+            card.appendChild(simulation);
+            
+            setTimeout(() => {
+                card.style.transform = '';
+                simulation.remove();
+            }, 1000);
+        }
+
+        // Animate metrics
+        function animateMetrics() {
+            const metrics = [
+                { id: 'speedMetric', target: 1400, suffix: '' },
+                { id: 'transistorMetric', target: 28, suffix: 'M' },
+                { id: 'sizeMetric', target: 130, suffix: 'nm' },
+                { id: 'powerMetric', target: 100, suffix: 'x' }
+            ];
+            
+            metrics.forEach(metric => {
+                let current = 0;
+                const increment = metric.target / 50;
+                const element = document.getElementById(metric.id);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= metric.target) {
+                        current = metric.target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current) + metric.suffix;
+                }, 30);
+            });
+        }
+
+        // Demo technology
+        function demoTechnology(tech) {
+            const card = event.currentTarget;
+            card.style.background = 'rgba(0, 255, 136, 0.2)';
+            
+            const demos = {
+                'mobile': 'The Nokia 3310 (2000) had more computing power than the Apollo 11 moon mission!',
+                'internet': 'By 2000, over 400 million people were online thanks to faster processors!',
+                'gaming': 'The PlayStation 2 (2000) could render 66 million polygons per second!'
+            };
+            
+            setTimeout(() => {
+                card.style.background = '';
+                alert(demos[tech]);
+            }, 300);
+        }
+
+        // Check answer
+        function checkAnswer(answer) {
+            const feedback = document.getElementById('answerFeedback');
+            
+            if (answer === 'B') {
+                feedback.style.color = '#00ff88';
+                feedback.textContent = '✅ Correct! 100,000 × 2^10 = 102.4 Million transistors!';
+                
+                // Celebration effect
+                for (let i = 0; i < 20; i++) {
+                    createParticle();
+                }
+            } else {
+                feedback.style.color = '#ff00a2';
+                feedback.textContent = '❌ Try again! Remember: doubles every 2 years for 20 years';
+            }
+        }
+
+        // Create particle effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 5000);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeGraph();
+            setTimeout(animateMetrics, 500);
+            
+            // Create floating transistors continuously
+            setInterval(() => {
+                const transistor = document.createElement('div');
+                transistor.className = 'transistor-float';
+                transistor.style.left = Math.random() * window.innerWidth + 'px';
+                transistor.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                document.querySelector('.bg-container').appendChild(transistor);
+                
+                setTimeout(() => transistor.remove(), 20000);
+            }, 3000);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to next slide');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to previous slide');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenCyber - Integrated Circuits Revolution (1958-1960)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000814;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background Animation */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Chip Pattern Background */
+        .chip-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 107, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0, 200, 255, 0.1) 0%, transparent 50%);
+            animation: chipRotate 20s linear infinite;
+        }
+
+        @keyframes chipRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Circuit Traces */
+        .circuit-traces {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(0deg, rgba(255, 165, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 200, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: traceMove 15s linear infinite;
+        }
+
+        @keyframes traceMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .era-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00, #ffa500);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.4);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-size: clamp(2.5em, 5vw, 4em);
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff6b00, #00c8ff, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(255, 107, 0, 0.5)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 30px rgba(0, 200, 255, 0.7)); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #00c8ff;
+            opacity: 0.9;
+        }
+
+        /* Inventors Section */
+        .inventors-section {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(0, 200, 255, 0.05));
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inventors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .inventor-profile {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ff6b00;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inventor-profile:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 0, 0.4);
+            border-color: #00c8ff;
+        }
+
+        .inventor-profile::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 165, 0, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .inventor-profile:hover::before {
+            opacity: 1;
+        }
+
+        .inventor-image {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff6b00, #ffa500);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .inventor-name {
+            font-size: 1.5em;
+            color: #ffa500;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .inventor-contribution {
+            color: #00c8ff;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .inventor-year {
+            color: #ff6b00;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* IC Simulator Section */
+        .ic-simulator {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00c8ff;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .simulator-title {
+            text-align: center;
+            font-size: 2em;
+            color: #ffa500;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+        }
+
+        /* Interactive IC Model */
+        .ic-model-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .ic-chip {
+            width: 400px;
+            height: 400px;
+            background: #1a1a1a;
+            border: 3px solid #ff6b00;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* IC Grid Pattern */
+        .ic-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 2px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .ic-component {
+            background: rgba(255, 107, 0, 0.2);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .ic-component:hover {
+            background: rgba(0, 200, 255, 0.4);
+            border-color: #00c8ff;
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.6);
+        }
+
+        .ic-component.transistor {
+            background: rgba(0, 200, 255, 0.3);
+        }
+
+        .ic-component.resistor {
+            background: rgba(255, 165, 0, 0.3);
+        }
+
+        .ic-component.capacitor {
+            background: rgba(0, 255, 150, 0.3);
+        }
+
+        /* Component Info Panel */
+        .component-info {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00c8ff;
+            border-radius: 15px;
+            padding: 30px;
+            width: 350px;
+        }
+
+        .info-title {
+            color: #ffa500;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .component-stats {
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 107, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            color: #00c8ff;
+        }
+
+        .stat-value {
+            color: #ffa500;
+            font-weight: bold;
+        }
+
+        /* Manufacturing Process */
+        .manufacturing-section {
+            margin: 40px 0;
+        }
+
+        .process-title {
+            text-align: center;
+            font-size: 2em;
+            color: #00c8ff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(255, 107, 0, 0.1);
+            border: 2px solid #ff6b00;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+            background: rgba(255, 107, 0, 0.2);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff6b00;
+            color: #000;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .step-name {
+            color: #ffa500;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            color: #ffffff;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        /* Timeline Comparison */
+        .timeline-comparison {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00c8ff;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .era-card {
+            background: rgba(255, 107, 0, 0.05);
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .era-card:hover {
+            transform: scale(1.05);
+            border-color: #00c8ff;
+            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.3);
+        }
+
+        .era-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .era-title {
+            color: #ffa500;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .era-details {
+            color: #00c8ff;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Size Evolution Animation */
+        .size-evolution {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .size-box {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-box:hover {
+            transform: scale(1.1);
+        }
+
+        .vacuum-tube-size {
+            width: 150px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.3), rgba(255, 140, 0, 0.1));
+            border: 3px solid #ff8c00;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        .transistor-size {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.3), rgba(0, 255, 150, 0.3));
+            border: 3px solid #00c8ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+
+        .ic-size {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.3), rgba(0, 200, 255, 0.3));
+            border: 3px solid #ffa500;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .size-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00c8ff;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* Interactive Demo Button */
+        .demo-button {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ff6b00, #00c8ff);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 200, 255, 0.6);
+        }
+
+        .demo-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Floating Elements */
+        .floating-chip {
+            position: fixed;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.6;
+        }
+
+        @keyframes floatChip {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Connection Lines Animation */
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00c8ff, transparent);
+            animation: lineFlow 2s linear infinite;
+        }
+
+        @keyframes lineFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .ic-model-container {
+                flex-direction: column;
+            }
+
+            .ic-chip {
+                width: 100%;
+                max-width: 350px;
+                height: 350px;
+            }
+
+            .component-info {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .process-steps {
+                flex-direction: column;
+            }
+
+            .size-evolution {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+
+        /* Special Effects */
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffa500;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Success Animation */
+        .success-pulse {
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 150, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 30px rgba(0, 255, 150, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 150, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-container">
+        <div class="chip-pattern"></div>
+        <div class="circuit-traces"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="era-badge">1958-1960</div>
+            <h1 class="main-title">The Integrated Circuit</h1>
+            <p class="subtitle">Multiple Components on a Single Chip!</p>
+        </header>
+
+        <!-- Inventors Section -->
+        <section class="inventors-section">
+            <h2 style="text-align: center; color: #ffa500; font-size: 2em; margin-bottom: 30px;">
+                🏆 The Parallel Inventors
+            </h2>
+            <div class="inventors-grid">
+                <div class="inventor-profile" onclick="showInventorDetails('kilby')">
+                    <div class="inventor-image">👨‍🔬</div>
+                    <h3 class="inventor-name">Jack Kilby</h3>
+                    <p class="inventor-contribution">
+                        Created the first working integrated circuit at Texas Instruments
+                    </p>
+                    <p class="inventor-year">September 12, 1958</p>
+                </div>
+                <div class="inventor-profile" onclick="showInventorDetails('noyce')">
+                    <div class="inventor-image">🧑‍💼</div>
+                    <h3 class="inventor-name">Robert Noyce</h3>
+                    <p class="inventor-contribution">
+                        Invented the silicon integrated circuit at Fairchild Semiconductor
+                    </p>
+                    <p class="inventor-year">January 23, 1959</p>
+                </div>
+            </div>
+            <p style="text-align: center; color: #00c8ff; margin-top: 20px;">
+                Both invented the IC independently! Kilby won the Nobel Prize, Noyce co-founded Intel.
+            </p>
+        </section>
+
+        <!-- IC Simulator -->
+        <section class="ic-simulator">
+            <h2 class="simulator-title">🔬 Interactive IC Explorer</h2>
+            <div class="ic-model-container">
+                <!-- IC Chip Model -->
+                <div class="ic-chip" id="icChip" onclick="activateChip()">
+                    <div class="ic-grid" id="icGrid">
+                        <!-- Grid components will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Component Info Panel -->
+                <div class="component-info">
+                    <h3 class="info-title">📊 Chip Statistics</h3>
+                    <div class="component-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Components:</span>
+                            <span class="stat-value" id="totalComponents">64</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Transistors:</span>
+                            <span class="stat-value" id="transistorCount">24</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Resistors:</span>
+                            <span class="stat-value" id="resistorCount">20</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Capacitors:</span>
+                            <span class="stat-value" id="capacitorCount">20</span>
+                        </div>
+                    </div>
+                    <button class="demo-button" onclick="simulateDataFlow()">
+                        ⚡ Simulate Data Flow
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manufacturing Process -->
+        <section class="manufacturing-section">
+            <h2 class="process-title">🏭 How ICs Are Made</h2>
+            <div class="process-steps">
+                <div class="process-step" onclick="animateStep(this)">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">🔬</div>
+                    <div class="step-name">Silicon Wafer</div>
+                    <div class="step-description">Pure silicon crystal sliced into thin wafers</div>
+                </div>
+                <div class="process-step" onclick="animateStep(this)">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">🎨</div>
+                    <div class="step-name">Photolithography</div>
+                    <div class="step-description">Circuit patterns printed using light</div>
+                </div>
+                <div class="process-step" onclick="animateStep(this)">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">⚗️</div>
+                    <div class="step-name">Doping</div>
+                    <div class="step-description">Adding impurities to create P and N regions</div>
+                </div>
+                <div class="process-step" onclick="animateStep(this)">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">🔗</div>
+                    <div class="step-name">Metallization</div>
+                    <div class="step-description">Adding metal connections between components</div>
+                </div>
+                <div class="process-step" onclick="animateStep(this)">
+                    <div class="step-number">5</div>
+                    <div class="step-icon">📦</div>
+                    <div class="step-name">Packaging</div>
+                    <div class="step-description">Protecting the chip and adding pins</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Size Evolution -->
+        <section style="text-align: center; margin: 40px 0;">
+            <h2 style="color: #00c8ff; font-size: 2em; margin-bottom: 30px;">
+                📏 Evolution of Size
+            </h2>
+            <div class="size-evolution">
+                <div class="size-box" onclick="animateSize(this)">
+                    <div class="vacuum-tube-size">💡</div>
+                    <span class="size-label">Vacuum Tube<br>(10-20 cm)</span>
+                </div>
+                <div style="font-size: 3em; color: #ffa500;">→</div>
+                <div class="size-box" onclick="animateSize(this)">
+                    <div class="transistor-size">⚡</div>
+                    <span class="size-label">Transistor<br>(1-2 cm)</span>
+                </div>
+                <div style="font-size: 3em; color: #ffa500;">→</div>
+                <div class="size-box" onclick="animateSize(this)">
+                    <div class="ic-size">🔲</div>
+                    <span class="size-label">Integrated Circuit<br>(Multiple in 1 cm²)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Comparison -->
+        <section class="timeline-comparison">
+            <h2 style="text-align: center; color: #ffa500; font-size: 2em; margin-bottom: 30px;">
+                ⏱️ IC Development Timeline
+            </h2>
+            <div class="comparison-grid">
+                <div class="era-card" onclick="animateEra(this)">
+                    <div class="era-icon" style="color: #ff6b00;">🔧</div>
+                    <div class="era-title">1958 - First IC</div>
+                    <div class="era-details">
+                        Jack Kilby's germanium IC<br>
+                        ~10 components
+                    </div>
+                </div>
+                <div class="era-card" onclick="animateEra(this)">
+                    <div class="era-icon" style="color: #00c8ff;">⚙️</div>
+                    <div class="era-title">1960s - Small Scale</div>
+                    <div class="era-details">
+                        SSI: 10-100 transistors<br>
+                        Basic logic gates
+                    </div>
+                </div>
+                <div class="era-card" onclick="animateEra(this)">
+                    <div class="era-icon" style="color: #00ff96;">🔌</div>
+                    <div class="era-title">1970s - Medium Scale</div>
+                    <div class="era-details">
+                        MSI: 100-1000 transistors<br>
+                        Simple processors
+                    </div>
+                </div>
+                <div class="era-card" onclick="animateEra(this)">
+                    <div class="era-icon" style="color: #ffa500;">💻</div>
+                    <div class="era-title">1980s+ - Large Scale</div>
+                    <div class="era-details">
+                        LSI/VLSI: Millions!<br>
+                        Complete computers
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications -->
+        <section style="text-align: center; margin: 40px 0;">
+            <h2 style="color: #00c8ff; font-size: 2em; margin-bottom: 30px;">
+                🚀 What ICs Made Possible
+            </h2>
+            <div class="applications-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div class="era-card" onclick="animateApp(this)">
+                    <div style="font-size: 3em; margin-bottom: 10px;">🖩</div>
+                    <div style="color: #ffa500; font-weight: bold;">Pocket Calculators</div>
+                </div>
+                <div class="era-card" onclick="animateApp(this)">
+                    <div style="font-size: 3em; margin-bottom: 10px;">⌚</div>
+                    <div style="color: #ffa500; font-weight: bold;">Digital Watches</div>
+                </div>
+                <div class="era-card" onclick="animateApp(this)">
+                    <div style="font-size: 3em; margin-bottom: 10px;">🕹️</div>
+                    <div style="color: #ffa500; font-weight: bold;">Video Games</div>
+                </div>
+                <div class="era-card" onclick="animateApp(this)">
+                    <div style="font-size: 3em; margin-bottom: 10px;">💾</div>
+                    <div style="color: #ffa500; font-weight: bold;">Computer Memory</div>
+                </div>
+                <div class="era-card" onclick="animateApp(this)">
+                    <div style="font-size: 3em; margin-bottom: 10px;">📡</div>
+                    <div style="color: #ffa500; font-weight: bold;">Satellites</div>
+                </div>
+                <div class="era-card" onclick="animateApp(this)">
+                    <div style="font-size: 3em; margin-bottom: 10px;">🚀</div>
+                    <div style="color: #ffa500; font-weight: bold;">Space Missions</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fun Fact -->
+        <div style="background: rgba(255, 107, 0, 0.1); border: 2px solid #ff6b00; border-radius: 20px; padding: 30px; margin: 40px 0; text-align: center;">
+            <h3 style="color: #ffa500; font-size: 1.5em; margin-bottom: 15px;">
+                💡 Fun Fact: The "Tyranny of Numbers"
+            </h3>
+            <p style="color: #ffffff; line-height: 1.6;">
+                Before ICs, connecting thousands of components by hand was nearly impossible. 
+                The IC solved this "tyranny of numbers" by putting everything on one chip!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize IC Grid
+        function initializeICGrid() {
+            const grid = document.getElementById('icGrid');
+            const componentTypes = ['transistor', 'resistor', 'capacitor'];
+            
+            for (let i = 0; i < 64; i++) {
+                const component = document.createElement('div');
+                component.className = 'ic-component';
+                
+                // Assign component type
+                const type = componentTypes[Math.floor(Math.random() * componentTypes.length)];
+                component.classList.add(type);
+                component.dataset.type = type;
+                component.dataset.index = i;
+                
+                // Add hover effect
+                component.addEventListener('mouseenter', function() {
+                    showComponentInfo(this);
+                });
+                
+                grid.appendChild(component);
+            }
+        }
+
+        // Show component info on hover
+        function showComponentInfo(component) {
+            const type = component.dataset.type;
+            const icons = {
+                transistor: '⚡',
+                resistor: '〰️',
+                capacitor: '▬'
+            };
+            
+            // Create info popup
+            const info = document.createElement('div');
+            info.style.position = 'absolute';
+            info.style.background = 'rgba(0, 0, 0, 0.9)';
+            info.style.color = '#00c8ff';
+            info.style.padding = '5px 10px';
+            info.style.borderRadius = '5px';
+            info.style.fontSize = '0.8em';
+            info.style.pointerEvents = 'none';
+            info.style.zIndex = '100';
+            info.textContent = `${icons[type]} ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+            
+            component.appendChild(info);
+            
+            setTimeout(() => info.remove(), 1000);
+        }
+
+        // Activate chip animation
+        function activateChip() {
+            const chip = document.getElementById('icChip');
+            const components = chip.querySelectorAll('.ic-component');
+            
+            // Wave animation
+            components.forEach((comp, index) => {
+                setTimeout(() => {
+                    comp.style.background = 'rgba(0, 255, 150, 0.6)';
+                    comp.style.transform = 'scale(1.2)';
+                    comp.style.boxShadow = '0 0 20px rgba(0, 255, 150, 0.8)';
+                    
+                    setTimeout(() => {
+                        comp.style.background = '';
+                        comp.style.transform = '';
+                        comp.style.boxShadow = '';
+                    }, 300);
+                }, index * 20);
+            });
+            
+            // Add success pulse
+            chip.classList.add('success-pulse');
+            setTimeout(() => chip.classList.remove('success-pulse'), 600);
+        }
+
+        // Simulate data flow
+        function simulateDataFlow() {
+            const chip = document.getElementById('icChip');
+            const gridRect = chip.getBoundingClientRect();
+            
+            // Create connection lines
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'connection-line';
+                    line.style.width = Math.random() * 200 + 100 + 'px';
+                    line.style.top = Math.random() * (gridRect.height - 40) + 20 + 'px';
+                    line.style.left = '0';
+                    chip.appendChild(line);
+                    
+                    setTimeout(() => line.remove(), 2000);
+                }, i * 200);
+            }
+            
+            // Activate random components
+            const components = chip.querySelectorAll('.ic-component');
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const randomComp = components[Math.floor(Math.random() * components.length)];
+                    randomComp.style.background = 'rgba(255, 255, 0, 0.8)';
+                    randomComp.style.transform = 'scale(1.3)';
+                    
+                    setTimeout(() => {
+                        randomComp.style.background = '';
+                        randomComp.style.transform = '';
+                    }, 500);
+                }, i * 100);
+            }
+        }
+
+        // Show inventor details
+        function showInventorDetails(inventor) {
+            const details = {
+                kilby: "Jack Kilby created the first IC while working alone at Texas Instruments during summer vacation. His germanium chip proved that multiple components could work together on a single piece of semiconductor material. He later invented the handheld calculator!",
+                noyce: "Robert Noyce improved on Kilby's design by using silicon and creating a practical way to connect components with metal lines printed directly on the chip. He co-founded Fairchild Semiconductor and later Intel, becoming known as the 'Mayor of Silicon Valley'."
+            };
+            
+            alert(details[inventor]);
+        }
+
+        // Animate process step
+        function animateStep(element) {
+            element.style.transform = 'translateY(-10px) scale(1.05)';
+            element.style.background = 'rgba(255, 107, 0, 0.3)';
+            
+            // Create sparks
+            for (let i = 0; i < 5; i++) {
+                createSpark(element);
+            }
+            
+            setTimeout(() => {
+                element.style.transform = '';
+                element.style.background = '';
+            }, 500);
+        }
+
+        // Create spark effect
+        function createSpark(element) {
+            const spark = document.createElement('div');
+            spark.className = 'spark';
+            const rect = element.getBoundingClientRect();
+            spark.style.left = Math.random() * rect.width + 'px';
+            spark.style.top = Math.random() * rect.height + 'px';
+            spark.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'px');
+            spark.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'px');
+            
+            element.appendChild(spark);
+            setTimeout(() => spark.remove(), 1000);
+        }
+
+        // Animate size comparison
+        function animateSize(element) {
+            element.style.transform = 'scale(1.2) rotate(5deg)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1.1) rotate(-5deg)';
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 200);
+            }, 200);
+        }
+
+        // Animate era card
+        function animateEra(element) {
+            element.style.transform = 'scale(0.95) rotateY(180deg)';
+            element.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                element.style.transform = 'scale(1) rotateY(360deg)';
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 500);
+            }, 100);
+        }
+
+        // Animate application
+        function animateApp(element) {
+            const icon = element.querySelector('div');
+            icon.style.transform = 'scale(1.5) rotate(360deg)';
+            icon.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                icon.style.transform = '';
+            }, 500);
+        }
+
+        // Create floating chips
+        function createFloatingChip() {
+            const chip = document.createElement('div');
+            chip.className = 'floating-chip';
+            chip.textContent = '🔲';
+            chip.style.left = Math.random() * window.innerWidth + 'px';
+            chip.style.fontSize = Math.random() * 20 + 20 + 'px';
+            chip.style.animation = `floatChip ${Math.random() * 5 + 5}s linear`;
+            
+            document.body.appendChild(chip);
+            
+            chip.addEventListener('animationend', () => chip.remove());
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeICGrid();
+            
+            // Create floating chips periodically
+            setInterval(createFloatingChip, 3000);
+            
+            // Update component counts
+            const components = document.querySelectorAll('.ic-component');
+            let transistors = 0, resistors = 0, capacitors = 0;
+            
+            components.forEach(comp => {
+                switch(comp.dataset.type) {
+                    case 'transistor': transistors++; break;
+                    case 'resistor': resistors++; break;
+                    case 'capacitor': capacitors++; break;
+                }
+            });
+            
+            document.getElementById('transistorCount').textContent = transistors;
+            document.getElementById('resistorCount').textContent = resistors;
+            document.getElementById('capacitorCount').textContent = capacitors;
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                console.log('Navigate to Modern Microprocessors slide');
+            }
+            if (e.key === 'ArrowLeft') {
+                console.log('Navigate to Transistor Revolution slide');
+            }
+        });
+
+        // Mouse trail effect
+        let mouseTimer;
+        document.addEventListener('mousemove', (e) => {
+            clearTimeout(mouseTimer);
+            
+            if (Math.random() > 0.95) {
+                const trail = document.createElement('div');
+                trail.style.position = 'fixed';
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+                trail.style.width = '6px';
+                trail.style.height = '6px';
+                trail.style.background = 'linear-gradient(45deg, #ff6b00, #00c8ff)';
+                trail.style.borderRadius = '50%';
+                trail.style.pointerEvents = 'none';
+                trail.style.animation = 'sparkle 0.5s ease-out forwards';
+                document.body.appendChild(trail);
+                
+                setTimeout(() => trail.remove(), 500);
+            }
+        });
+    </script>
+</body>
+</html>
