@@ -670,6 +670,439 @@
                 transform: translate(-50%, -50%) scale(1);
             }
         }
+
+        /* NEW: Attack Explanation Modal */
+        .attack-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .attack-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: #0d1117;
+            padding: 20px 30px;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            color: #58a6ff;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #f85149;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        /* NEW: Visual Flow Diagrams */
+        .flow-diagram {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .flow-step {
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step.active {
+            border-color: #21ba45;
+            box-shadow: 0 0 20px rgba(33, 186, 69, 0.3);
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #21ba45;
+            color: #0d1117;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: #58a6ff;
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        /* NEW: HTTP Headers Visualization */
+        .http-headers-viz {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .http-header-line {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .http-header-line.sent {
+            background: rgba(33, 186, 69, 0.1);
+            border-left: 3px solid #21ba45;
+            animation: headerSend 0.5s ease-out;
+        }
+
+        @keyframes headerSend {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .http-header-line.pending {
+            background: rgba(255, 165, 2, 0.1);
+            border-left: 3px solid #ffa502;
+            opacity: 0.6;
+        }
+
+        .http-header-line.missing {
+            background: rgba(248, 81, 73, 0.1);
+            border-left: 3px solid #f85149;
+            border-style: dashed;
+        }
+
+        /* NEW: Password Attack Visualization */
+        .password-viz {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .password-attempt {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .password-attempt.trying {
+            background: rgba(255, 165, 2, 0.1);
+            border-color: #ffa502;
+            animation: tryPassword 0.5s ease-out;
+        }
+
+        .password-attempt.failed {
+            background: rgba(248, 81, 73, 0.1);
+            border-color: #f85149;
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .password-attempt.success {
+            background: rgba(33, 186, 69, 0.2);
+            border-color: #21ba45;
+            box-shadow: 0 0 20px rgba(33, 186, 69, 0.5);
+            font-weight: bold;
+        }
+
+        @keyframes tryPassword {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* NEW: ARP Table Visualization */
+        .arp-table {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .arp-table-header {
+            display: grid;
+            grid-template-columns: 1fr 2fr 2fr;
+            gap: 15px;
+            padding: 10px;
+            background: #161b22;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #58a6ff;
+        }
+
+        .arp-entry {
+            display: grid;
+            grid-template-columns: 1fr 2fr 2fr;
+            gap: 15px;
+            padding: 10px;
+            margin: 5px 0;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .arp-entry.poisoned {
+            background: rgba(248, 81, 73, 0.1);
+            border-color: #f85149;
+            animation: arpPoison 1s ease-out;
+        }
+
+        @keyframes arpPoison {
+            0% { background: #0d1117; }
+            50% { background: rgba(248, 81, 73, 0.3); }
+            100% { background: rgba(248, 81, 73, 0.1); }
+        }
+
+        /* NEW: Connection Pool Visualization */
+        .connection-pool {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+        }
+
+        .connection-slot {
+            width: 40px;
+            height: 40px;
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .connection-slot.occupied {
+            background: rgba(248, 81, 73, 0.2);
+            border-color: #f85149;
+        }
+
+        .connection-slot.available {
+            background: rgba(33, 186, 69, 0.2);
+            border-color: #21ba45;
+        }
+
+        /* NEW: Info Cards */
+        .info-card {
+            background: #161b22;
+            border-left: 4px solid #58a6ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card-title {
+            color: #58a6ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .info-card-content {
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        /* NEW: Interactive Demo Buttons */
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .demo-button {
+            background: #21863a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: #2ea043;
+            transform: translateY(-2px);
+        }
+
+        .demo-button.secondary {
+            background: #30363d;
+        }
+
+        .demo-button.secondary:hover {
+            background: #484f58;
+        }
+
+        /* NEW: Live Stats Display */
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #21ba45;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #8b949e;
+            font-size: 0.9em;
+        }
+
+        /* NEW: Timeline Visualization */
+        .attack-timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #30363d;
+        }
+
+        .timeline-event {
+            position: relative;
+            padding-left: 60px;
+            margin: 20px 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 20px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: #21ba45;
+            border-radius: 50%;
+            border: 3px solid #0d1117;
+        }
+
+        .timeline-content {
+            background: #161b22;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #30363d;
+        }
+
+        .timeline-time {
+            color: #8b949e;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            color: #58a6ff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc {
+            color: #c9d1d9;
+            font-size: 0.95em;
+        }
     </style>
 </head>
 <body>
@@ -696,6 +1129,9 @@
                 <div class="attack-icon">🔑</div>
                 <h3 class="attack-title">Dictionary Password Attack</h3>
                 <p class="attack-desc">Using Hydra to crack weak passwords with rockyou.txt wordlist</p>
+                <button class="demo-button secondary" style="margin-top: 15px; width: 100%;" onclick="event.stopPropagation(); showAttackExplanation('hydra')">
+                    📖 Learn How It Works
+                </button>
             </div>
 
             <!-- ARP Poisoning Card -->
@@ -704,6 +1140,9 @@
                 <div class="attack-icon">🎭</div>
                 <h3 class="attack-title">ARP Cache Poisoning</h3>
                 <p class="attack-desc">Man-in-the-Middle attack using Ettercap & Wireshark</p>
+                <button class="demo-button secondary" style="margin-top: 15px; width: 100%;" onclick="event.stopPropagation(); showAttackExplanation('arp')">
+                    📖 Learn How It Works
+                </button>
             </div>
 
             <!-- Slowloris Card -->
@@ -712,6 +1151,9 @@
                 <div class="attack-icon">🌊</div>
                 <h3 class="attack-title">Slowloris DoS Attack</h3>
                 <p class="attack-desc">Denial-of-Service attack exhausting web server resources</p>
+                <button class="demo-button secondary" style="margin-top: 15px; width: 100%;" onclick="event.stopPropagation(); showAttackExplanation('slowloris')">
+                    📖 Learn How It Works
+                </button>
             </div>
         </div>
 
@@ -898,6 +1340,255 @@
 
     <!-- Status Indicators -->
     <div class="status-indicator" id="statusIndicator"></div>
+
+    <!-- Attack Explanation Modals -->
+    <!-- Hydra Modal -->
+    <div class="attack-modal" id="hydraModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔑 How Dictionary Password Attack Works</h2>
+                <button class="modal-close" onclick="closeModal('hydraModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-card">
+                    <div class="info-card-title">What is a Dictionary Attack?</div>
+                    <div class="info-card-content">
+                        A dictionary attack tries common passwords from a pre-compiled list (wordlist) against a target system. 
+                        Hydra is a tool that automates this process, trying thousands of passwords per minute.
+                    </div>
+                </div>
+
+                <div class="flow-diagram">
+                    <h3 style="color: #58a6ff; margin-bottom: 20px;">Attack Process Flow</h3>
+                    
+                    <div class="flow-step" id="hydraStep1">
+                        <div class="flow-step-number">1</div>
+                        <strong>Load Wordlist</strong><br>
+                        Hydra loads rockyou.txt containing 14+ million common passwords
+                    </div>
+                    
+                    <div class="flow-arrow">⬇️</div>
+                    
+                    <div class="flow-step" id="hydraStep2">
+                        <div class="flow-step-number">2</div>
+                        <strong>Send Login Request</strong><br>
+                        POST /auth/login with username=admin & password=[from wordlist]
+                    </div>
+                    
+                    <div class="flow-arrow">⬇️</div>
+                    
+                    <div class="flow-step" id="hydraStep3">
+                        <div class="flow-step-number">3</div>
+                        <strong>Check Response</strong><br>
+                        If response is 302 redirect → password is correct!<br>
+                        If response is 401/403 → try next password
+                    </div>
+                </div>
+
+                <h3 style="color: #58a6ff; margin: 20px 0;">Live Password Attempts Visualization</h3>
+                <div class="password-viz" id="passwordViz">
+                    <!-- Passwords will be added dynamically -->
+                </div>
+
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="simulatePasswordAttack()">▶️ Simulate Attack</button>
+                    <button class="demo-button secondary" onclick="resetPasswordViz()">🔄 Reset</button>
+                </div>
+
+                <div class="live-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="passAttempts">0</div>
+                        <div class="stat-label">Passwords Tried</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="passSpeed">0</div>
+                        <div class="stat-label">Attempts/Second</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="passTime">0s</div>
+                        <div class="stat-label">Time Elapsed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARP Modal -->
+    <div class="attack-modal" id="arpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🎭 How ARP Cache Poisoning Works</h2>
+                <button class="modal-close" onclick="closeModal('arpModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-card">
+                    <div class="info-card-title">What is ARP Poisoning?</div>
+                    <div class="info-card-content">
+                        ARP (Address Resolution Protocol) maps IP addresses to MAC addresses. 
+                        In ARP poisoning, the attacker sends fake ARP messages to associate their MAC address 
+                        with another device's IP, intercepting all traffic meant for that device.
+                    </div>
+                </div>
+
+                <div class="flow-diagram">
+                    <h3 style="color: #58a6ff; margin-bottom: 20px;">Normal vs Poisoned ARP Flow</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h4 style="color: #21ba45; margin-bottom: 10px;">✅ Normal Communication</h4>
+                            <div class="flow-step">
+                                iPhone → Router → AmpliPi<br>
+                                <small style="color: #8b949e;">Direct, secure path</small>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: #f85149; margin-bottom: 10px;">❌ Poisoned Communication</h4>
+                            <div class="flow-step">
+                                iPhone → <span style="color: #f85149;">Kali Linux</span> → AmpliPi<br>
+                                <small style="color: #8b949e;">Intercepted by attacker</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #58a6ff; margin: 20px 0;">ARP Table Visualization</h3>
+                <div class="arp-table">
+                    <div class="arp-table-header">
+                        <div>Device</div>
+                        <div>IP Address</div>
+                        <div>MAC Address</div>
+                    </div>
+                    <div class="arp-entry" id="arpEntry1">
+                        <div>🎵 AmpliPi</div>
+                        <div>192.168.1.101</div>
+                        <div id="arpMac1">AA:BB:CC:DD:EE:FF</div>
+                    </div>
+                    <div class="arp-entry" id="arpEntry2">
+                        <div>📱 iPhone</div>
+                        <div>192.168.1.105</div>
+                        <div id="arpMac2">11:22:33:44:55:66</div>
+                    </div>
+                </div>
+
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="simulateArpPoison()">🎭 Poison ARP Cache</button>
+                    <button class="demo-button secondary" onclick="resetArpTable()">🔄 Reset</button>
+                </div>
+
+                <div class="info-card" style="margin-top: 20px;">
+                    <div class="info-card-title">⚠️ What Can Attackers See?</div>
+                    <div class="info-card-content">
+                        • All HTTP traffic (unencrypted)<br>
+                        • Login credentials<br>
+                        • AirPlay metadata (song names, artists)<br>
+                        • API calls and responses<br>
+                        • Session cookies and tokens
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slowloris Modal -->
+    <div class="attack-modal" id="slowlorisModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🌊 How Slowloris DoS Attack Works</h2>
+                <button class="modal-close" onclick="closeModal('slowlorisModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-card">
+                    <div class="info-card-title">What is Slowloris?</div>
+                    <div class="info-card-content">
+                        Slowloris is a denial-of-service attack that holds connections open by sending partial HTTP requests, 
+                        never completing them. The server keeps waiting for the rest of the request, eventually running out 
+                        of available connections for legitimate users.
+                    </div>
+                </div>
+
+                <h3 style="color: #58a6ff; margin: 20px 0;">📨 Understanding HTTP Headers</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                    <div>
+                        <h4 style="color: #21ba45; margin-bottom: 10px;">✅ Normal HTTP Request</h4>
+                        <div class="http-headers-viz">
+                            <div class="http-header-line sent">GET / HTTP/1.1</div>
+                            <div class="http-header-line sent">Host: 192.168.1.101</div>
+                            <div class="http-header-line sent">User-Agent: Mozilla/5.0</div>
+                            <div class="http-header-line sent">Accept-language: en-US</div>
+                            <div class="http-header-line sent" style="background: rgba(33, 186, 69, 0.3);">
+                                [Empty line - Request Complete! ✓]
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="color: #f85149; margin-bottom: 10px;">❌ Slowloris Request</h4>
+                        <div class="http-headers-viz">
+                            <div class="http-header-line sent">GET /?1234 HTTP/1.1</div>
+                            <div class="http-header-line sent">Host: 192.168.1.101</div>
+                            <div class="http-header-line sent">User-Agent: Mozilla/5.0</div>
+                            <div class="http-header-line pending">X-Slowloris-1: keep-alive</div>
+                            <div class="http-header-line missing">
+                                [Never sends empty line! ✗]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #58a6ff; margin: 20px 0;">Server Connection Pool</h3>
+                <div class="connection-pool" id="connectionPool">
+                    <!-- Connection slots will be added dynamically -->
+                </div>
+
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="simulateSlowloris()">🌊 Start Slowloris</button>
+                    <button class="demo-button secondary" onclick="resetSlowloris()">🔄 Reset</button>
+                </div>
+
+                <div class="attack-timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">0.000s</div>
+                            <div class="timeline-title">Initial Connection</div>
+                            <div class="timeline-desc">Send partial HTTP headers</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">15.000s</div>
+                            <div class="timeline-title">Keep-Alive Header</div>
+                            <div class="timeline-desc">Send X-Slowloris-1: keep-alive</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-event">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">30.000s</div>
+                            <div class="timeline-title">Continue Forever</div>
+                            <div class="timeline-desc">Keep connection open indefinitely</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card" style="margin-top: 20px;">
+                    <div class="info-card-title">💡 Why It Works</div>
+                    <div class="info-card-content">
+                        • Servers have limited connection pools<br>
+                        • Each connection waits for request completion<br>
+                        • Slowloris never completes the request<br>
+                        • Eventually, all connections are exhausted<br>
+                        • Legitimate users can't connect
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         let selectedAttack = null;
@@ -1256,13 +1947,155 @@
             }, 1000);
         }
 
+        // NEW: Attack explanation functions
+        function showAttackExplanation(attack) {
+            document.getElementById(attack + 'Modal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // NEW: Password attack visualization
+        function simulatePasswordAttack() {
+            const passwords = [
+                '123456', 'password', 'admin', 'qwerty', 'letmein',
+                'welcome', 'monkey', 'dragon', '1234567', 'baseball',
+                'iloveyou', 'trustno1', 'sunshine', 'master', 'abc123'
+            ];
+            
+            const viz = document.getElementById('passwordViz');
+            viz.innerHTML = '';
+            
+            let attempts = 0;
+            let startTime = Date.now();
+            
+            passwords.forEach((pass, index) => {
+                const div = document.createElement('div');
+                div.className = 'password-attempt';
+                div.textContent = pass;
+                viz.appendChild(div);
+                
+                setTimeout(() => {
+                    div.classList.add('trying');
+                    attempts++;
+                    document.getElementById('passAttempts').textContent = attempts;
+                    
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    document.getElementById('passSpeed').textContent = Math.floor(attempts / elapsed);
+                    document.getElementById('passTime').textContent = elapsed.toFixed(1) + 's';
+                    
+                    setTimeout(() => {
+                        if (pass === 'abc123') {
+                            div.classList.remove('trying');
+                            div.classList.add('success');
+                            div.textContent += ' ✓';
+                        } else {
+                            div.classList.remove('trying');
+                            div.classList.add('failed');
+                        }
+                    }, 500);
+                }, index * 600);
+            });
+        }
+
+        function resetPasswordViz() {
+            document.getElementById('passwordViz').innerHTML = '';
+            document.getElementById('passAttempts').textContent = '0';
+            document.getElementById('passSpeed').textContent = '0';
+            document.getElementById('passTime').textContent = '0s';
+        }
+
+        // NEW: ARP poisoning visualization
+        function simulateArpPoison() {
+            const entry1 = document.getElementById('arpEntry1');
+            const entry2 = document.getElementById('arpEntry2');
+            const mac1 = document.getElementById('arpMac1');
+            const mac2 = document.getElementById('arpMac2');
+            
+            setTimeout(() => {
+                entry1.classList.add('poisoned');
+                mac1.textContent = '00:11:22:33:44:55 (Kali!)';
+                mac1.style.color = '#f85149';
+            }, 500);
+            
+            setTimeout(() => {
+                entry2.classList.add('poisoned');
+                mac2.textContent = '00:11:22:33:44:55 (Kali!)';
+                mac2.style.color = '#f85149';
+            }, 1000);
+        }
+
+        function resetArpTable() {
+            document.getElementById('arpEntry1').classList.remove('poisoned');
+            document.getElementById('arpEntry2').classList.remove('poisoned');
+            document.getElementById('arpMac1').textContent = 'AA:BB:CC:DD:EE:FF';
+            document.getElementById('arpMac1').style.color = '';
+            document.getElementById('arpMac2').textContent = '11:22:33:44:55:66';
+            document.getElementById('arpMac2').style.color = '';
+        }
+
+        // NEW: Slowloris visualization
+        function simulateSlowloris() {
+            const pool = document.getElementById('connectionPool');
+            pool.innerHTML = '';
+            
+            // Create 100 connection slots
+            for (let i = 0; i < 100; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'connection-slot available';
+                slot.textContent = i + 1;
+                pool.appendChild(slot);
+            }
+            
+            // Gradually fill connections
+            let occupied = 0;
+            const fillInterval = setInterval(() => {
+                if (occupied >= 100) {
+                    clearInterval(fillInterval);
+                    return;
+                }
+                
+                const available = pool.querySelectorAll('.available');
+                if (available.length > 0) {
+                    const randomSlot = available[Math.floor(Math.random() * available.length)];
+                    randomSlot.classList.remove('available');
+                    randomSlot.classList.add('occupied');
+                    randomSlot.textContent = '🔒';
+                    occupied++;
+                }
+            }, 50);
+        }
+
+        function resetSlowloris() {
+            const pool = document.getElementById('connectionPool');
+            pool.innerHTML = '';
+        }
+
+        // Highlight flow steps
+        function highlightFlowSteps(stepPrefix, count) {
+            for (let i = 1; i <= count; i++) {
+                setTimeout(() => {
+                    document.getElementById(stepPrefix + i).classList.add('active');
+                }, i * 1000);
+            }
+        }
+
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === '1') selectAttack('hydra');
             if (e.key === '2') selectAttack('arp');
             if (e.key === '3') selectAttack('slowloris');
             if (e.key === 'Enter' && !attackRunning) runSelectedAttack();
-            if (e.key === 'Escape' && attackRunning) stopAttack();
+            if (e.key === 'Escape') {
+                if (attackRunning) {
+                    stopAttack();
+                } else {
+                    document.querySelectorAll('.attack-modal').forEach(modal => {
+                        modal.classList.remove('active');
+                    });
+                }
+            }
             if (e.key === 'c' && e.ctrlKey) stopAttack();
         });
 
