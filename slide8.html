@@ -864,6 +864,138 @@
             line-height: 1.5;
         }
 
+        /* Video Demo Section */
+        .video-section {
+            background: rgba(0, 119, 190, 0.05);
+            border: 2px solid rgba(0, 119, 190, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-iframe-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .video-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .video-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a2f4b 100%);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .video-fallback-content {
+            padding: 40px;
+            max-width: 600px;
+        }
+
+        .video-fallback h3 {
+            color: #00b4d8;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-fallback p {
+            color: #90e0ef;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .video-external-link {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #0077be, #00b4d8);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.4);
+        }
+
+        .video-external-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 180, 216, 0.6);
+        }
+
+        .video-external-link svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #00b4d8;
+        }
+
+        .video-loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(0, 180, 216, 0.3);
+            border-top: 3px solid #00b4d8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .video-info {
+            margin-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .video-info p {
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
         /* Access Info */
         .access-info {
             background: rgba(0, 255, 136, 0.1);
@@ -913,6 +1045,15 @@
             .zone-room {
                 position: relative;
                 margin: 10px;
+            }
+            
+            .video-fallback h3 {
+                font-size: 1.5em;
+            }
+            
+            .video-external-link {
+                font-size: 1em;
+                padding: 12px 24px;
             }
         }
 
@@ -1049,6 +1190,57 @@
                 <div class="description-card">
                     <h3 style="color: #00b4d8; margin-bottom: 15px;">🏠 Smart Integration</h3>
                     <p>RESTful API enables seamless integration with smart home systems. Create scenes, automations, and voice control through Alexa, Google Assistant, or Siri Shortcuts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Demo Section -->
+        <section class="video-section">
+            <h2 class="section-title">🎬 AmpliPi Manufacuring Video</h2>
+            
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <!-- Iframe Container -->
+                    <div class="video-iframe-container" id="videoContainer">
+                        <!-- Loading Spinner -->
+                        <div class="video-loading" id="videoLoading">
+                            <div class="video-loading-spinner"></div>
+                            <p>Loading video...</p>
+                        </div>
+                        
+                        <!-- Frame.io Iframe -->
+                        <iframe 
+                            id="videoFrame"
+                            class="video-iframe"
+                            src="https://next.frame.io/share/3c248009-e8f6-46d6-ae0e-def7641a4cbb/view/1dbb198e-9564-419d-980a-615913448919"
+                            allowfullscreen
+                            allow="autoplay; fullscreen"
+                            onload="handleIframeLoad()"
+                            onerror="handleIframeError()">
+                        </iframe>
+                    </div>
+                    
+                    <!-- Fallback Content -->
+                    <div class="video-fallback" id="videoFallback">
+                        <div class="video-fallback-content">
+                            <h3>AmpliPi Multi-Room Audio System</h3>
+                            <p>Experience the power of AmpliPi with our comprehensive video walkthrough. See the making of Amplipi.</p>
+                            <a href="https://next.frame.io/share/3c248009-e8f6-46d6-ae0e-def7641a4cbb/view/1dbb198e-9564-419d-980a-615913448919" 
+                               target="_blank" 
+                               class="video-external-link">
+                                <svg viewBox="0 0 24 24" fill="white">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                Watch on Frame.io
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-info">
+                    <p>
+                        <strong>Video:</strong> Experience the making of AmpliPi system.
+                    </p>
                 </div>
             </div>
         </section>
@@ -1329,6 +1521,7 @@
         };
 
         let isHacked = false;
+        let iframeLoadTimeout;
 
         // Initialize 3D rotation control
         let isDragging = false;
@@ -1594,6 +1787,38 @@
                 event.target.style.transform = '';
             }, 300);
         }
+
+        // Video iframe handling
+        function handleIframeLoad() {
+            console.log('Iframe loaded successfully');
+            clearTimeout(iframeLoadTimeout);
+            document.getElementById('videoLoading').style.display = 'none';
+        }
+
+        function handleIframeError() {
+            console.log('Iframe failed to load');
+            showVideoFallback();
+        }
+
+        function showVideoFallback() {
+            document.getElementById('videoLoading').style.display = 'none';
+            document.getElementById('videoFrame').style.display = 'none';
+            document.getElementById('videoFallback').style.display = 'flex';
+        }
+
+        // Set a timeout for iframe loading
+        window.addEventListener('load', () => {
+            iframeLoadTimeout = setTimeout(() => {
+                // If iframe hasn't loaded after 5 seconds, show fallback
+                const iframe = document.getElementById('videoFrame');
+                const loading = document.getElementById('videoLoading');
+                
+                if (loading && loading.style.display !== 'none') {
+                    console.log('Iframe loading timeout - showing fallback');
+                    showVideoFallback();
+                }
+            }, 5000);
+        });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
