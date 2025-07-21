@@ -1236,10 +1236,50 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="video-container">
+                <div class="video-wrapper">
+                    <!-- Iframe Container -->
+                    <div class="video-iframe-container" id="videoContainer">
+                        <!-- Loading Spinner -->
+                        <div class="video-loading" id="videoLoading">
+                            <div class="video-loading-spinner"></div>
+                            <p>Loading video...</p>
+                        </div>
+                        
+                        <!-- Frame.io Iframe -->
+                        <iframe 
+                            id="videoFrame"
+                            class="video-iframe"
+                            src="https://next.frame.io/share/24f8eef9-8106-48c1-b3ca-c35b5cf1be51/view/eae3e3fa-b506-469f-a10c-5cb0fa033362"
+                            allowfullscreen
+                            allow="autoplay; fullscreen"
+                            onload="handleIframeLoad()"
+                            onerror="handleIframeError()">
+                        </iframe>
+                        <br><br>
+                    </div>
+                    
+                    <!-- Fallback Content -->
+                    <div class="video-fallback" id="videoFallback">
+                        <div class="video-fallback-content">
+                            <h3>AmpliPi Multi-Room Audio System</h3>
+                            <p>Experience the power of AmpliPi with our comprehensive video walkthrough. See the making of Amplipi.</p>
+                            <a href="https://next.frame.io/share/24f8eef9-8106-48c1-b3ca-c35b5cf1be51/view/eae3e3fa-b506-469f-a10c-5cb0fa033362" 
+                               target="_blank" 
+                               class="video-external-link">
+                                <svg viewBox="0 0 24 24" fill="white">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                Watch on Frame.io
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="video-info">
                     <p>
-                        <strong>Video:</strong> Experience the making of AmpliPi system.
+                        <strong>Video:</strong> Experience the making of AmpliPi home audio system and RF detector.
                     </p>
                 </div>
             </div>
