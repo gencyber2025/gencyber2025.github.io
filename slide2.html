@@ -1538,34 +1538,61 @@
             }
         }
 
-        // Fetch leaderboard from Google Sheets using JSONP to avoid CORS
+        // Fetch leaderboard from Google Sheets - with fallback to proxy
         async function fetchLeaderboard() {
             if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
                 console.log('Google Script URL not configured');
                 return [];
             }
 
+            // First try the proxy method (more reliable)
+            try {
+                console.log('Fetching leaderboard via proxy...');
+                const proxyUrl = 'https://api.allorigins.win/get?url=' + 
+                    encodeURIComponent(GOOGLE_SCRIPT_URL + '?action=leaderboard');
+                
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                
+                if (data.contents) {
+                    const scriptData = JSON.parse(data.contents);
+                    console.log('Proxy response:', scriptData);
+                    
+                    if (scriptData.status === 'success') {
+                        const leaderboard = (scriptData.leaderboard || []).map(item => ({
+                            name: item.name,
+                            score: item.score,
+                            completionTime: item.completionTime || 
+                                          (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
+                        }));
+                        console.log('Leaderboard data:', leaderboard);
+                        return leaderboard;
+                    }
+                }
+            } catch (error) {
+                console.error('Proxy fetch error:', error);
+                console.log('Falling back to JSONP...');
+            }
+
+            // Fallback to JSONP if proxy fails
             return new Promise((resolve) => {
                 // Create a unique callback name
                 const callbackName = 'leaderboardCallback_' + Date.now();
                 
                 // Create the callback function
                 window[callbackName] = function(data) {
-                    console.log('Received data:', data);
+                    console.log('JSONP received data:', data);
                     
                     if (data.status === 'success') {
                         // Normalize data to handle different formats
                         const leaderboard = (data.leaderboard || []).map(item => ({
                             name: item.name,
                             score: item.score,
-                            // Handle both 'completionTime' and 'time' formats
                             completionTime: item.completionTime || 
                                           (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
                         }));
-                        console.log('Normalized leaderboard:', leaderboard);
                         resolve(leaderboard);
                     } else {
-                        console.error('Error in response:', data);
                         resolve([]);
                     }
                     
@@ -1580,20 +1607,20 @@
                 
                 // Handle errors
                 script.onerror = function() {
-                    console.error('Error loading leaderboard');
+                    console.error('JSONP failed - your Google Apps Script needs to be redeployed with "Anyone" access');
                     window[callbackName] = null;
                     delete window[callbackName];
                     resolve([]);
                 };
                 
                 // Add script to page
-                console.log('Fetching leaderboard from:', script.src);
+                console.log('Trying JSONP:', script.src);
                 document.head.appendChild(script);
                 
-                // Timeout after 10 seconds
+                // Timeout after 5 seconds
                 setTimeout(() => {
                     if (window[callbackName]) {
-                        console.error('Leaderboard fetch timeout');
+                        console.error('JSONP timeout');
                         window[callbackName] = null;
                         delete window[callbackName];
                         try {
@@ -1601,7 +1628,7 @@
                         } catch (e) {}
                         resolve([]);
                     }
-                }, 10000);
+                }, 5000);
             });
         }
 
@@ -2138,6 +2165,11 @@
                 return;
             }
             
+            // First, try to access the URL directly
+            const testUrl = `${GOOGLE_SCRIPT_URL}?action=leaderboard`;
+            console.log('Testing direct access:', testUrl);
+            alert(`Testing leaderboard...\n\n1. Open this URL in a new tab:\n${testUrl}\n\n2. You should see JSON data or an error message.\n\n3. Report back what you see!`);
+            
             try {
                 const leaderboard = await fetchLeaderboard();
                 console.log('Leaderboard data:', leaderboard);
@@ -2148,7 +2180,7 @@
                     await updateLeaderboardDisplay();
                     document.getElementById('leaderboardOverlay').classList.add('show');
                 } else {
-                    alert('Connected successfully but no submissions found. Try adding test data in Google Apps Script.');
+                    alert('Connected but no data returned. Check the Google Apps Script logs.');
                 }
             } catch (error) {
                 alert('Error connecting to Google Apps Script. Check console for details.');
