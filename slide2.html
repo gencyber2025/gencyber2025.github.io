@@ -1448,6 +1448,9 @@
                         <p>Waiting for results...</p>
                     </div>
                 </div>
+                <button class="close-leaderboard" onclick="forceRefreshLeaderboard()" style="background: #0080ff; margin-right: 10px;">
+                    🔄 Refresh
+                </button>
                 <button class="close-leaderboard" onclick="closeLeaderboard()">Close</button>
             </div>
         </div>
@@ -1470,7 +1473,14 @@
 
     <script>
         // Quiz Management
-        const QUIZ_PASSWORD = "vacuum2024"; // Change this to your desired password
+        const QUIZ_PASSWORD = "vacuum2025"; // Change this to your desired password
+        
+        // TEMPORARY: Demo mode with fake data - SET TO false WHEN GOOGLE APPS SCRIPT IS FIXED
+        const DEMO_MODE = false; // ← Script is working, so using real data now
+        
+        // Replace with your Google Apps Script URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhppJnSAX7I64XLLawhgtENaO3_R10-yc1BSNWnMAMMIhH8BofU5SaR7_8Ylf1ikkF/exec';
+        
         let quizSubmitted = false;
         let selectedAnswers = {};
         let studentName = "";
@@ -1482,9 +1492,6 @@
         let allSubmissions = [];
         let currentSessionId = "";
         let isQuizActive = false;
-
-        // Replace with your Google Apps Script URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytvBn79WznzGoYatBkWvtf0R70bes5E6ASb0SHp9BnUK_ICd_wC-TAyffQylgfzls5/exec';
 
         // Correct answers
         const correctAnswers = {
@@ -1538,98 +1545,95 @@
             }
         }
 
-        // Fetch leaderboard from Google Sheets - with fallback to proxy
+        // Fetch leaderboard from Google Sheets - with better error handling
         async function fetchLeaderboard() {
+            // Demo mode for testing
+            if (DEMO_MODE) {
+                console.log('Running in DEMO MODE - using fake data');
+                console.log('Set DEMO_MODE = false once your Google Apps Script is fixed');
+                return [
+                    { name: "Alice Johnson", score: 5, completionTime: 18.5 },
+                    { name: "Bob Smith", score: 4, completionTime: 22.3 },
+                    { name: "Carol Davis", score: 5, completionTime: 21.2 }
+                ];
+            }
+            
             if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
                 console.log('Google Script URL not configured');
                 return [];
             }
 
-            // First try the proxy method (more reliable)
+            // First, let's check what the script is actually returning
             try {
+                console.log('Testing direct access to Google Apps Script...');
+                const testUrl = `${GOOGLE_SCRIPT_URL}?action=leaderboard`;
+                
+                // Try proxy with better error handling
                 console.log('Fetching leaderboard via proxy...');
                 const proxyUrl = 'https://api.allorigins.win/get?url=' + 
-                    encodeURIComponent(GOOGLE_SCRIPT_URL + '?action=leaderboard');
+                    encodeURIComponent(testUrl);
                 
                 const response = await fetch(proxyUrl);
                 const data = await response.json();
                 
                 if (data.contents) {
-                    const scriptData = JSON.parse(data.contents);
-                    console.log('Proxy response:', scriptData);
+                    // Check if it's HTML (error page)
+                    if (data.contents.trim().startsWith('<!DOCTYPE') || data.contents.includes('<html')) {
+                        console.error('❌ Google Apps Script returned HTML error page instead of JSON');
+                        console.error('This means your deployment is not accessible.');
+                        console.error('To fix:');
+                        console.error('1. Go to Deploy → Manage deployments');
+                        console.error('2. Make sure "Who has access" is set to "Anyone"');
+                        console.error('3. NOT "Anyone with Google account" - just "Anyone"');
+                        console.error('Direct URL to test:', testUrl);
+                        alert('Leaderboard Error: Google Apps Script is not publicly accessible. Check console for fix instructions.');
+                        
+                        // Try to extract error message if possible
+                        const match = data.contents.match(/<title>(.*?)<\/title>/);
+                        if (match) {
+                            console.error('Error page title:', match[1]);
+                        }
+                        
+                        return [];
+                    }
                     
-                    if (scriptData.status === 'success') {
-                        const leaderboard = (scriptData.leaderboard || []).map(item => ({
-                            name: item.name,
-                            score: item.score,
-                            completionTime: item.completionTime || 
-                                          (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
-                        }));
-                        console.log('Leaderboard data:', leaderboard);
-                        return leaderboard;
+                    // Try to parse as JSON
+                    try {
+                        const scriptData = JSON.parse(data.contents);
+                        console.log('✅ Successfully received data:', scriptData);
+                        
+                        if (scriptData.status === 'success') {
+                            const leaderboard = (scriptData.leaderboard || []).map(item => ({
+                                name: item.name,
+                                score: item.score,
+                                completionTime: item.completionTime || 
+                                              (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
+                            }));
+                            console.log('Leaderboard data:', leaderboard);
+                            
+                            // If empty, log helpful info
+                            if (leaderboard.length === 0) {
+                                console.log('📊 Leaderboard is empty. Possible reasons:');
+                                console.log('1. No submissions in current session (last 60 minutes)');
+                                console.log('2. All data was cleared (new day or >60 min gap)');
+                                console.log('3. Sheet is empty - try running addSampleData() in Apps Script');
+                                console.log('Session ID:', scriptData.sessionId);
+                                console.log('To debug: Check your Google Sheet directly');
+                            }
+                            
+                            return leaderboard;
+                        }
+                    } catch (parseError) {
+                        console.error('Failed to parse response as JSON:', parseError);
+                        console.log('Response was:', data.contents.substring(0, 200) + '...');
                     }
                 }
             } catch (error) {
-                console.error('Proxy fetch error:', error);
-                console.log('Falling back to JSONP...');
+                console.error('Fetch error:', error);
             }
 
-            // Fallback to JSONP if proxy fails
-            return new Promise((resolve) => {
-                // Create a unique callback name
-                const callbackName = 'leaderboardCallback_' + Date.now();
-                
-                // Create the callback function
-                window[callbackName] = function(data) {
-                    console.log('JSONP received data:', data);
-                    
-                    if (data.status === 'success') {
-                        // Normalize data to handle different formats
-                        const leaderboard = (data.leaderboard || []).map(item => ({
-                            name: item.name,
-                            score: item.score,
-                            completionTime: item.completionTime || 
-                                          (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
-                        }));
-                        resolve(leaderboard);
-                    } else {
-                        resolve([]);
-                    }
-                    
-                    // Cleanup
-                    delete window[callbackName];
-                    document.head.removeChild(script);
-                };
-                
-                // Create script tag for JSONP
-                const script = document.createElement('script');
-                script.src = `${GOOGLE_SCRIPT_URL}?action=leaderboard&callback=${callbackName}`;
-                
-                // Handle errors
-                script.onerror = function() {
-                    console.error('JSONP failed - your Google Apps Script needs to be redeployed with "Anyone" access');
-                    window[callbackName] = null;
-                    delete window[callbackName];
-                    resolve([]);
-                };
-                
-                // Add script to page
-                console.log('Trying JSONP:', script.src);
-                document.head.appendChild(script);
-                
-                // Timeout after 5 seconds
-                setTimeout(() => {
-                    if (window[callbackName]) {
-                        console.error('JSONP timeout');
-                        window[callbackName] = null;
-                        delete window[callbackName];
-                        try {
-                            document.head.removeChild(script);
-                        } catch (e) {}
-                        resolve([]);
-                    }
-                }, 5000);
-            });
+            console.log('All methods failed. Please check your Google Apps Script deployment.');
+            return [];
         }
 
         // Update leaderboard display with live data
@@ -1655,6 +1659,10 @@
                             <div class="dot"></div>
                         </div>
                         <p>Waiting for submissions...</p>
+                        <p style="font-size: 0.9em; margin-top: 10px; color: #888;">
+                            If you just submitted, click Refresh button<br>
+                            or wait a few seconds
+                        </p>
                     </div>
                 `;
                 return;
@@ -1681,7 +1689,13 @@
             sessionInfo.style.textAlign = 'center';
             sessionInfo.style.color = '#888';
             sessionInfo.style.marginTop = '20px';
-            sessionInfo.innerHTML = `<small>Live Leaderboard • ${top3.length} submissions</small>`;
+            
+            if (DEMO_MODE) {
+                sessionInfo.innerHTML = `<small style="color: #ff8c00;">⚠️ DEMO MODE - Using test data</small>`;
+            } else {
+                sessionInfo.innerHTML = `<small>Live Leaderboard • ${top3.length} submissions</small>`;
+            }
+            
             leaderboardList.appendChild(sessionInfo);
         }
 
@@ -1876,10 +1890,14 @@
             // Save to Google Sheets
             await saveToGoogleSheets(submission);
 
-            // Show leaderboard after a short delay
-            setTimeout(() => {
+            // Wait for data to be saved, then force refresh leaderboard
+            setTimeout(async () => {
+                console.log('Force refreshing leaderboard after submission...');
+                stopLeaderboardUpdates(); // Stop current updates
+                await updateLeaderboardDisplay(); // Force immediate update
                 showLeaderboard();
-            }, 2000);
+                startLeaderboardUpdates(); // Restart updates
+            }, 3000); // Wait 3 seconds for data to save to Google Sheets
         }
 
         // Show quiz results
@@ -1964,6 +1982,11 @@
             }
             
             console.log('Saving to Google Sheets:', submission);
+            console.log('Submission details:');
+            console.log('- Name:', submission.name);
+            console.log('- Score:', submission.score);
+            console.log('- Time:', submission.completionTime);
+            console.log('- Session ID:', submission.sessionId);
             
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
@@ -1974,9 +1997,11 @@
                     },
                     body: JSON.stringify(submission)
                 });
-                console.log('Submission saved to Google Sheets');
+                console.log('✅ Submission sent to Google Sheets');
+                console.log('Note: Check your Google Sheet to confirm data was saved');
+                console.log('If sheet is empty, check Google Apps Script logs for errors');
             } catch (error) {
-                console.error('Error saving to Google Sheets:', error);
+                console.error('❌ Error saving to Google Sheets:', error);
             }
         }
 
@@ -2155,10 +2180,32 @@
             }
         });
 
+        // Force refresh leaderboard
+        async function forceRefreshLeaderboard() {
+            console.log('Manual refresh triggered');
+            stopLeaderboardUpdates();
+            await updateLeaderboardDisplay();
+            startLeaderboardUpdates();
+            
+            // Check if we got data
+            const leaderboardList = document.getElementById('leaderboardList');
+            if (leaderboardList.innerHTML.includes('Waiting for submissions')) {
+                console.log('Still no data. Checking Google Sheet...');
+                console.log('Try running addSampleData() in Google Apps Script');
+            }
+        }
+
         // Test function for debugging leaderboard
         async function testLeaderboard() {
-            console.log('Testing leaderboard connection...');
+            console.log('=== TESTING LEADERBOARD CONNECTION ===');
             console.log('Script URL:', GOOGLE_SCRIPT_URL);
+            console.log('Demo Mode:', DEMO_MODE);
+            
+            if (DEMO_MODE) {
+                alert('Currently running in DEMO MODE with fake data.\n\nTo use real data:\n1. Fix your Google Apps Script deployment\n2. Set DEMO_MODE = false in the code');
+                showLeaderboard();
+                return;
+            }
             
             if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
                 alert('Please set your Google Apps Script URL first!');
@@ -2168,23 +2215,37 @@
             // First, try to access the URL directly
             const testUrl = `${GOOGLE_SCRIPT_URL}?action=leaderboard`;
             console.log('Testing direct access:', testUrl);
-            alert(`Testing leaderboard...\n\n1. Open this URL in a new tab:\n${testUrl}\n\n2. You should see JSON data or an error message.\n\n3. Report back what you see!`);
             
             try {
                 const leaderboard = await fetchLeaderboard();
-                console.log('Leaderboard data:', leaderboard);
+                console.log('Leaderboard data received:', leaderboard);
                 
                 if (leaderboard.length > 0) {
-                    alert(`Success! Found ${leaderboard.length} submissions in current session.`);
-                    // Show the leaderboard
+                    alert(`✅ Success! Found ${leaderboard.length} submissions:\n\n` +
+                          leaderboard.map((s, i) => `${i+1}. ${s.name} - Score: ${s.score}/5, Time: ${s.completionTime}s`).join('\n'));
                     await updateLeaderboardDisplay();
                     document.getElementById('leaderboardOverlay').classList.add('show');
                 } else {
-                    alert('Connected but no data returned. Check the Google Apps Script logs.');
+                    const message = `⚠️ Connected but no data found!\n\n` +
+                        `Possible reasons:\n` +
+                        `1. Google Sheet is empty\n` +
+                        `2. All data was cleared (>60 min gap or new day)\n` +
+                        `3. Data exists but in different session\n\n` +
+                        `To fix:\n` +
+                        `1. Check your Google Sheet directly\n` +
+                        `2. Run addSampleData() in Apps Script\n` +
+                        `3. Submit a test quiz entry\n\n` +
+                        `Direct link to test: ${testUrl}`;
+                    
+                    alert(message);
+                    console.log('📊 Empty leaderboard debugging:');
+                    console.log('1. Open your Google Sheet and check for data');
+                    console.log('2. If sheet has data, check Session ID column');
+                    console.log('3. Run getCurrentSessionResults() in Apps Script');
                 }
             } catch (error) {
-                alert('Error connecting to Google Apps Script. Check console for details.');
                 console.error('Test error:', error);
+                alert('Error connecting. Check browser console for details.');
             }
         }
     </script>
