@@ -771,6 +771,18 @@
             text-align: center;
             margin-bottom: 30px;
             z-index: 50;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-timer.warning {
+            border-color: #ff0000;
+            background: rgba(255, 0, 0, 0.2);
+            animation: warningPulse 1s infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .timer-display {
@@ -778,6 +790,7 @@
             color: #ff0000;
             font-weight: bold;
             font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
         }
 
         .timer-label {
@@ -829,6 +842,48 @@
             50% { transform: scale(1.05); }
         }
 
+        .waiting-message {
+            text-align: center;
+            color: #00bfff;
+            font-size: 1.5em;
+            margin: 40px 0;
+            animation: waitingPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes waitingPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 0, 0, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            animation: liveFlash 2s ease-in-out infinite;
+        }
+
+        @keyframes liveFlash {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: liveDotPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes liveDotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
         .leaderboard-list {
             margin: 30px 0;
         }
@@ -843,6 +898,19 @@
             justify-content: space-between;
             border: 2px solid transparent;
             transition: all 0.3s ease;
+            animation: slideInScale 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        @keyframes slideInScale {
+            from {
+                opacity: 0;
+                transform: translateX(-50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
         }
 
         .leaderboard-item.gold {
@@ -951,6 +1019,7 @@
         .option.selected {
             background: rgba(0, 128, 255, 0.3);
             border-color: #00bfff;
+            transform: scale(1.02);
         }
 
         .option.correct {
@@ -1364,9 +1433,20 @@
         <!-- Leaderboard Overlay -->
         <div class="leaderboard-overlay" id="leaderboardOverlay">
             <div class="leaderboard-container">
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>LIVE RESULTS</span>
+                </div>
                 <h2 class="leaderboard-title">🏆 Top Performers 🏆</h2>
                 <div class="leaderboard-list" id="leaderboardList">
-                    <!-- Dynamically populated -->
+                    <div class="waiting-message">
+                        <div class="loading-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <p>Waiting for results...</p>
+                    </div>
                 </div>
                 <button class="close-leaderboard" onclick="closeLeaderboard()">Close</button>
             </div>
@@ -1380,20 +1460,31 @@
                 <div class="dot"></div>
             </div>
             <p style="color: #ffd700; margin-top: 20px;">Preparing next era...</p>
+            
+            <!-- Debug button for testing (remove in production) -->
+            <button onclick="testLeaderboard()" style="margin-top: 20px; padding: 10px 20px; background: #0080ff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Test Leaderboard Connection
+            </button>
         </div>
     </div>
 
     <script>
         // Quiz Management
-        const QUIZ_PASSWORD = "vacuum2025"; // Change this to your desired password
+        const QUIZ_PASSWORD = "vacuum2024"; // Change this to your desired password
         let quizSubmitted = false;
         let selectedAnswers = {};
         let studentName = "";
         let quizStartTime = null;
         let quizEndTime = null;
         let timerInterval = null;
+        let leaderboardInterval = null;
         let timeRemaining = 30;
         let allSubmissions = [];
+        let currentSessionId = "";
+        let isQuizActive = false;
+
+        // Replace with your Google Apps Script URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybLDsKV6G5zeFd05BIVefpjWi-L3vOaehqjS1KgXq4l7NMjujj6-RIkoBd0z-aaJQo/exec';
 
         // Correct answers
         const correctAnswers = {
@@ -1404,10 +1495,28 @@
             5: 'c'  // The grid
         };
 
+        // Generate session ID based on current date and hour
+        function generateSessionId() {
+            const now = new Date();
+            return now.toISOString().slice(0, 13); // YYYY-MM-DDTHH
+        }
+
         // Load existing submissions
         function loadSubmissions() {
             const saved = localStorage.getItem('vacuumQuizSubmissions');
-            if (saved) {
+            const savedSessionId = localStorage.getItem('vacuumQuizSessionId');
+            currentSessionId = generateSessionId();
+            
+            // If session ID has changed (new hour or day), clear old data
+            if (savedSessionId !== currentSessionId) {
+                localStorage.removeItem('vacuumQuizSubmissions');
+                localStorage.removeItem('vacuumQuizSubmitted');
+                localStorage.removeItem('vacuumQuizName');
+                localStorage.removeItem('vacuumQuizScore');
+                localStorage.setItem('vacuumQuizSessionId', currentSessionId);
+                allSubmissions = [];
+                quizSubmitted = false;
+            } else if (saved) {
                 allSubmissions = JSON.parse(saved);
             }
         }
@@ -1416,13 +1525,138 @@
         function checkQuizStatus() {
             loadSubmissions();
             const submitted = localStorage.getItem('vacuumQuizSubmitted');
-            if (submitted) {
+            const savedSessionId = localStorage.getItem('vacuumQuizSessionId');
+            
+            // Only consider submitted if it's from the current session
+            if (submitted && savedSessionId === currentSessionId) {
                 quizSubmitted = true;
                 const name = localStorage.getItem('vacuumQuizName');
                 const score = localStorage.getItem('vacuumQuizScore');
                 if (name && score) {
                     displayPreviousResults(name, score);
                 }
+            }
+        }
+
+        // Fetch leaderboard from Google Sheets
+        async function fetchLeaderboard() {
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                console.log('Google Script URL not configured');
+                return [];
+            }
+
+            try {
+                console.log('Fetching leaderboard from:', GOOGLE_SCRIPT_URL);
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=leaderboard`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                if (!response.ok) {
+                    console.error('Response not OK:', response.status);
+                    return [];
+                }
+                
+                const text = await response.text();
+                console.log('Raw response:', text);
+                
+                try {
+                    const data = JSON.parse(text);
+                    console.log('Parsed data:', data);
+                    
+                    if (data.status === 'success') {
+                        // Normalize data to handle different formats
+                        const leaderboard = (data.leaderboard || []).map(item => ({
+                            name: item.name,
+                            score: item.score,
+                            // Handle both 'completionTime' and 'time' formats
+                            completionTime: item.completionTime || 
+                                          (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
+                        }));
+                        console.log('Normalized leaderboard:', leaderboard);
+                        return leaderboard;
+                    }
+                } catch (parseError) {
+                    console.error('Error parsing JSON:', parseError);
+                    console.log('Response text was:', text);
+                }
+                
+                return [];
+            } catch (error) {
+                console.error('Error fetching leaderboard:', error);
+                return [];
+            }
+        }
+
+        // Update leaderboard display with live data
+        async function updateLeaderboardDisplay() {
+            const leaderboard = await fetchLeaderboard();
+            
+            // Build leaderboard HTML
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '';
+            
+            const medals = ['🥇', '🥈', '🥉'];
+            const classes = ['gold', 'silver', 'bronze'];
+            
+            // Show top 3
+            const top3 = leaderboard.slice(0, 3);
+            
+            if (top3.length === 0) {
+                leaderboardList.innerHTML = `
+                    <div class="waiting-message">
+                        <div class="loading-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <p>Waiting for submissions...</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            top3.forEach((submission, index) => {
+                const item = document.createElement('div');
+                item.className = `leaderboard-item ${classes[index]}`;
+                item.style.animationDelay = `${index * 0.2}s`;
+                item.innerHTML = `
+                    <div class="rank-badge">${medals[index]}</div>
+                    <div class="student-info">
+                        <div class="student-name">${submission.name}</div>
+                        <div class="student-stats">
+                            Score: ${submission.score}/5 | Time: ${typeof submission.completionTime === 'number' ? submission.completionTime.toFixed(1) : submission.completionTime}s
+                        </div>
+                    </div>
+                `;
+                leaderboardList.appendChild(item);
+            });
+
+            // Add session info
+            const sessionInfo = document.createElement('div');
+            sessionInfo.style.textAlign = 'center';
+            sessionInfo.style.color = '#888';
+            sessionInfo.style.marginTop = '20px';
+            sessionInfo.innerHTML = `<small>Live Leaderboard • ${top3.length} submissions</small>`;
+            leaderboardList.appendChild(sessionInfo);
+        }
+
+        // Start live leaderboard updates
+        function startLeaderboardUpdates() {
+            // Update immediately
+            updateLeaderboardDisplay();
+            
+            // Then update every 3 seconds
+            leaderboardInterval = setInterval(updateLeaderboardDisplay, 3000);
+        }
+
+        // Stop leaderboard updates
+        function stopLeaderboardUpdates() {
+            if (leaderboardInterval) {
+                clearInterval(leaderboardInterval);
+                leaderboardInterval = null;
             }
         }
 
@@ -1445,10 +1679,16 @@
             studentName = name;
             document.getElementById('quizLock').classList.add('unlocked');
             
-            // Check if already submitted
-            if (quizSubmitted) {
+            // Check if already submitted in this session
+            const alreadySubmitted = allSubmissions.some(sub => 
+                sub.name.toLowerCase() === name.toLowerCase()
+            );
+            
+            if (alreadySubmitted || quizSubmitted) {
                 disableQuiz();
-                alert("You have already submitted this quiz!");
+                alert("You have already submitted this quiz in this session!");
+                // Show leaderboard immediately for those who already submitted
+                showLeaderboard();
             } else {
                 startQuiz();
             }
@@ -1457,6 +1697,7 @@
         // Start the quiz and timer
         function startQuiz() {
             quizStartTime = new Date();
+            isQuizActive = true;
             document.getElementById('quizTimer').style.display = 'block';
             
             // Start countdown timer
@@ -1467,9 +1708,11 @@
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
                     autoSubmitQuiz();
-                    setTimeout(showLeaderboard, 1000);
                 }
             }, 1000);
+            
+            // Start leaderboard updates
+            startLeaderboardUpdates();
         }
 
         // Update timer display
@@ -1478,11 +1721,22 @@
             const seconds = timeRemaining % 60;
             document.getElementById('timerDisplay').textContent = 
                 `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color and add warning class when time is running out
+            if (timeRemaining <= 10) {
+                document.getElementById('timerDisplay').style.color = '#ff0000';
+                document.getElementById('quizTimer').classList.add('warning');
+                
+                // Add dramatic effect for last 5 seconds
+                if (timeRemaining <= 5) {
+                    document.getElementById('timerDisplay').style.fontSize = '2.5em';
+                }
+            }
         }
 
         // Select quiz option
         function selectOption(element) {
-            if (quizSubmitted) {
+            if (quizSubmitted || !isQuizActive) {
                 return;
             }
 
@@ -1496,6 +1750,12 @@
             // Mark this option as selected
             element.classList.add('selected');
             selectedAnswers[question] = value;
+            
+            // Visual feedback
+            element.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 200);
         }
 
         // Auto-submit when timer runs out
@@ -1506,20 +1766,28 @@
         }
 
         // Submit quiz
-        function submitQuiz(isAutoSubmit = false) {
+        async function submitQuiz(isAutoSubmit = false) {
             if (quizSubmitted) {
                 alert("You have already submitted this quiz!");
                 return;
             }
 
+            isQuizActive = false;
             quizEndTime = new Date();
-            const completionTime = (quizEndTime - quizStartTime) / 1000; // in seconds
+            const completionTime = Math.round((quizEndTime - quizStartTime) / 1000 * 10) / 10; // Round to 1 decimal
 
             // Check if all questions answered
             const totalQuestions = 5;
             const answeredQuestions = Object.keys(selectedAnswers).length;
             
-            if (!isAutoSubmit && answeredQuestions < totalQuestions) {
+            // Fill in unanswered questions with empty values if auto-submit
+            if (isAutoSubmit && answeredQuestions < totalQuestions) {
+                for (let i = 1; i <= totalQuestions; i++) {
+                    if (!selectedAnswers[i]) {
+                        selectedAnswers[i] = '';
+                    }
+                }
+            } else if (!isAutoSubmit && answeredQuestions < totalQuestions) {
                 alert(`Please answer all questions! You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
                 return;
             }
@@ -1542,6 +1810,7 @@
             localStorage.setItem('vacuumQuizSubmitted', 'true');
             localStorage.setItem('vacuumQuizName', studentName);
             localStorage.setItem('vacuumQuizScore', score);
+            localStorage.setItem('vacuumQuizSessionId', currentSessionId);
 
             // Save submission
             const submission = {
@@ -1549,7 +1818,8 @@
                 score: score,
                 completionTime: completionTime,
                 answers: selectedAnswers,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                sessionId: currentSessionId
             };
             
             allSubmissions.push(submission);
@@ -1562,12 +1832,12 @@
             disableQuiz();
 
             // Save to Google Sheets
-            saveToGoogleSheets(submission);
+            await saveToGoogleSheets(submission);
 
-            // Show leaderboard after all submissions are in (if time is up)
-            if (timeRemaining <= 0) {
-                setTimeout(showLeaderboard, 1000);
-            }
+            // Show leaderboard after a short delay
+            setTimeout(() => {
+                showLeaderboard();
+            }, 2000);
         }
 
         // Show quiz results
@@ -1591,7 +1861,7 @@
             // Display results
             document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalQuestions} (${percentage}%)`;
             document.getElementById('submissionInfo').textContent = 
-                `Submitted by: ${studentName} | Time: ${completionTime.toFixed(1)}s`;
+                `Submitted by: ${studentName} | Time: ${completionTime}s`;
             document.getElementById('quizResults').classList.add('show');
             
             // Disable submit button
@@ -1600,47 +1870,26 @@
         }
 
         // Show leaderboard
-        function showLeaderboard() {
-            // Sort submissions by score (desc) then by time (asc)
-            const sortedSubmissions = [...allSubmissions].sort((a, b) => {
-                if (b.score !== a.score) {
-                    return b.score - a.score;
-                }
-                return a.completionTime - b.completionTime;
-            });
-
-            // Get top 3
-            const top3 = sortedSubmissions.slice(0, 3);
+        async function showLeaderboard() {
+            // Make sure we have the latest data
+            await updateLeaderboardDisplay();
             
-            // Build leaderboard HTML
-            const leaderboardList = document.getElementById('leaderboardList');
-            leaderboardList.innerHTML = '';
-            
-            const medals = ['🥇', '🥈', '🥉'];
-            const classes = ['gold', 'silver', 'bronze'];
-            
-            top3.forEach((submission, index) => {
-                const item = document.createElement('div');
-                item.className = `leaderboard-item ${classes[index]}`;
-                item.innerHTML = `
-                    <div class="rank-badge">${medals[index]}</div>
-                    <div class="student-info">
-                        <div class="student-name">${submission.name}</div>
-                        <div class="student-stats">
-                            Score: ${submission.score}/5 | Time: ${submission.completionTime.toFixed(1)}s
-                        </div>
-                    </div>
-                `;
-                leaderboardList.appendChild(item);
-            });
-
             // Show overlay
             document.getElementById('leaderboardOverlay').classList.add('show');
+            
+            // Continue updating leaderboard while it's visible
+            if (!leaderboardInterval) {
+                startLeaderboardUpdates();
+            }
         }
 
         // Close leaderboard
         function closeLeaderboard() {
             document.getElementById('leaderboardOverlay').classList.remove('show');
+            // Keep updating in background if quiz is still active
+            if (!isQuizActive) {
+                stopLeaderboardUpdates();
+            }
         }
 
         // Display previous results
@@ -1665,31 +1914,37 @@
             });
         }
 
-        // Save to Google Sheets (placeholder - requires backend implementation)
-        function saveToGoogleSheets(submission) {
-            // Replace this URL with your Google Apps Script Web App URL
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQfnrMX9wxG-l7C-z37ysOHcLwfy1hB0nuT4GAvJOvvqAbI5umnc__VFf5GNvBOg/exec';
+        // Save to Google Sheets
+        async function saveToGoogleSheets(submission) {
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                console.log('Google Sheets URL not configured');
+                return;
+            }
             
             console.log('Saving to Google Sheets:', submission);
             
-            // Uncomment this code after you've deployed your Google Apps Script
-            /*
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(submission)
-            })
-            .then(() => {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(submission)
+                });
                 console.log('Submission saved to Google Sheets');
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error saving to Google Sheets:', error);
-            });
-            */
+            }
         }
+
+        // Check quiz status on page load
+        checkQuizStatus();
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            stopLeaderboardUpdates();
+        });
 
         // Check quiz status on page load
         checkQuizStatus();
@@ -1857,6 +2112,34 @@
                 unlockQuiz();
             }
         });
+
+        // Test function for debugging leaderboard
+        async function testLeaderboard() {
+            console.log('Testing leaderboard connection...');
+            console.log('Script URL:', GOOGLE_SCRIPT_URL);
+            
+            if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                alert('Please set your Google Apps Script URL first!');
+                return;
+            }
+            
+            try {
+                const leaderboard = await fetchLeaderboard();
+                console.log('Leaderboard data:', leaderboard);
+                
+                if (leaderboard.length > 0) {
+                    alert(`Success! Found ${leaderboard.length} submissions in current session.`);
+                    // Show the leaderboard
+                    await updateLeaderboardDisplay();
+                    document.getElementById('leaderboardOverlay').classList.add('show');
+                } else {
+                    alert('Connected successfully but no submissions found. Try adding test data in Google Apps Script.');
+                }
+            } catch (error) {
+                alert('Error connecting to Google Apps Script. Check console for details.');
+                console.error('Test error:', error);
+            }
+        }
     </script>
 </body>
 </html>
