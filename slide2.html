@@ -1484,7 +1484,7 @@
         let isQuizActive = false;
 
         // Replace with your Google Apps Script URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybLDsKV6G5zeFd05BIVefpjWi-L3vOaehqjS1KgXq4l7NMjujj6-RIkoBd0z-aaJQo/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytvBn79WznzGoYatBkWvtf0R70bes5E6ASb0SHp9BnUK_ICd_wC-TAyffQylgfzls5/exec';
 
         // Correct answers
         const correctAnswers = {
@@ -1538,33 +1538,20 @@
             }
         }
 
-        // Fetch leaderboard from Google Sheets
+        // Fetch leaderboard from Google Sheets using JSONP to avoid CORS
         async function fetchLeaderboard() {
             if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
                 console.log('Google Script URL not configured');
                 return [];
             }
 
-            try {
-                console.log('Fetching leaderboard from:', GOOGLE_SCRIPT_URL);
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=leaderboard`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                    }
-                });
+            return new Promise((resolve) => {
+                // Create a unique callback name
+                const callbackName = 'leaderboardCallback_' + Date.now();
                 
-                if (!response.ok) {
-                    console.error('Response not OK:', response.status);
-                    return [];
-                }
-                
-                const text = await response.text();
-                console.log('Raw response:', text);
-                
-                try {
-                    const data = JSON.parse(text);
-                    console.log('Parsed data:', data);
+                // Create the callback function
+                window[callbackName] = function(data) {
+                    console.log('Received data:', data);
                     
                     if (data.status === 'success') {
                         // Normalize data to handle different formats
@@ -1576,18 +1563,46 @@
                                           (typeof item.time === 'string' ? parseFloat(item.time.replace('s', '')) : item.time)
                         }));
                         console.log('Normalized leaderboard:', leaderboard);
-                        return leaderboard;
+                        resolve(leaderboard);
+                    } else {
+                        console.error('Error in response:', data);
+                        resolve([]);
                     }
-                } catch (parseError) {
-                    console.error('Error parsing JSON:', parseError);
-                    console.log('Response text was:', text);
-                }
+                    
+                    // Cleanup
+                    delete window[callbackName];
+                    document.head.removeChild(script);
+                };
                 
-                return [];
-            } catch (error) {
-                console.error('Error fetching leaderboard:', error);
-                return [];
-            }
+                // Create script tag for JSONP
+                const script = document.createElement('script');
+                script.src = `${GOOGLE_SCRIPT_URL}?action=leaderboard&callback=${callbackName}`;
+                
+                // Handle errors
+                script.onerror = function() {
+                    console.error('Error loading leaderboard');
+                    window[callbackName] = null;
+                    delete window[callbackName];
+                    resolve([]);
+                };
+                
+                // Add script to page
+                console.log('Fetching leaderboard from:', script.src);
+                document.head.appendChild(script);
+                
+                // Timeout after 10 seconds
+                setTimeout(() => {
+                    if (window[callbackName]) {
+                        console.error('Leaderboard fetch timeout');
+                        window[callbackName] = null;
+                        delete window[callbackName];
+                        try {
+                            document.head.removeChild(script);
+                        } catch (e) {}
+                        resolve([]);
+                    }
+                }, 10000);
+            });
         }
 
         // Update leaderboard display with live data
