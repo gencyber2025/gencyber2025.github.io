@@ -434,10 +434,13 @@
             grid-column: span 2;
         }
 
-        /* Timeline Section */
+        /* Timeline Section - UPDATED FOR BETTER VISIBILITY */
         .timeline-section {
             margin: 60px 0;
             position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 40px;
         }
 
         .timeline-title {
@@ -459,7 +462,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: linear-gradient(to bottom, #ffd700, #00ff41);
+            background: #666;
             transform: translateX(-50%);
         }
 
@@ -479,23 +482,25 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: #ffd700;
-            border: 3px solid #000;
+            width: 30px;
+            height: 30px;
+            background: #1a1a1a;
+            border: 4px solid #ffd700;
             border-radius: 50%;
             z-index: 10;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
 
         .event-marker:hover {
             transform: translateX(-50%) scale(1.5);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+            background: #333;
         }
 
         .event-content {
-            background: rgba(255, 215, 0, 0.1);
+            background: rgba(0, 0, 0, 0.8);
             border: 2px solid #ffd700;
             border-radius: 15px;
             padding: 20px;
@@ -506,25 +511,29 @@
         .timeline-event:hover .event-content {
             transform: scale(1.05);
             box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            background: rgba(0, 0, 0, 0.9);
         }
 
         .event-year {
             color: #ffd700;
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .event-title {
             color: #00ff41;
             font-weight: bold;
             margin-bottom: 5px;
+            font-size: 1.2em;
         }
 
         .event-desc {
             color: #ffffff;
             font-size: 0.9em;
             line-height: 1.6;
+            opacity: 0.9;
         }
 
         /* Features Grid */
@@ -567,6 +576,377 @@
             color: #00ff41;
             font-size: 0.9em;
             line-height: 1.4;
+        }
+
+        /* Quiz Section - NEW */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(0, 100, 200, 0.1), rgba(0, 150, 255, 0.1));
+            border: 3px solid #0080ff;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .quiz-lock {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .quiz-lock.unlocked {
+            display: none;
+        }
+
+        .lock-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: lockPulse 2s infinite;
+        }
+
+        @keyframes lockPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .password-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .password-label {
+            color: #00bfff;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .password-input, .name-input {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: 2px solid #0080ff;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 250px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .unlock-button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #0080ff, #00bfff);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .unlock-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 128, 255, 0.5);
+        }
+
+        /* Timer Display */
+        .quiz-timer {
+            position: sticky;
+            top: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #ff0000;
+            border-radius: 15px;
+            padding: 15px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 50;
+        }
+
+        .timer-display {
+            font-size: 2em;
+            color: #ff0000;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-label {
+            color: #ffd700;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        /* Leaderboard */
+        .leaderboard-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .leaderboard-overlay.show {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .leaderboard-container {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 4px solid #ffd700;
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+
+        .leaderboard-title {
+            font-size: 3em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            animation: titlePulse 2s infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .leaderboard-list {
+            margin: 30px 0;
+        }
+
+        .leaderboard-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item.gold {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .leaderboard-item.silver {
+            border-color: #c0c0c0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.1));
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
+        }
+
+        .leaderboard-item.bronze {
+            border-color: #cd7f32;
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.1));
+            box-shadow: 0 0 15px rgba(205, 127, 50, 0.4);
+        }
+
+        .rank-badge {
+            font-size: 2.5em;
+            margin-right: 20px;
+        }
+
+        .student-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .student-stats {
+            color: #00bfff;
+            font-size: 1.1em;
+        }
+
+        .close-leaderboard {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .close-leaderboard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 140, 0, 0.6);
+        }
+
+        .quiz-title {
+            font-size: 2.5em;
+            color: #00bfff;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+        }
+
+        .quiz-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 1.3em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            color: #fff;
+        }
+
+        .option:hover:not(.disabled) {
+            background: rgba(0, 128, 255, 0.2);
+            border-color: #0080ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: rgba(0, 128, 255, 0.3);
+            border-color: #00bfff;
+        }
+
+        .option.correct {
+            background: rgba(0, 255, 0, 0.3);
+            border-color: #00ff00;
+        }
+
+        .option.incorrect {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff0000;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .submit-quiz {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .submit-quiz:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 255, 0, 0.4);
+        }
+
+        .submit-quiz:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quiz-results {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .quiz-results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .score {
+            font-size: 2em;
+            color: #00ff00;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .submission-info {
+            color: #00bfff;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .view-leaderboard-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .view-leaderboard-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 140, 0, 0.6);
+        }
+
+        .view-leaderboard-btn:active {
+            transform: translateY(-1px);
         }
 
         /* Action Button */
@@ -621,6 +1001,33 @@
 
             .event-marker {
                 left: 20px;
+            }
+
+            .password-input, .name-input {
+                width: 200px;
+            }
+
+            .leaderboard-container {
+                padding: 30px 20px;
+            }
+
+            .leaderboard-title {
+                font-size: 2em;
+            }
+
+            .rank-badge {
+                font-size: 2em;
+                margin-right: 15px;
+            }
+
+            .student-name {
+                font-size: 1.2em;
+            }
+
+            .quiz-timer {
+                position: relative;
+                top: auto;
+                margin-bottom: 20px;
             }
         }
 
@@ -939,9 +1346,637 @@
                 which filled an entire room and weighed 30 tons!
             </p>
         </div>
+
+        <!-- Quiz Section - NEW -->
+        <section class="quiz-section" id="quizSection">
+            <div class="quiz-lock" id="quizLock">
+                <div class="lock-icon">🔒</div>
+                <div class="password-container">
+                    <div class="password-label">Enter Your Information:</div>
+                    <input type="text" class="name-input" id="nameInput" placeholder="Enter your full name">
+                    <input type="password" class="password-input" id="passwordInput" placeholder="Enter quiz password">
+                    <button class="unlock-button" onclick="unlockQuiz()">Start Quiz</button>
+                </div>
+            </div>
+
+            <h2 class="quiz-title">🧠 Test Your Microprocessor Knowledge!</h2>
+            
+            <!-- Timer Display -->
+            <div class="quiz-timer" id="quizTimer" style="display: none;">
+                <div class="timer-label">Time Remaining:</div>
+                <div class="timer-display" id="timerDisplay">0:30</div>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="question">1. How many transistors did the Intel 4004 have?</div>
+                <div class="options">
+                    <div class="option" data-question="1" data-value="a" onclick="selectOption(this)">A) 1,500</div>
+                    <div class="option" data-question="1" data-value="b" onclick="selectOption(this)">B) 2,300</div>
+                    <div class="option" data-question="1" data-value="c" onclick="selectOption(this)">C) 4,004</div>
+                    <div class="option" data-question="1" data-value="d" onclick="selectOption(this)">D) 10,000</div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question">2. What was the clock speed of the Intel 4004?</div>
+                <div class="options">
+                    <div class="option" data-question="2" data-value="a" onclick="selectOption(this)">A) 108 kHz</div>
+                    <div class="option" data-question="2" data-value="b" onclick="selectOption(this)">B) 500 kHz</div>
+                    <div class="option" data-question="2" data-value="c" onclick="selectOption(this)">C) 740 kHz</div>
+                    <div class="option" data-question="2" data-value="d" onclick="selectOption(this)">D) 1 MHz</div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question">3. The Intel 4004 was originally designed for what type of device?</div>
+                <div class="options">
+                    <div class="option" data-question="3" data-value="a" onclick="selectOption(this)">A) Personal computers</div>
+                    <div class="option" data-question="3" data-value="b" onclick="selectOption(this)">B) Calculators</div>
+                    <div class="option" data-question="3" data-value="c" onclick="selectOption(this)">C) Video games</div>
+                    <div class="option" data-question="3" data-value="d" onclick="selectOption(this)">D) Smartphones</div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question">4. What was the data width of the Intel 4004?</div>
+                <div class="options">
+                    <div class="option" data-question="4" data-value="a" onclick="selectOption(this)">A) 2-bit</div>
+                    <div class="option" data-question="4" data-value="b" onclick="selectOption(this)">B) 4-bit</div>
+                    <div class="option" data-question="4" data-value="c" onclick="selectOption(this)">C) 8-bit</div>
+                    <div class="option" data-question="4" data-value="d" onclick="selectOption(this)">D) 16-bit</div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question">5. Which Intel processor introduced the x86 architecture still used today?</div>
+                <div class="options">
+                    <div class="option" data-question="5" data-value="a" onclick="selectOption(this)">A) Intel 4004</div>
+                    <div class="option" data-question="5" data-value="b" onclick="selectOption(this)">B) Intel 8008</div>
+                    <div class="option" data-question="5" data-value="c" onclick="selectOption(this)">C) Intel 8080</div>
+                    <div class="option" data-question="5" data-value="d" onclick="selectOption(this)">D) Intel 8086</div>
+                </div>
+            </div>
+
+            <button class="submit-quiz" id="submitQuiz" onclick="submitQuiz()">Submit Quiz</button>
+
+            <div class="quiz-results" id="quizResults">
+                <div class="score" id="scoreDisplay"></div>
+                <div class="submission-info" id="submissionInfo"></div>
+                <div class="submission-info">Thank you for participating!</div>
+                <button class="view-leaderboard-btn" onclick="showLeaderboard()">
+                    🏆 View Leaderboard
+                </button>
+            </div>
+        </section>
+
+        <!-- Leaderboard Overlay -->
+        <div class="leaderboard-overlay" id="leaderboardOverlay">
+            <div class="leaderboard-container">
+                <h2 class="leaderboard-title">🏆 Top Performers 🏆</h2>
+                <div class="leaderboard-list" id="leaderboardList">
+                    <!-- Dynamically populated -->
+                </div>
+                <button class="close-leaderboard" onclick="closeLeaderboard()">Close</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Quiz Management
+        const QUIZ_PASSWORD = "micro2025"; // Change this to your desired password
+        let quizSubmitted = false;
+        let selectedAnswers = {};
+        let studentName = "";
+        let quizStartTime = null;
+        let quizEndTime = null;
+        let timerInterval = null;
+        let timeRemaining = 30; // 30 seconds to match slide 2
+        let allSubmissions = [];
+
+        // Correct answers
+        const correctAnswers = {
+            1: 'b', // 2,300 transistors
+            2: 'c', // 740 kHz
+            3: 'b', // Calculators
+            4: 'b', // 4-bit
+            5: 'd'  // Intel 8086
+        };
+
+        // Load existing submissions
+        function loadSubmissions() {
+            const saved = localStorage.getItem('microprocessorQuizSubmissions');
+            if (saved) {
+                allSubmissions = JSON.parse(saved);
+            }
+        }
+
+        // Check if quiz was already submitted
+        function checkQuizStatus() {
+            loadSubmissions();
+            const submitted = localStorage.getItem('microprocessorQuizSubmitted');
+            const savedName = localStorage.getItem('microprocessorQuizName');
+            
+            if (submitted && savedName) {
+                // Check if this name already submitted
+                const hasSubmitted = allSubmissions.some(sub => 
+                    sub.name.toLowerCase() === savedName.toLowerCase()
+                );
+                
+                if (hasSubmitted) {
+                    quizSubmitted = true;
+                    const score = localStorage.getItem('microprocessorQuizScore');
+                    if (savedName && score) {
+                        displayPreviousResults(savedName, score);
+                    }
+                }
+            }
+        }
+
+        // Unlock quiz with password
+        function unlockQuiz() {
+            const name = document.getElementById('nameInput').value.trim();
+            const password = document.getElementById('passwordInput').value;
+            
+            if (!name) {
+                alert("Please enter your full name!");
+                return;
+            }
+            
+            if (password !== QUIZ_PASSWORD) {
+                alert("Incorrect password! Please try again.");
+                document.getElementById('passwordInput').value = "";
+                return;
+            }
+            
+            studentName = name;
+            
+            // Check if this name already submitted
+            loadSubmissions();
+            const hasSubmitted = allSubmissions.some(sub => 
+                sub.name.toLowerCase() === name.toLowerCase()
+            );
+            
+            if (hasSubmitted) {
+                alert(`${name} has already submitted this quiz!`);
+                return;
+            }
+            
+            document.getElementById('quizLock').classList.add('unlocked');
+            startQuiz();
+        }
+
+        // Start the quiz and timer
+        function startQuiz() {
+            quizStartTime = new Date();
+            document.getElementById('quizTimer').style.display = 'block';
+            
+            // Start countdown timer
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Select quiz option
+        function selectOption(element) {
+            if (quizSubmitted) {
+                return;
+            }
+
+            const question = element.getAttribute('data-question');
+            const value = element.getAttribute('data-value');
+            
+            // Clear previous selection for this question
+            const options = document.querySelectorAll(`.option[data-question="${question}"]`);
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Mark this option as selected
+            element.classList.add('selected');
+            selectedAnswers[question] = value;
+        }
+
+        // Auto-submit when timer runs out
+        function autoSubmitQuiz() {
+            if (!quizSubmitted) {
+                submitQuiz(true);
+            }
+        }
+
+        // Submit quiz
+        function submitQuiz(isAutoSubmit = false) {
+            if (quizSubmitted) {
+                alert("You have already submitted this quiz!");
+                return;
+            }
+
+            quizEndTime = new Date();
+            const completionTime = (quizEndTime - quizStartTime) / 1000; // in seconds
+
+            // Check if all questions answered
+            const totalQuestions = 5;
+            const answeredQuestions = Object.keys(selectedAnswers).length;
+            
+            if (!isAutoSubmit && answeredQuestions < totalQuestions) {
+                alert(`Please answer all questions! You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
+                return;
+            }
+
+            // Calculate score
+            let score = 0;
+            for (let q in correctAnswers) {
+                if (selectedAnswers[q] === correctAnswers[q]) {
+                    score++;
+                }
+            }
+
+            // Clear timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            // Mark quiz as submitted
+            quizSubmitted = true;
+            localStorage.setItem('microprocessorQuizSubmitted', 'true');
+            localStorage.setItem('microprocessorQuizName', studentName);
+            localStorage.setItem('microprocessorQuizScore', score);
+
+            // Save submission
+            const submission = {
+                name: studentName,
+                score: score,
+                completionTime: completionTime,
+                answers: selectedAnswers,
+                timestamp: new Date().toISOString()
+            };
+            
+            allSubmissions.push(submission);
+            localStorage.setItem('microprocessorQuizSubmissions', JSON.stringify(allSubmissions));
+
+            // Show results
+            showResults(score, completionTime);
+            
+            // Disable further selections
+            disableQuiz();
+
+            // Save to Google Sheets
+            saveToGoogleSheets(submission);
+
+            // Save to Google Sheets
+            saveToGoogleSheets(submission);
+
+            // Show leaderboard after all submissions are in (if time is up)
+            if (timeRemaining <= 0) {
+                setTimeout(showLeaderboard, 1000);
+            }
+        }
+
+        // Show quiz results
+        function showResults(score, completionTime) {
+            const totalQuestions = 5;
+            const percentage = (score / totalQuestions * 100).toFixed(0);
+            
+            // Show correct/incorrect answers
+            for (let q in correctAnswers) {
+                const options = document.querySelectorAll(`.option[data-question="${q}"]`);
+                options.forEach(opt => {
+                    const value = opt.getAttribute('data-value');
+                    if (value === correctAnswers[q]) {
+                        opt.classList.add('correct');
+                    } else if (value === selectedAnswers[q] && value !== correctAnswers[q]) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+            }
+
+            // Display results
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalQuestions} (${percentage}%)`;
+            document.getElementById('submissionInfo').textContent = 
+                `Submitted by: ${studentName} | Time: ${completionTime.toFixed(1)}s`;
+            document.getElementById('quizResults').classList.add('show');
+            
+            // Update submit button
+            const submitBtn = document.getElementById('submitQuiz');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Quiz Submitted";
+        }
+
+        // Fetch leaderboard from Google Sheets
+        async function fetchLeaderboard() {
+            try {
+                // Use the same URL as saveToGoogleSheets
+                const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf6z3PO6WdayhF0PruFoGByUSTgLZYcZB8uJ5amcQoygh2eZMHRBDaim2pZ9_SkXyIHA/exec';
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=leaderboard');
+                const data = await response.json();
+                
+                console.log('Raw API response:', data); // Debug log
+                
+                if (data.status === 'success' && data.leaderboard && data.leaderboard.length > 0) {
+                    console.log('Total entries from API:', data.leaderboard.length);
+                    console.log('Total rows in sheet:', data.totalRows);
+                    
+                    // Ensure data types are correct
+                    const cleanedData = data.leaderboard.map(entry => ({
+                        name: entry.name,
+                        score: parseInt(entry.score) || 0,
+                        completionTime: parseFloat(entry.completionTime) || 0,
+                        timestamp: entry.timestamp,
+                        sessionId: entry.sessionId
+                    }));
+                    
+                    // Client-side sorting by performance (score desc, then time asc)
+                    const sortedData = [...cleanedData].sort((a, b) => {
+                        if (b.score !== a.score) {
+                            return b.score - a.score;
+                        }
+                        return a.completionTime - b.completionTime;
+                    });
+                    
+                    console.log('After sorting, top 5:', sortedData.slice(0, 5));
+                    
+                    return {
+                        topPerformers: sortedData.slice(0, 5), // Get top 5
+                        top3Display: sortedData.slice(0, 3),   // For display
+                        allSubmissions: cleanedData,           // All 50 for duplicate checking
+                        totalSubmissions: data.totalRows || cleanedData.length,
+                        returnedCount: data.returnedRows || cleanedData.length
+                    };
+                }
+                console.log('No valid data from API');
+                return null;
+            } catch (error) {
+                console.error('Error fetching leaderboard:', error);
+                return null;
+            }
+        }
+
+        // Show leaderboard
+        async function showLeaderboard() {
+            // Show overlay immediately with loading state
+            document.getElementById('leaderboardOverlay').classList.add('show');
+            
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '<div class="loading-dots" style="justify-content: center; padding: 40px;"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+            
+            // Try to fetch from Google Sheets first
+            const sheetsData = await fetchLeaderboard();
+            
+            console.log('Sheets data received:', sheetsData); // Debug log
+            
+            let top3;
+            let totalSubmissions = 0;
+            let dataSource = 'local';
+            
+            if (sheetsData && sheetsData.top3Display && sheetsData.top3Display.length > 0) {
+                // Use data from Google Sheets
+                top3 = sheetsData.top3Display;
+                totalSubmissions = sheetsData.totalSubmissions;
+                dataSource = 'sheets';
+                console.log(`Using ${dataSource} data - Top 3:`, top3);
+                console.log(`Total submissions in sheet: ${totalSubmissions}`);
+                console.log(`Returned from API: ${sheetsData.returnedCount}`);
+            } else {
+                // Fall back to local data
+                console.log('Falling back to local data');
+                const sortedSubmissions = [...allSubmissions].sort((a, b) => {
+                    if (b.score !== a.score) {
+                        return b.score - a.score;
+                    }
+                    return a.completionTime - b.completionTime;
+                });
+                top3 = sortedSubmissions.slice(0, 3);
+                totalSubmissions = allSubmissions.length;
+                console.log('Local data - Top 3:', top3);
+            }
+            
+            // Build leaderboard HTML
+            leaderboardList.innerHTML = '';
+            
+            if (!top3 || top3.length === 0) {
+                leaderboardList.innerHTML = '<div style="text-align: center; color: #ffd700; padding: 20px;">No submissions yet!</div>';
+            } else {
+                const medals = ['🥇', '🥈', '🥉'];
+                const classes = ['gold', 'silver', 'bronze'];
+                
+                // Show all available entries (up to 3)
+                const availableCount = Math.min(top3.length, 3);
+                for (let i = 0; i < availableCount; i++) {
+                    const submission = top3[i];
+                    const item = document.createElement('div');
+                    item.className = `leaderboard-item ${classes[i] || ''}`;
+                    item.innerHTML = `
+                        <div class="rank-badge">${medals[i]}</div>
+                        <div class="student-info">
+                            <div class="student-name">${submission.name}</div>
+                            <div class="student-stats">
+                                Score: ${submission.score}/5 | Time: ${(submission.completionTime || 0).toFixed(1)}s
+                            </div>
+                        </div>
+                    `;
+                    leaderboardList.appendChild(item);
+                }
+                
+                // Add total submissions info
+                if (totalSubmissions > 0) {
+                    const info = document.createElement('div');
+                    info.style.cssText = 'text-align: center; color: #00bfff; margin-top: 20px; font-size: 0.9em;';
+                    if (dataSource === 'sheets' && sheetsData.returnedCount) {
+                        info.textContent = `Top ${top3.length} performers from ${sheetsData.returnedCount} recent submissions (${totalSubmissions} total)`;
+                    } else {
+                        info.textContent = `Top ${top3.length} performers from ${totalSubmissions} submissions`;
+                    }
+                    leaderboardList.appendChild(info);
+                }
+            }
+        }
+
+        // Close leaderboard
+        function closeLeaderboard() {
+            document.getElementById('leaderboardOverlay').classList.remove('show');
+        }
+
+        // Display previous results
+        function displayPreviousResults(name, score) {
+            const totalQuestions = 5;
+            const percentage = (score / totalQuestions * 100).toFixed(0);
+            
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalQuestions} (${percentage}%)`;
+            document.getElementById('submissionInfo').textContent = `Previously submitted by: ${name}`;
+            document.getElementById('quizResults').classList.add('show');
+            
+            document.getElementById('submitQuiz').disabled = true;
+            document.getElementById('submitQuiz').textContent = "Already Submitted";
+        }
+
+        // Disable quiz after submission
+        function disableQuiz() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                opt.onclick = null;
+            });
+            
+            // Ensure submit button stays disabled
+            const submitBtn = document.getElementById('submitQuiz');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Quiz Submitted";
+            submitBtn.onclick = null; // Remove click handler
+        }
+
+        // Flag to prevent duplicate saves
+        let isSavingToSheets = false;
+
+        // Save to Google Sheets
+        function saveToGoogleSheets(submission) {
+            // Prevent duplicate saves
+            if (isSavingToSheets) {
+                console.log('Already saving to sheets, skipping duplicate call');
+                return;
+            }
+            
+            isSavingToSheets = true;
+            
+            // Replace this URL with your Google Apps Script Web App URL
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf6z3PO6WdayhF0PruFoGByUSTgLZYcZB8uJ5amcQoygh2eZMHRBDaim2pZ9_SkXyIHA/exec';
+            
+            console.log('Saving to Google Sheets:', submission);
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(submission)
+            })
+            .then(() => {
+                console.log('Submission saved to Google Sheets');
+                isSavingToSheets = false;
+            })
+            .catch(error => {
+                console.error('Error saving to Google Sheets:', error);
+                isSavingToSheets = false;
+            });
+        }
+
+        // Check quiz status on page load
+        checkQuizStatus();
+
+        // Also fetch submissions from Google Sheets on load
+        fetchLeaderboard().then(data => {
+            if (data && data.allSubmissions) {
+                // Merge with local submissions to check for duplicates
+                data.allSubmissions.forEach(submission => {
+                    if (!allSubmissions.some(s => s.name.toLowerCase() === submission.name.toLowerCase())) {
+                        allSubmissions.push(submission);
+                    }
+                });
+                localStorage.setItem('microprocessorQuizSubmissions', JSON.stringify(allSubmissions));
+                console.log('Loaded submissions from sheets. Total unique:', allSubmissions.length);
+            }
+        });
+
+        // Manual test function for debugging
+        window.testLeaderboard = async function() {
+            console.log('=== Testing Leaderboard ===');
+            const data = await fetchLeaderboard();
+            if (data) {
+                console.log('Fetched data:', data);
+                console.log('Top performers count:', data.topPerformers.length);
+                console.log('Top 3 for display:', data.top3Display.length);
+                console.log('Total submissions in sheet:', data.totalSubmissions);
+                console.log('Returned from API:', data.returnedCount);
+                
+                console.log('\n=== Top 5 Performers ===');
+                data.topPerformers.forEach((p, i) => {
+                    console.log(`${i+1}. ${p.name} - Score: ${p.score}, Time: ${p.completionTime}s`);
+                });
+                
+                console.log('\n=== Top 3 Display ===');
+                data.top3Display.forEach((p, i) => {
+                    console.log(`${['🥇','🥈','🥉'][i]} ${p.name} - Score: ${p.score}, Time: ${p.completionTime}s`);
+                });
+            } else {
+                console.log('No data returned from API');
+            }
+            
+            console.log('\n=== Local Submissions ===');
+            console.log('Count:', allSubmissions.length);
+            allSubmissions.forEach((s, i) => {
+                console.log(`${i+1}. ${s.name} - Score: ${s.score}, Time: ${s.completionTime}s`);
+            });
+            
+            // Also test the API directly
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf6z3PO6WdayhF0PruFoGByUSTgLZYcZB8uJ5amcQoygh2eZMHRBDaim2pZ9_SkXyIHA/exec';
+            console.log('\n=== Direct API Test ===');
+            console.log('Test this URL in a new tab:');
+            console.log(GOOGLE_SCRIPT_URL + '?action=leaderboard');
+        };
+
+        // Quick test for checking specific issues
+        window.quickCheck = async function() {
+            console.log('🔍 Quick Check Running...');
+            
+            // Test API
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf6z3PO6WdayhF0PruFoGByUSTgLZYcZB8uJ5amcQoygh2eZMHRBDaim2pZ9_SkXyIHA/exec';
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=leaderboard');
+                const data = await response.json();
+                
+                console.log(`✅ API Status: ${data.status}`);
+                console.log(`📊 Total in sheet: ${data.totalRows}`);
+                console.log(`📥 Returned count: ${data.returnedRows || data.leaderboard?.length || 0}`);
+                
+                if (data.leaderboard && data.leaderboard.length > 0) {
+                    console.log('📋 First 3 entries:');
+                    data.leaderboard.slice(0, 3).forEach((e, i) => {
+                        console.log(`  ${i+1}. ${e.name} - Score: ${e.score}`);
+                    });
+                } else {
+                    console.log('❌ No data in leaderboard array');
+                }
+                
+                // Check for duplicates
+                const names = data.leaderboard?.map(e => e.name.toLowerCase()) || [];
+                const uniqueNames = new Set(names);
+                if (names.length !== uniqueNames.size) {
+                    console.log(`⚠️ Duplicate names found! ${names.length} entries but only ${uniqueNames.size} unique names`);
+                }
+                
+            } catch (error) {
+                console.error('❌ API Error:', error);
+            }
+        };
+
+        // Also add a function to clear local cache
+        window.clearLocalCache = function() {
+            localStorage.removeItem('microprocessorQuizSubmissions');
+            localStorage.removeItem('microprocessorQuizSubmitted');
+            localStorage.removeItem('microprocessorQuizName');
+            localStorage.removeItem('microprocessorQuizScore');
+            allSubmissions = [];
+            console.log('Local cache cleared!');
+        };
+
+        // Enter key handler for password input
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                unlockQuiz();
+            }
+        });
+
         // Initialize binary rain
         function createBinaryRain() {
             const rain = document.getElementById('binaryRain');
@@ -1160,6 +2195,13 @@
             }
             if (e.key === 'ArrowLeft') {
                 console.log('Navigate to previous slide');
+            }
+        });
+
+        // Enter key handler for password input
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                unlockQuiz();
             }
         });
 
